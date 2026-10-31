@@ -100,73 +100,73 @@ function showToast(msg) {
 }
 
 // ============================================================================
-// STATION METADATA (MATCHING SCREENSHOT ARCHITECTURE)
+// STATION METADATA (JAPANESE ARCHITECTURAL THEME - KYOTO & NEO-TOKYO)
 // ============================================================================
 const STATIONS = {
   hub: {
     id: 'hub',
-    name: 'Trung Tâm Điều Phối',
-    shortName: 'Điều phối',
-    icon: '🏰',
+    name: 'Thiên Thủ Các (Điều Phối)',
+    shortName: 'Thiên Thủ Các',
+    icon: '🏯',
     pos: { x: 2, y: 0, z: -12 },
-    labelHeight: 15.5,
-    camOffset: { x: 0, y: 26, z: 26 },
-    quote: 'Lâu đài trung tâm kết nối toàn bộ hệ thống Công việc, Lịch, App & Ngân sách của bạn.',
+    labelHeight: 17.5,
+    camOffset: { x: 0, y: 26, z: 27 },
+    quote: 'Lâu đài Thiên Thủ Các trung tâm điều phối toàn bộ Công việc, Lịch, App & Ngân khố.',
     bubble: 'Hệ thống đang vận hành 100% công suất!'
   },
   tasks: {
     id: 'tasks',
-    name: 'Trạm Task & Kế Hoạch',
-    shortName: 'Quản lý Task',
-    icon: '📋',
+    name: 'Đền Thần Đạo & Võ Đường Task',
+    shortName: 'Đền Task',
+    icon: '⛩️',
     pos: { x: -4, y: 0, z: 5 },
-    labelHeight: 9.5,
+    labelHeight: 11.2,
     camOffset: { x: -4, y: 18, z: 22 },
-    quote: 'Buồn ngủ người xem đang bỏ lỡ? Tập trung xử lý từng Task Ngày - Tuần - Tháng!',
+    quote: 'Tập trung tinh thần võ sĩ đạo để xử lý dứt điểm từng Task Ngày - Tuần - Tháng!',
     bubble: 'Đang xử lý danh sách Task trong ngày & tuần!'
   },
   schedule: {
     id: 'schedule',
-    name: 'Tháp Lịch Làm Việc',
-    shortName: 'Lịch trình',
-    icon: '🥕',
+    name: 'Bảo Tháp Ngũ Trùng (Lịch Trình)',
+    shortName: 'Bảo Tháp Lịch',
+    icon: '🗼',
     pos: { x: -16, y: 0, z: 13 },
-    labelHeight: 13.5,
-    camOffset: { x: -16, y: 18, z: 28 },
-    quote: 'Quản lý khung giờ làm việc trong ngày, lịch hẹn và phân bổ thời gian hiệu quả.',
+    labelHeight: 16.0,
+    camOffset: { x: -16, y: 19, z: 28 },
+    quote: 'Tiếng chuông Chùa Tháp điểm giờ chuẩn xác cho từng khung lịch làm việc trong ngày.',
     bubble: 'Khung giờ Deep Work đang diễn ra!'
   },
   finance: {
     id: 'finance',
-    name: 'Tiệm Ngân Sách & Lương',
-    shortName: 'Ngân sách & Lương',
-    icon: '🧁',
+    name: 'Thương Hội Ngân Khố Maneki-Neko',
+    shortName: 'Ngân Khố & Lương',
+    icon: '🐱',
     pos: { x: 18, y: 0, z: 12 },
-    labelHeight: 10.5,
+    labelHeight: 12.2,
     camOffset: { x: 18, y: 18, z: 27 },
-    quote: 'Theo dõi Lương, dòng tiền thu nhập, hạn mức ngân sách và chi tiêu hàng ngày.',
+    quote: 'Mèo Thần Tài Maneki-Neko chiêu tài lộc, quản lý Lương, Ngân sách và Chi tiêu.',
     bubble: 'Ngân sách tháng đang trong vùng an toàn!'
   },
   apps: {
     id: 'apps',
-    name: 'Nhà Máy Quản Lý App',
+    name: 'Trạm Công Nghệ Neo-Tokyo App',
     shortName: 'Quản lý App',
-    icon: '🚀',
+    icon: '🗼',
     pos: { x: -20, y: 0, z: -12 },
-    labelHeight: 10.5,
+    labelHeight: 13.5,
     camOffset: { x: -20, y: 18, z: 6 },
-    quote: 'Giám sát các ứng dụng, phần mềm, dự án cá nhân và tiến độ triển khai.',
+    quote: 'Trung tâm công nghệ Neo-Tokyo giám sát các ứng dụng, phần mềm và dự án số.',
     bubble: 'Các App & Bot đang hoạt động ổn định!'
   },
   goals: {
     id: 'goals',
-    name: 'Vườn Mục Tiêu & Thói Quen',
-    shortName: 'Mục tiêu',
-    icon: '🐰',
+    name: 'Vườn Thiền Zen & Hồ Cá Koi',
+    shortName: 'Vườn Thiền Mục Tiêu',
+    icon: '🌸',
     pos: { x: -23, y: 0, z: 18 },
-    labelHeight: 10.0,
+    labelHeight: 10.5,
     camOffset: { x: -23, y: 17, z: 33 },
-    quote: 'Xây dựng thói quen kỷ luật mỗi ngày để tự động hóa thành công dài hạn.',
+    quote: 'Rèn luyện kỷ luật tĩnh tâm mỗi ngày cùng búp bê Daruma & hồ cá Koi thịnh vượng.',
     bubble: 'Chuỗi thói quen liên tiếp đang tăng!'
   }
 };
@@ -179,7 +179,7 @@ const labelsContainer = document.getElementById('labels-container');
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xdcf0d5);
-scene.fog = new THREE.FogExp2(0xdcf0d5, 0.0085);
+scene.fog = new THREE.FogExp2(0xdcf0d5, 0.0075);
 
 const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.5, 300);
 camera.position.set(-6, 34, 44);
@@ -203,17 +203,17 @@ controls.target.set(-2, 2, 2);
 const ambientLight = new THREE.AmbientLight(0xfff6f0, 0.72);
 scene.add(ambientLight);
 
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0xc8e6c9, 0.35);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xc8e6c9, 0.38);
 scene.add(hemiLight);
 
-const dirLight = new THREE.DirectionalLight(0xfff5e4, 0.85);
+const dirLight = new THREE.DirectionalLight(0xfff5e4, 0.9);
 dirLight.position.set(35, 55, 30);
 dirLight.castShadow = true;
 dirLight.shadow.mapSize.width = 2048;
 dirLight.shadow.mapSize.height = 2048;
 dirLight.shadow.camera.near = 5;
-dirLight.shadow.camera.far = 140;
-const d = 48;
+dirLight.shadow.camera.far = 150;
+const d = 50;
 dirLight.shadow.camera.left = -d;
 dirLight.shadow.camera.right = d;
 dirLight.shadow.camera.top = d;
@@ -221,29 +221,33 @@ dirLight.shadow.camera.bottom = -d;
 dirLight.shadow.bias = -0.0005;
 scene.add(dirLight);
 
-// Materials Palette (Pastel Cute Theme)
+// Materials Palette (Authentic Japanese Architecture + Pastel Sakura Harmony)
 const MATS = {
-  ground: new THREE.MeshStandardMaterial({ color: 0xd8efd2, roughness: 0.95 }),
-  plazaCream: new THREE.MeshStandardMaterial({ color: 0xf9f3eb, roughness: 0.7 }),
-  goldTrim: new THREE.MeshStandardMaterial({ color: 0xe3b963, roughness: 0.4, metalness: 0.2 }),
-  castlePink: new THREE.MeshStandardMaterial({ color: 0xe8b5c8, roughness: 0.6 }),
-  castleLav: new THREE.MeshStandardMaterial({ color: 0xcab8d9, roughness: 0.65 }),
-  castleRoof: new THREE.MeshStandardMaterial({ color: 0x9b5de5, roughness: 0.5 }),
-  purpleWall: new THREE.MeshStandardMaterial({ color: 0xa689b8, roughness: 0.65 }),
-  roseWall: new THREE.MeshStandardMaterial({ color: 0xd199b2, roughness: 0.65 }),
-  mintWall: new THREE.MeshStandardMaterial({ color: 0x89c4b8, roughness: 0.6 }),
-  mintDark: new THREE.MeshStandardMaterial({ color: 0x5f9ea0, roughness: 0.65 }),
-  carrotOrange: new THREE.MeshStandardMaterial({ color: 0xd67c3b, roughness: 0.65 }),
-  carrotRing: new THREE.MeshStandardMaterial({ color: 0xb85d23, roughness: 0.7 }),
-  leafGreen: new THREE.MeshStandardMaterial({ color: 0x43a047, roughness: 0.6 }),
-  frostingPink: new THREE.MeshStandardMaterial({ color: 0xf497b6, roughness: 0.45 }),
-  cupBase: new THREE.MeshStandardMaterial({ color: 0xeadcd5, roughness: 0.75 }),
-  bunnyYellow: new THREE.MeshStandardMaterial({ color: 0xe5d36e, roughness: 0.55 }),
-  bunnyPink: new THREE.MeshStandardMaterial({ color: 0xf2a6be, roughness: 0.55 }),
-  donutGold: new THREE.MeshStandardMaterial({ color: 0xd49b4b, roughness: 0.4, metalness: 0.1 }),
-  railSteel: new THREE.MeshStandardMaterial({ color: 0x8b8589, roughness: 0.4, metalness: 0.5 }),
-  railWood: new THREE.MeshStandardMaterial({ color: 0xb08968, roughness: 0.8 }),
-  white: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 })
+  ground: new THREE.MeshStandardMaterial({ color: 0xd5ebd0, roughness: 0.95 }),
+  plazaCream: new THREE.MeshStandardMaterial({ color: 0xf7f1e5, roughness: 0.75 }),
+  stoneWall: new THREE.MeshStandardMaterial({ color: 0x9e9a95, roughness: 0.85 }),
+  stoneDark: new THREE.MeshStandardMaterial({ color: 0x75726e, roughness: 0.9 }),
+  shikkuiWhite: new THREE.MeshStandardMaterial({ color: 0xfcfaf5, roughness: 0.55 }),
+  woodDark: new THREE.MeshStandardMaterial({ color: 0x3d261c, roughness: 0.7 }),
+  woodWarm: new THREE.MeshStandardMaterial({ color: 0x8c583a, roughness: 0.65 }),
+  kawaraRoof: new THREE.MeshStandardMaterial({ color: 0x2f3640, roughness: 0.5, metalness: 0.15 }),
+  kawaraTeal: new THREE.MeshStandardMaterial({ color: 0x3b6978, roughness: 0.5, metalness: 0.15 }),
+  vermilion: new THREE.MeshStandardMaterial({ color: 0xd93829, roughness: 0.45 }),
+  vermilionDark: new THREE.MeshStandardMaterial({ color: 0x9e1f14, roughness: 0.55 }),
+  goldTrim: new THREE.MeshStandardMaterial({ color: 0xf0c44d, roughness: 0.3, metalness: 0.45 }),
+  sakuraPink: new THREE.MeshStandardMaterial({ color: 0xffb7c5, roughness: 0.6 }),
+  sakuraDeep: new THREE.MeshStandardMaterial({ color: 0xf48fb1, roughness: 0.6 }),
+  sakuraLight: new THREE.MeshStandardMaterial({ color: 0xffe4ec, roughness: 0.6 }),
+  bambooGreen: new THREE.MeshStandardMaterial({ color: 0x55a630, roughness: 0.55 }),
+  pineGreen: new THREE.MeshStandardMaterial({ color: 0x2d6a4f, roughness: 0.7 }),
+  waterpond: new THREE.MeshStandardMaterial({ color: 0x4cc9f0, roughness: 0.2, metalness: 0.1, transparent: true, opacity: 0.85 }),
+  shojiGlow: new THREE.MeshStandardMaterial({ color: 0xfff3d1, emissive: 0xffb74d, emissiveIntensity: 0.35, roughness: 0.4 }),
+  lanternGlow: new THREE.MeshStandardMaterial({ color: 0xff6b4a, emissive: 0xff5722, emissiveIntensity: 0.65, roughness: 0.4 }),
+  neonCyan: new THREE.MeshStandardMaterial({ color: 0x00f5d4, emissive: 0x00bbf9, emissiveIntensity: 0.75 }),
+  neonPink: new THREE.MeshStandardMaterial({ color: 0xff4d6d, emissive: 0xf72585, emissiveIntensity: 0.75 }),
+  railSteel: new THREE.MeshStandardMaterial({ color: 0x7f8c8d, roughness: 0.4, metalness: 0.6 }),
+  railWood: new THREE.MeshStandardMaterial({ color: 0x8d6e63, roughness: 0.8 }),
+  white: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4 })
 };
 
 function enableShadow(obj) {
@@ -253,6 +257,102 @@ function enableShadow(obj) {
       child.receiveShadow = true;
     }
   });
+}
+
+// Helper: Build Japanese Curved Pagoda/Castle Roof Tier (Irimoya-zukuri style)
+function createJapaneseRoof(width, depth, height, roofMat = MATS.kawaraRoof, withGoldCorners = true) {
+  const rg = new THREE.Group();
+
+  // Main flared eaves base
+  const eave = new THREE.Mesh(new THREE.BoxGeometry(width * 1.08, height * 0.24, depth * 1.08), roofMat);
+  eave.position.y = height * 0.12;
+  rg.add(eave);
+
+  // Upper sloped hipped roof (4-sided pyramid frustum)
+  const radiusBottom = Math.hypot(width, depth) * 0.54;
+  const radiusTop = radiusBottom * 0.42;
+  const slope = new THREE.Mesh(new THREE.CylinderGeometry(radiusTop, radiusBottom, height * 0.78, 4), roofMat);
+  slope.rotation.y = Math.PI / 4;
+  slope.scale.set(width / Math.max(width, depth), 1, depth / Math.max(width, depth));
+  slope.position.y = height * 0.52;
+  rg.add(slope);
+
+  // Roof Ridge Beam (Munagi) with Gold End Caps
+  const ridgeW = width * 0.46;
+  const ridge = new THREE.Mesh(new THREE.BoxGeometry(ridgeW, height * 0.22, depth * 0.14), roofMat);
+  ridge.position.y = height * 0.92;
+  rg.add(ridge);
+
+  if (withGoldCorners) {
+    const capL = new THREE.Mesh(new THREE.BoxGeometry(0.28, height * 0.28, depth * 0.18), MATS.goldTrim);
+    capL.position.set(-ridgeW * 0.5, height * 0.94, 0);
+    const capR = capL.clone();
+    capR.position.x = ridgeW * 0.5;
+    rg.add(capL, capR);
+
+    // Upturned corner ornaments
+    const cOffsets = [
+      [-width * 0.52, depth * 0.52],
+      [width * 0.52, depth * 0.52],
+      [-width * 0.52, -depth * 0.52],
+      [width * 0.52, -depth * 0.52]
+    ];
+    cOffsets.forEach(([cx, cz]) => {
+      const horn = new THREE.Mesh(new THREE.ConeGeometry(0.18, 0.45, 6), MATS.goldTrim);
+      horn.position.set(cx, height * 0.3, cz);
+      rg.add(horn);
+    });
+  }
+  return rg;
+}
+
+// Helper: Build Detailed Japanese Torii Gate (⛩️)
+function createToriiGate(scale = 1) {
+  const tg = new THREE.Group();
+  const pillarGeo = new THREE.CylinderGeometry(0.22 * scale, 0.26 * scale, 4.2 * scale, 16);
+  const pLeft = new THREE.Mesh(pillarGeo, MATS.vermilion);
+  pLeft.position.set(-1.55 * scale, 2.1 * scale, 0);
+  const pRight = new THREE.Mesh(pillarGeo, MATS.vermilion);
+  pRight.position.set(1.55 * scale, 2.1 * scale, 0);
+
+  // Black stone base shoes (Kamebara)
+  const shoeGeo = new THREE.CylinderGeometry(0.32 * scale, 0.36 * scale, 0.45 * scale, 16);
+  const sLeft = new THREE.Mesh(shoeGeo, MATS.kawaraRoof);
+  sLeft.position.set(-1.55 * scale, 0.22 * scale, 0);
+  const sRight = sLeft.clone();
+  sRight.position.x = 1.55 * scale;
+
+  // Lower tie beam (Nuki)
+  const nuki = new THREE.Mesh(new THREE.BoxGeometry(3.9 * scale, 0.26 * scale, 0.24 * scale), MATS.vermilion);
+  nuki.position.y = 3.25 * scale;
+
+  // Top lintel (Kasagi) with dark roof cap
+  const kasagi = new THREE.Mesh(new THREE.BoxGeometry(4.6 * scale, 0.32 * scale, 0.42 * scale), MATS.vermilion);
+  kasagi.position.y = 4.15 * scale;
+  const kasagiCap = new THREE.Mesh(new THREE.BoxGeometry(4.8 * scale, 0.16 * scale, 0.48 * scale), MATS.kawaraRoof);
+  kasagiCap.position.y = 4.35 * scale;
+
+  // Center plaque (Gakuzuka)
+  const plaque = new THREE.Mesh(new THREE.BoxGeometry(0.55 * scale, 0.85 * scale, 0.3 * scale), MATS.goldTrim);
+  plaque.position.y = 3.7 * scale;
+
+  tg.add(pLeft, pRight, sLeft, sRight, nuki, kasagi, kasagiCap, plaque);
+  return tg;
+}
+
+// Helper: Build Traditional Stone Lantern (Ishidoro / Toro)
+function createStoneLantern(scale = 1) {
+  const lg = new THREE.Group();
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.45 * scale, 0.55 * scale, 0.3 * scale, 6), MATS.stoneWall);
+  base.position.y = 0.15 * scale;
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.2 * scale, 0.25 * scale, 1.2 * scale, 8), MATS.stoneWall);
+  post.position.y = 0.9 * scale;
+  const lightBox = new THREE.Mesh(new THREE.CylinderGeometry(0.35 * scale, 0.35 * scale, 0.55 * scale, 6), MATS.shojiGlow);
+  lightBox.position.y = 1.7 * scale;
+  const roof = new THREE.Mesh(new THREE.ConeGeometry(0.75 * scale, 0.55 * scale, 6), MATS.stoneDark);
+  roof.position.y = 2.2 * scale;
+  lg.add(base, post, lightBox, roof);
+  return lg;
 }
 
 // Ground Plane
@@ -280,7 +380,7 @@ function registerStationHitbox(stationId, group, radius = 6, height = 10) {
   const ringGeo = new THREE.RingGeometry(radius + 0.5, radius + 1.2, 48);
   ringGeo.rotateX(-Math.PI / 2);
   const ringMat = new THREE.MeshBasicMaterial({
-    color: 0x7d2e38,
+    color: 0xd93829,
     side: THREE.DoubleSide,
     transparent: true,
     opacity: 0.0
@@ -292,297 +392,500 @@ function registerStationHitbox(stationId, group, radius = 6, height = 10) {
 }
 
 // ============================================================================
-// BUILD THE 6 ICONIC 3D STATIONS (MATCHING SCREENSHOT)
+// BUILD THE 6 DETAILED JAPANESE 3D STATIONS
 // ============================================================================
 
-// 1. CENTRAL CASTLE HUB ('hub')
+// 1. CENTRAL TENSHUKAKU CASTLE HUB ('hub' - Himeji / Osaka Style Castle + Moat & Red Bridge)
 function buildCastleHub() {
   const group = new THREE.Group();
   group.position.set(STATIONS.hub.pos.x, 0, STATIONS.hub.pos.z);
 
-  // Circular Plaza with Gold Rim
-  const plazaOuter = new THREE.Mesh(new THREE.CylinderGeometry(14.5, 15, 0.5, 48), MATS.goldTrim);
-  plazaOuter.position.y = 0.25;
-  group.add(plazaOuter);
+  // Outer Moat Rim & Water Moat
+  const moatRim = new THREE.Mesh(new THREE.CylinderGeometry(14.8, 15.2, 0.45, 48), MATS.stoneWall);
+  moatRim.position.y = 0.22;
+  group.add(moatRim);
 
-  const plazaInner = new THREE.Mesh(new THREE.CylinderGeometry(13.8, 13.8, 0.65, 48), MATS.plazaCream);
-  plazaInner.position.y = 0.35;
-  group.add(plazaInner);
+  const moatWater = new THREE.Mesh(new THREE.CylinderGeometry(14.2, 14.2, 0.52, 48), MATS.waterpond);
+  moatWater.position.y = 0.26;
+  group.add(moatWater);
 
-  // Main Central Keep
-  const keep = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.6, 10, 24), MATS.castleLav);
-  keep.position.y = 5.5;
-  group.add(keep);
+  // Inner Island Courtyard
+  const island = new THREE.Mesh(new THREE.CylinderGeometry(11.2, 11.8, 0.7, 36), MATS.plazaCream);
+  island.position.y = 0.35;
+  group.add(island);
 
-  const keepRoof = new THREE.Mesh(new THREE.ConeGeometry(5.2, 4.5, 24), MATS.castlePink);
-  keepRoof.position.y = 12.7;
-  group.add(keepRoof);
+  // Sloped Ishigaki Stone Fortress Base
+  const ishigaki1 = new THREE.Mesh(new THREE.CylinderGeometry(7.8, 9.4, 3.2, 4), MATS.stoneWall);
+  ishigaki1.rotation.y = Math.PI / 4;
+  ishigaki1.position.y = 2.0;
+  group.add(ishigaki1);
 
-  // Surrounding Turrets
-  const turretOffsets = [
-    { x: -5.2, z: 2.5, h: 7.5, r: 2.2 },
-    { x: 5.2, z: 2.5, h: 7.5, r: 2.2 },
-    { x: -4.5, z: -4.5, h: 8.5, r: 2.0 },
-    { x: 4.5, z: -4.5, h: 8.5, r: 2.0 }
+  const ishigaki2 = new THREE.Mesh(new THREE.CylinderGeometry(6.6, 7.6, 1.6, 4), MATS.stoneDark);
+  ishigaki2.rotation.y = Math.PI / 4;
+  ishigaki2.position.y = 4.2;
+  group.add(ishigaki2);
+
+  // 4 Tiers of Tenshukaku Castle Keep
+  const tiers = [
+    { w: 8.6, d: 8.6, h: 2.6, y: 5.0, rw: 10.6, rd: 10.6, rh: 1.5 },
+    { w: 6.8, d: 6.8, h: 2.3, y: 7.8, rw: 8.8, rd: 8.8, rh: 1.4 },
+    { w: 5.2, d: 5.2, h: 2.1, y: 10.2, rw: 7.0, rd: 7.0, rh: 1.3 },
+    { w: 3.8, d: 3.8, h: 2.0, y: 12.4, rw: 5.6, rd: 5.6, rh: 1.5 }
   ];
-  turretOffsets.forEach(t => {
-    const tower = new THREE.Mesh(new THREE.CylinderGeometry(t.r, t.r * 1.08, t.h, 20), MATS.castleLav);
-    tower.position.set(t.x, t.h / 2 + 0.5, t.z);
-    group.add(tower);
 
-    const roof = new THREE.Mesh(new THREE.ConeGeometry(t.r * 1.25, 3.0, 20), MATS.castlePink);
-    roof.position.set(t.x, t.h + 2.0, t.z);
+  tiers.forEach((t, idx) => {
+    const wall = new THREE.Mesh(new THREE.BoxGeometry(t.w, t.h, t.d), MATS.shikkuiWhite);
+    wall.position.y = t.y + t.h / 2;
+    group.add(wall);
+
+    // Timber frame accent & glowing windows
+    const band = new THREE.Mesh(new THREE.BoxGeometry(t.w + 0.12, 0.25, t.d + 0.12), MATS.woodDark);
+    band.position.y = t.y + t.h * 0.25;
+    group.add(band);
+
+    const win = new THREE.Mesh(new THREE.BoxGeometry(t.w * 0.55, t.h * 0.42, t.d + 0.16), MATS.shojiGlow);
+    win.position.y = t.y + t.h * 0.62;
+    group.add(win);
+
+    // Curved Japanese Roof for this tier
+    const roof = createJapaneseRoof(t.rw, t.rd, t.rh, idx === 3 ? MATS.kawaraTeal : MATS.kawaraRoof, true);
+    roof.position.y = t.y + t.h - 0.1;
     group.add(roof);
   });
 
-  // Front Gate Balcony
-  const frontWall = new THREE.Mesh(new THREE.BoxGeometry(7.5, 4.2, 3.5), MATS.plazaCream);
-  frontWall.position.set(0, 2.6, 4.0);
-  group.add(frontWall);
+  // Top Red Railing Balcony & Golden Shachihoko Roof Guardians
+  const shachiL = new THREE.Mesh(new THREE.ConeGeometry(0.35, 1.1, 8), MATS.goldTrim);
+  shachiL.position.set(-1.3, 16.0, 0);
+  shachiL.rotation.z = -0.25;
+  const shachiR = shachiL.clone();
+  shachiR.position.x = 1.3;
+  shachiR.rotation.z = 0.25;
+  group.add(shachiL, shachiR);
 
-  const frontRoof = new THREE.Mesh(new THREE.BoxGeometry(8.0, 0.7, 4.0), MATS.castlePink);
-  frontRoof.position.set(0, 4.9, 4.0);
-  group.add(frontRoof);
-
-  // Floating Golden Halo Crown above Castle
-  const crown = new THREE.Mesh(new THREE.TorusGeometry(2.6, 0.22, 12, 36), MATS.goldTrim);
+  // Floating Golden Celestial Ring above Tenshukaku
+  const crown = new THREE.Mesh(new THREE.TorusGeometry(2.4, 0.18, 12, 36), MATS.goldTrim);
   crown.rotation.x = Math.PI / 2;
-  crown.position.y = 15.2;
+  crown.position.y = 16.8;
   group.add(crown);
-  animatedObjects.push({ mesh: crown, type: 'spinY', speed: 1.2, baseY: 15.2 });
+  animatedObjects.push({ mesh: crown, type: 'spinY', speed: 1.2, baseY: 16.8 });
+
+  // Red Arched Taiko-bashi Bridge crossing the moat at the front
+  const bridgeGroup = new THREE.Group();
+  bridgeGroup.position.set(0, 0.6, 12.2);
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.35, 5.2), MATS.vermilion);
+  deck.position.y = 0.4;
+  const railL = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.75, 5.2), MATS.vermilionDark);
+  railL.position.set(-1.3, 0.85, 0);
+  const railR = railL.clone();
+  railR.position.x = 1.3;
+  bridgeGroup.add(deck, railL, railR);
+  group.add(bridgeGroup);
+
+  // Corner Sakura Trees inside Castle Courtyard
+  const cTree1 = createSakuraTree(1.0);
+  cTree1.position.set(-7.5, 0.6, 6.2);
+  const cTree2 = createSakuraTree(0.95);
+  cTree2.position.set(7.5, 0.6, 6.2);
+  group.add(cTree1, cTree2);
 
   enableShadow(group);
-  registerStationHitbox('hub', group, 11, 14);
+  registerStationHitbox('hub', group, 12.5, 16);
   scene.add(group);
 }
 
-// 2. TASK & WORKFLOW STATION ('tasks' - Center-front station with spinning Donut & Cupcake)
+// 2. SHINTO SHRINE & MACHIYA TASK DOJO ('tasks' - Vermilion Torii + Machiya Hall + Ema Board)
 function buildTaskStation() {
   const group = new THREE.Group();
   group.position.set(STATIONS.tasks.pos.x, 0, STATIONS.tasks.pos.z);
 
-  // Base pad
-  const pad = new THREE.Mesh(new THREE.BoxGeometry(10.5, 0.6, 8.5), MATS.plazaCream);
-  pad.position.y = 0.3;
-  group.add(pad);
-
-  // Main Rose/Lavender Building block
-  const body = new THREE.Mesh(new THREE.BoxGeometry(7.6, 3.8, 5.6), MATS.roseWall);
-  body.position.y = 2.4;
-  group.add(body);
-
-  // Roof Rim
-  const rim = new THREE.Mesh(new THREE.BoxGeometry(8.2, 0.6, 6.2), MATS.castlePink);
-  rim.position.y = 4.5;
-  group.add(rim);
-
-  // Iconic Rotating Golden Donut on the Roof (Just like screenshot!)
-  const donutGroup = new THREE.Group();
-  donutGroup.position.set(-1.5, 6.3, 0.5);
-  const donut = new THREE.Mesh(new THREE.TorusGeometry(1.35, 0.55, 16, 32), MATS.donutGold);
-  const icing = new THREE.Mesh(new THREE.TorusGeometry(1.36, 0.42, 16, 32), MATS.plazaCream);
-  icing.position.z = 0.18;
-  donutGroup.add(donut, icing);
-  group.add(donutGroup);
-  animatedObjects.push({ mesh: donutGroup, type: 'spinY', speed: 1.8, baseY: 6.3 });
-
-  // Secondary Left Wing ("Viết bài / Sprint")
-  const leftWing = new THREE.Group();
-  leftWing.position.set(-10.5, 0, -2.5);
-  const lwPad = new THREE.Mesh(new THREE.BoxGeometry(8.5, 0.5, 7.5), MATS.plazaCream);
-  lwPad.position.y = 0.25;
-  const lwBody = new THREE.Mesh(new THREE.BoxGeometry(6.5, 3.6, 5.2), MATS.purpleWall);
-  lwBody.position.y = 2.2;
-  // Mini cupcake on left wing roof
-  const miniCup = createCupcakeMesh(1.1);
-  miniCup.position.set(0, 4.1, 0);
-  leftWing.add(lwPad, lwBody, miniCup);
-  group.add(leftWing);
-
-  enableShadow(group);
-  registerStationHitbox('tasks', group, 7.5, 9);
-  scene.add(group);
-}
-
-// Helper for Cupcake 3D Mesh
-function createCupcakeMesh(scale = 1) {
-  const cg = new THREE.Group();
-  const base = new THREE.Mesh(new THREE.CylinderGeometry(1.2 * scale, 0.85 * scale, 1.4 * scale, 20), MATS.cupBase);
-  base.position.y = 0.7 * scale;
-  cg.add(base);
-
-  // Layered Swirl Frosting
-  const f1 = new THREE.Mesh(new THREE.TorusGeometry(0.95 * scale, 0.42 * scale, 14, 24), MATS.frostingPink);
-  f1.rotation.x = Math.PI / 2;
-  f1.position.y = 1.55 * scale;
-  const f2 = new THREE.Mesh(new THREE.TorusGeometry(0.65 * scale, 0.36 * scale, 14, 24), MATS.frostingPink);
-  f2.rotation.x = Math.PI / 2;
-  f2.position.y = 2.05 * scale;
-  const f3 = new THREE.Mesh(new THREE.SphereGeometry(0.42 * scale, 16, 16), new THREE.MeshStandardMaterial({ color: 0xd9385a }));
-  f3.position.y = 2.55 * scale;
-  cg.add(f1, f2, f3);
-  return cg;
-}
-
-// 3. SCHEDULE & CALENDAR CARROT TOWER ('schedule' - Foreground left Carrot Tower + Slide)
-function buildScheduleTower() {
-  const group = new THREE.Group();
-  group.position.set(STATIONS.schedule.pos.x, 0, STATIONS.schedule.pos.z);
-
-  const pad = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.6, 0.6, 24), MATS.plazaCream);
-  pad.position.y = 0.3;
-  group.add(pad);
-
-  // Stacked Carrot Segments
-  for (let i = 0; i < 5; i++) {
-    const rBottom = 2.5 - i * 0.32;
-    const rTop = 2.5 - (i + 1) * 0.32;
-    const seg = new THREE.Mesh(new THREE.CylinderGeometry(rTop, rBottom, 1.8, 20), MATS.carrotOrange);
-    seg.position.y = 1.4 + i * 1.85;
-    group.add(seg);
-
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(rBottom * 0.98, 0.12, 10, 24), MATS.carrotRing);
-    ring.rotation.x = Math.PI / 2;
-    ring.position.y = 0.6 + i * 1.85;
-    group.add(ring);
-  }
-
-  // Green Leaf Sprout on Top (Rotating gently)
-  const leaves = new THREE.Group();
-  leaves.position.y = 10.5;
-  for (let i = 0; i < 5; i++) {
-    const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.45, 2.6, 8), MATS.leafGreen);
-    const angle = (i / 5) * Math.PI * 2;
-    leaf.position.set(Math.cos(angle) * 0.4, 1.0, Math.sin(angle) * 0.4);
-    leaf.rotation.z = -Math.cos(angle) * 0.35;
-    leaf.rotation.x = Math.sin(angle) * 0.35;
-    leaves.add(leaf);
-  }
-  group.add(leaves);
-  animatedObjects.push({ mesh: leaves, type: 'spinY', speed: 0.9, baseY: 10.5 });
-
-  // Cute Pink Slide attached to Tower
-  const slide = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.3, 6.2), MATS.frostingPink);
-  slide.position.set(3.2, 2.2, 2.2);
-  slide.rotation.x = 0.52;
-  slide.rotation.y = 0.45;
-  group.add(slide);
-
-  enableShadow(group);
-  registerStationHitbox('schedule', group, 5.8, 12);
-  scene.add(group);
-}
-
-// 4. FINANCE, BUDGET & SALARY BAKERY ('finance' - Giant Cupcake Station on Right)
-function buildFinanceBakery() {
-  const group = new THREE.Group();
-  group.position.set(STATIONS.finance.pos.x, 0, STATIONS.finance.pos.z);
-
-  const pad = new THREE.Mesh(new THREE.BoxGeometry(9.5, 0.6, 9.5), MATS.plazaCream);
-  pad.position.y = 0.3;
-  group.add(pad);
-
-  const giantCupcake = createCupcakeMesh(2.85);
-  giantCupcake.position.y = 0.5;
-  group.add(giantCupcake);
-
-  // Floating Gold Coins Orbiting Finance Building
-  const coinOrbit = new THREE.Group();
-  coinOrbit.position.y = 5.5;
-  for (let i = 0; i < 4; i++) {
-    const coin = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.16, 16), MATS.goldTrim);
-    coin.rotation.z = Math.PI / 2;
-    const angle = (i / 4) * Math.PI * 2;
-    coin.position.set(Math.cos(angle) * 4.5, (i % 2) * 0.8, Math.sin(angle) * 4.5);
-    coinOrbit.add(coin);
-  }
-  group.add(coinOrbit);
-  animatedObjects.push({ mesh: coinOrbit, type: 'spinY', speed: 1.5, baseY: 5.5 });
-
-  enableShadow(group);
-  registerStationHitbox('finance', group, 6.5, 10);
-  scene.add(group);
-}
-
-// 5. APP & PROJECT FACTORY ('apps' - Mint Building in Top-Left)
-function buildAppsFactory() {
-  const group = new THREE.Group();
-  group.position.set(STATIONS.apps.pos.x, 0, STATIONS.apps.pos.z);
-
+  // Stone Courtyard Pad
   const pad = new THREE.Mesh(new THREE.BoxGeometry(11.5, 0.6, 9.5), MATS.plazaCream);
   pad.position.y = 0.3;
   group.add(pad);
 
-  const mainBox = new THREE.Mesh(new THREE.BoxGeometry(8.8, 5.2, 6.8), MATS.mintWall);
-  mainBox.position.y = 3.0;
-  group.add(mainBox);
+  // Main Machiya Dojo Hall
+  const hallWall = new THREE.Mesh(new THREE.BoxGeometry(7.8, 3.4, 5.4), MATS.shikkuiWhite);
+  hallWall.position.set(0, 2.3, -0.8);
+  group.add(hallWall);
 
-  const topDeck = new THREE.Mesh(new THREE.BoxGeometry(6.2, 1.8, 4.8), MATS.mintDark);
-  topDeck.position.y = 6.5;
-  group.add(topDeck);
+  // Vermilion Pillars & Glowing Shoji Sliding Doors
+  for (let x = -3.6; x <= 3.6; x += 1.8) {
+    const col = new THREE.Mesh(new THREE.BoxGeometry(0.28, 3.5, 5.6), MATS.vermilion);
+    col.position.set(x, 2.3, -0.8);
+    group.add(col);
+  }
+  const shojiFront = new THREE.Mesh(new THREE.BoxGeometry(6.8, 2.4, 5.52), MATS.shojiGlow);
+  shojiFront.position.set(0, 2.2, -0.8);
+  group.add(shojiFront);
 
-  // Rotating Radar / Server Dish on Roof
-  const radar = new THREE.Group();
-  radar.position.set(0, 8.2, 0);
-  const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 1.5, 8), MATS.white);
-  const dish = new THREE.Mesh(new THREE.OctahedronGeometry(1.1, 0), MATS.goldTrim);
-  dish.position.y = 1.1;
-  radar.add(rod, dish);
-  group.add(radar);
-  animatedObjects.push({ mesh: radar, type: 'spinY', speed: 2.2, baseY: 8.2 });
+  // 1st Floor Curved Japanese Roof
+  const roof1 = createJapaneseRoof(9.6, 7.2, 1.5, MATS.kawaraRoof, true);
+  roof1.position.set(0, 3.9, -0.8);
+  group.add(roof1);
+
+  // 2nd Floor Loft & Upper Roof
+  const loft = new THREE.Mesh(new THREE.BoxGeometry(5.2, 2.0, 3.6), MATS.shikkuiWhite);
+  loft.position.set(0, 5.8, -0.8);
+  group.add(loft);
+
+  const roof2 = createJapaneseRoof(6.8, 5.0, 1.4, MATS.kawaraRoof, true);
+  roof2.position.set(0, 6.7, -0.8);
+  group.add(roof2);
+
+  // Front Vermilion Torii Gate at the entrance
+  const torii = createToriiGate(1.05);
+  torii.position.set(0, 0.5, 3.3);
+  group.add(torii);
+
+  // Hanging Red Chochin Paper Lanterns along front eaves
+  for (let lx = -3.0; lx <= 3.0; lx += 1.5) {
+    const lantern = new THREE.Mesh(new THREE.SphereGeometry(0.28, 12, 12), MATS.lanternGlow);
+    lantern.scale.y = 1.35;
+    lantern.position.set(lx, 3.6, 2.1);
+    group.add(lantern);
+  }
+
+  // Spinning Giant Red & Gold Chochin Lantern Emblem above Dojo
+  const emblemGroup = new THREE.Group();
+  emblemGroup.position.set(0, 9.4, -0.8);
+  const bigLantern = new THREE.Mesh(new THREE.SphereGeometry(0.95, 20, 20), MATS.lanternGlow);
+  bigLantern.scale.y = 1.25;
+  const goldCapTop = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.2, 16), MATS.goldTrim);
+  goldCapTop.position.y = 1.1;
+  const goldCapBot = goldCapTop.clone();
+  goldCapBot.position.y = -1.1;
+  emblemGroup.add(bigLantern, goldCapTop, goldCapBot);
+  group.add(emblemGroup);
+  animatedObjects.push({ mesh: emblemGroup, type: 'spinY', speed: 1.6, baseY: 9.4 });
+
+  // Side Pavilion (Ema Wishing Plaque Rack & Tea House)
+  const teaHouse = new THREE.Group();
+  teaHouse.position.set(-10.5, 0, -2.5);
+  const thPad = new THREE.Mesh(new THREE.BoxGeometry(8.2, 0.5, 7.2), MATS.plazaCream);
+  thPad.position.y = 0.25;
+  const thBody = new THREE.Mesh(new THREE.BoxGeometry(5.8, 3.0, 4.6), MATS.woodWarm);
+  thBody.position.y = 2.0;
+  const thRoof = createJapaneseRoof(7.2, 6.0, 1.4, MATS.kawaraTeal, true);
+  thRoof.position.y = 3.4;
+  teaHouse.add(thPad, thBody, thRoof);
+  group.add(teaHouse);
 
   enableShadow(group);
-  registerStationHitbox('apps', group, 7.0, 10);
+  registerStationHitbox('tasks', group, 7.8, 10);
   scene.add(group);
 }
 
-// 6. GOALS & HABITS BUNNY GARDEN ('goals' - Bunny Ears Building in Foreground-Left)
+// 3. GOJU-NO-TO 5-STORY PAGODA & BELL TOWER ('schedule' - Kyoto 5-Story Pagoda)
+function buildScheduleTower() {
+  const group = new THREE.Group();
+  group.position.set(STATIONS.schedule.pos.x, 0, STATIONS.schedule.pos.z);
+
+  // Stone Pagoda Foundation
+  const pad = new THREE.Mesh(new THREE.BoxGeometry(10.5, 0.7, 10.5), MATS.plazaCream);
+  pad.position.y = 0.35;
+  group.add(pad);
+
+  const stonePodium = new THREE.Mesh(new THREE.BoxGeometry(7.2, 1.0, 7.2), MATS.stoneWall);
+  stonePodium.position.y = 1.1;
+  group.add(stonePodium);
+
+  // 5-Story Vermilion & Dark Tile Pagoda (Goju-no-to)
+  for (let i = 0; i < 5; i++) {
+    const w = 4.6 - i * 0.45;
+    const h = 1.75;
+    const baseY = 1.6 + i * 2.15;
+
+    // Pagoda Core Wall
+    const core = new THREE.Mesh(new THREE.BoxGeometry(w, h, w), MATS.vermilion);
+    core.position.y = baseY + h / 2;
+    group.add(core);
+
+    // White Plaster Panels
+    const panel = new THREE.Mesh(new THREE.BoxGeometry(w * 0.78, h * 0.7, w + 0.08), MATS.shikkuiWhite);
+    panel.position.y = baseY + h / 2;
+    const panel2 = new THREE.Mesh(new THREE.BoxGeometry(w + 0.08, h * 0.7, w * 0.78), MATS.shikkuiWhite);
+    panel2.position.y = baseY + h / 2;
+    group.add(panel, panel2);
+
+    // Curved Pagoda Roof Tier
+    const roof = createJapaneseRoof(w + 2.1, w + 2.1, 1.05, MATS.kawaraRoof, true);
+    roof.position.y = baseY + h - 0.1;
+    group.add(roof);
+  }
+
+  // Golden Sorin Finial Spire (9 Sacred Rings at Top of Pagoda)
+  const spireGroup = new THREE.Group();
+  spireGroup.position.y = 12.6;
+  const spirePole = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.22, 3.2, 12), MATS.goldTrim);
+  spirePole.position.y = 1.6;
+  spireGroup.add(spirePole);
+  for (let r = 0; r < 6; r++) {
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.45 - r * 0.04, 0.06, 8, 16), MATS.goldTrim);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = 0.6 + r * 0.38;
+    spireGroup.add(ring);
+  }
+  group.add(spireGroup);
+  animatedObjects.push({ mesh: spireGroup, type: 'spinY', speed: 1.0, baseY: 12.6 });
+
+  // Adjacent Bonsho Temple Bell Pavilion (Timekeeper)
+  const bellPav = new THREE.Group();
+  bellPav.position.set(4.2, 0.7, 2.8);
+  const bRoof = createJapaneseRoof(3.4, 3.4, 1.1, MATS.kawaraRoof, false);
+  bRoof.position.y = 2.8;
+  const bell = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.62, 1.2, 16), MATS.stoneDark);
+  bell.position.y = 1.8;
+  bellPav.add(bRoof, bell);
+  group.add(bellPav);
+
+  enableShadow(group);
+  registerStationHitbox('schedule', group, 6.5, 15);
+  scene.add(group);
+}
+
+// 4. EDO KURA TREASURY VAULT & GIANT MANEKI-NEKO ('finance' - Lucky Cat & Gold Koban Coins)
+function buildFinanceBakery() {
+  const group = new THREE.Group();
+  group.position.set(STATIONS.finance.pos.x, 0, STATIONS.finance.pos.z);
+
+  const pad = new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.7, 10.8), MATS.plazaCream);
+  pad.position.y = 0.35;
+  group.add(pad);
+
+  // Traditional Edo Kura Merchant Vault Building
+  const kuraWall = new THREE.Mesh(new THREE.BoxGeometry(6.8, 4.6, 5.8), MATS.shikkuiWhite);
+  kuraWall.position.set(-0.8, 2.9, -1.0);
+  group.add(kuraWall);
+
+  // Black Namako-kabe Lower Tile Trim
+  const namako = new THREE.Mesh(new THREE.BoxGeometry(7.0, 1.5, 6.0), MATS.kawaraRoof);
+  namako.position.set(-0.8, 1.35, -1.0);
+  group.add(namako);
+
+  const kuraRoof = createJapaneseRoof(8.6, 7.6, 1.7, MATS.kawaraRoof, true);
+  kuraRoof.position.set(-0.8, 5.1, -1.0);
+  group.add(kuraRoof);
+
+  // Giant Maneki-Neko (Japanese Beckoning Lucky Cat) Statue in Front-Right
+  const catGroup = new THREE.Group();
+  catGroup.position.set(2.2, 0.7, 2.0);
+  catGroup.rotation.y = -0.35;
+
+  // Red Cushion (Zabuton)
+  const cushion = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.5, 3.2), MATS.vermilion);
+  cushion.position.y = 0.25;
+  catGroup.add(cushion);
+
+  // Cat Body & Head
+  const catBody = new THREE.Mesh(new THREE.CylinderGeometry(1.15, 1.35, 2.4, 20), MATS.white);
+  catBody.position.y = 1.6;
+  const catHead = new THREE.Mesh(new THREE.SphereGeometry(1.25, 24, 24), MATS.white);
+  catHead.position.y = 3.3;
+
+  // Cat Ears (White outer, Red inner)
+  const earGeo = new THREE.ConeGeometry(0.45, 0.95, 12);
+  const earL = new THREE.Mesh(earGeo, MATS.white);
+  earL.position.set(-0.78, 4.35, 0);
+  earL.rotation.z = 0.25;
+  const earR = new THREE.Mesh(earGeo, MATS.white);
+  earR.position.set(0.78, 4.35, 0);
+  earR.rotation.z = -0.25;
+
+  // Red Collar & Golden Bell
+  const collar = new THREE.Mesh(new THREE.TorusGeometry(0.95, 0.14, 10, 24), MATS.vermilion);
+  collar.rotation.x = Math.PI / 2;
+  collar.position.y = 2.45;
+  const bell = new THREE.Mesh(new THREE.SphereGeometry(0.28, 12, 12), MATS.goldTrim);
+  bell.position.set(0, 2.38, 1.02);
+
+  // Golden Oval Koban Coin held on right side
+  const koban = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.65, 0.18, 20), MATS.goldTrim);
+  koban.scale.z = 1.45;
+  koban.rotation.x = Math.PI / 2;
+  koban.position.set(0.7, 1.65, 1.15);
+
+  // Animated Beckoning Left Paw (Waving up and down!)
+  const wavingPaw = new THREE.Group();
+  wavingPaw.position.set(-1.15, 2.4, 0.3);
+  const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.35, 1.35, 12), MATS.white);
+  arm.position.y = 0.55;
+  const paw = new THREE.Mesh(new THREE.SphereGeometry(0.4, 12, 12), MATS.white);
+  paw.position.set(0, 1.2, 0.15);
+  wavingPaw.add(arm, paw);
+  animatedObjects.push({ mesh: wavingPaw, type: 'waveX', speed: 4.5 });
+
+  catGroup.add(catBody, catHead, earL, earR, collar, bell, koban, wavingPaw);
+  group.add(catGroup);
+
+  // Orbiting Golden Koban Coins above Treasury
+  const coinOrbit = new THREE.Group();
+  coinOrbit.position.set(-0.8, 8.2, -1.0);
+  for (let i = 0; i < 5; i++) {
+    const coin = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.15, 16), MATS.goldTrim);
+    coin.scale.x = 1.4;
+    coin.rotation.z = Math.PI / 2;
+    const angle = (i / 5) * Math.PI * 2;
+    coin.position.set(Math.cos(angle) * 4.2, (i % 2) * 0.6, Math.sin(angle) * 4.2);
+    coinOrbit.add(coin);
+  }
+  group.add(coinOrbit);
+  animatedObjects.push({ mesh: coinOrbit, type: 'spinY', speed: 1.5, baseY: 8.2 });
+
+  enableShadow(group);
+  registerStationHitbox('finance', group, 7.0, 11);
+  scene.add(group);
+}
+
+// 5. NEO-TOKYO CYBER DOJO & MINI TOKYO TOWER ('apps' - Akihabara / Modern Japanese Tech Hub)
+function buildAppsFactory() {
+  const group = new THREE.Group();
+  group.position.set(STATIONS.apps.pos.x, 0, STATIONS.apps.pos.z);
+
+  const pad = new THREE.Mesh(new THREE.BoxGeometry(12.0, 0.6, 10.0), MATS.plazaCream);
+  pad.position.y = 0.3;
+  group.add(pad);
+
+  // 2-Tier Modern Japanese Tech Dojo
+  const baseBuilding = new THREE.Mesh(new THREE.BoxGeometry(7.8, 3.8, 6.2), MATS.woodDark);
+  baseBuilding.position.set(-1.2, 2.5, 0);
+  group.add(baseBuilding);
+
+  const glassStrip = new THREE.Mesh(new THREE.BoxGeometry(8.0, 1.4, 6.4), MATS.neonCyan);
+  glassStrip.position.set(-1.2, 2.6, 0);
+  group.add(glassStrip);
+
+  const roof1 = createJapaneseRoof(9.4, 7.8, 1.3, MATS.kawaraTeal, true);
+  roof1.position.set(-1.2, 4.3, 0);
+  group.add(roof1);
+
+  const topBuilding = new THREE.Mesh(new THREE.BoxGeometry(5.4, 2.4, 4.4), MATS.shikkuiWhite);
+  topBuilding.position.set(-1.2, 6.5, 0);
+  group.add(topBuilding);
+
+  const roof2 = createJapaneseRoof(7.0, 5.8, 1.3, MATS.kawaraTeal, true);
+  roof2.position.set(-1.2, 7.6, 0);
+  group.add(roof2);
+
+  // Vertical Glowing Neon Kanban Signs on Facade
+  const signPink = new THREE.Mesh(new THREE.BoxGeometry(0.55, 3.2, 0.25), MATS.neonPink);
+  signPink.position.set(-3.8, 4.8, 3.3);
+  const signCyan = new THREE.Mesh(new THREE.BoxGeometry(0.55, 2.8, 0.25), MATS.neonCyan);
+  signCyan.position.set(1.4, 4.5, 3.3);
+  group.add(signPink, signCyan);
+
+  // Iconic Red & White Tokyo Tower Spire next to Tech Building
+  const towerGroup = new THREE.Group();
+  towerGroup.position.set(3.6, 0.6, 1.5);
+  const tSegs = [
+    { rB: 1.5, rT: 1.05, h: 2.4, y: 1.2, mat: MATS.vermilion },
+    { rB: 1.05, rT: 0.75, h: 2.2, y: 3.5, mat: MATS.white },
+    { rB: 0.75, rT: 0.45, h: 2.2, y: 5.7, mat: MATS.vermilion },
+    { rB: 0.45, rT: 0.22, h: 2.0, y: 7.8, mat: MATS.white },
+    { rB: 0.22, rT: 0.05, h: 2.2, y: 9.9, mat: MATS.vermilion }
+  ];
+  tSegs.forEach(s => {
+    const seg = new THREE.Mesh(new THREE.CylinderGeometry(s.rT, s.rB, s.h, 4), s.mat);
+    seg.rotation.y = Math.PI / 4;
+    seg.position.y = s.y;
+    towerGroup.add(seg);
+  });
+  // Observation deck
+  const obsDeck = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.65, 2.1), MATS.shojiGlow);
+  obsDeck.position.y = 3.2;
+  towerGroup.add(obsDeck);
+  group.add(towerGroup);
+
+  // Floating Holo Core above Roof
+  const holo = new THREE.Mesh(new THREE.OctahedronGeometry(1.1, 0), MATS.neonCyan);
+  holo.position.set(-1.2, 10.3, 0);
+  group.add(holo);
+  animatedObjects.push({ mesh: holo, type: 'spinY', speed: 2.4, baseY: 10.3 });
+
+  enableShadow(group);
+  registerStationHitbox('apps', group, 7.2, 12);
+  scene.add(group);
+}
+
+// 6. ZEN GARDEN, KOI POND & DARUMA PAVILION ('goals' - Japanese Zen Sanctuary)
 function buildGoalsGarden() {
   const group = new THREE.Group();
   group.position.set(STATIONS.goals.pos.x, 0, STATIONS.goals.pos.z);
 
-  const pad = new THREE.Mesh(new THREE.BoxGeometry(8.5, 0.6, 8.5), MATS.plazaCream);
+  // Raked Zen Sand Courtyard
+  const pad = new THREE.Mesh(new THREE.BoxGeometry(10.5, 0.6, 10.5), MATS.plazaCream);
   pad.position.y = 0.3;
   group.add(pad);
 
-  // Gazebo columns
-  const gazeboRoof = new THREE.Mesh(new THREE.BoxGeometry(5.6, 0.6, 5.6), MATS.white);
-  gazeboRoof.position.y = 3.2;
-  group.add(gazeboRoof);
+  // Japanese Azumaya Wooden Pavilion
+  const pavGroup = new THREE.Group();
+  pavGroup.position.set(-1.8, 0.6, -1.5);
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(5.0, 0.35, 5.0), MATS.woodWarm);
+  floor.position.y = 0.2;
+  pavGroup.add(floor);
 
-  // Cute Pear/Bunny Head Dome
-  const head = new THREE.Mesh(new THREE.SphereGeometry(2.3, 24, 24), MATS.bunnyYellow);
-  head.position.y = 5.4;
-  group.add(head);
+  const pCols = [[-2.1, -2.1], [2.1, -2.1], [-2.1, 2.1], [2.1, 2.1]];
+  pCols.forEach(([cx, cz]) => {
+    const c = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 3.0, 12), MATS.woodDark);
+    c.position.set(cx, 1.7, cz);
+    pavGroup.add(c);
+  });
 
-  // Bunny Ears
-  const earGeo = new THREE.CylinderGeometry(0.45, 0.55, 2.8, 16);
-  const earL = new THREE.Mesh(earGeo, MATS.bunnyYellow);
-  earL.position.set(-0.9, 8.2, 0);
-  earL.rotation.z = 0.18;
-  const earR = new THREE.Mesh(earGeo, MATS.bunnyYellow);
-  earR.position.set(0.9, 8.2, 0);
-  earR.rotation.z = -0.18;
-  group.add(earL, earR);
+  const pavRoof = createJapaneseRoof(6.4, 6.4, 1.5, MATS.kawaraRoof, true);
+  pavRoof.position.y = 3.1;
+  pavGroup.add(pavRoof);
 
-  // Pink Bunny Companion next to it
-  const pinkBunny = new THREE.Mesh(new THREE.SphereGeometry(2.1, 20, 20), MATS.bunnyPink);
-  pinkBunny.position.set(-3.2, 2.4, 3.0);
-  const pEarL = new THREE.Mesh(earGeo, MATS.bunnyPink);
-  pEarL.position.set(-3.9, 4.9, 3.0);
-  pEarL.rotation.z = 0.2;
-  const pEarR = new THREE.Mesh(earGeo, MATS.bunnyPink);
-  pEarR.position.set(-2.5, 4.9, 3.0);
-  pEarR.rotation.z = -0.2;
-  group.add(pinkBunny, pEarL, pEarR);
+  // Giant Red Daruma Doll inside Pavilion (Japanese Goal Setting Symbol!)
+  const daruma = new THREE.Group();
+  daruma.position.set(0, 1.4, 0);
+  const dBody = new THREE.Mesh(new THREE.SphereGeometry(1.15, 20, 20), MATS.vermilion);
+  dBody.scale.y = 1.15;
+  const dFace = new THREE.Mesh(new THREE.SphereGeometry(0.75, 16, 16), MATS.plazaCream);
+  dFace.position.set(0, 0.25, 0.55);
+  const dGold = new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.1, 8, 20), MATS.goldTrim);
+  dGold.position.set(0, -0.2, 0.45);
+  daruma.add(dBody, dFace, dGold);
+  pavGroup.add(daruma);
+  group.add(pavGroup);
+
+  // Koi Pond with Swimming Red & White Koi Fish!
+  const pondGroup = new THREE.Group();
+  pondGroup.position.set(2.2, 0.62, 2.2);
+  const pondRim = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 2.8, 0.3, 24), MATS.stoneWall);
+  const pondWater = new THREE.Mesh(new THREE.CylinderGeometry(2.35, 2.35, 0.34, 24), MATS.waterpond);
+  pondGroup.add(pondRim, pondWater);
+
+  // Swimming Koi Fish Orbiting inside Pond
+  const koiOrbit = new THREE.Group();
+  koiOrbit.position.y = 0.22;
+  for (let k = 0; k < 3; k++) {
+    const koi = new THREE.Mesh(
+      new THREE.ConeGeometry(0.2, 0.75, 8),
+      k % 2 === 0 ? MATS.vermilion : MATS.goldTrim
+    );
+    koi.rotation.x = Math.PI / 2;
+    const angle = (k / 3) * Math.PI * 2;
+    koi.position.set(Math.cos(angle) * 1.3, 0, Math.sin(angle) * 1.3);
+    koi.rotation.z = -angle;
+    koiOrbit.add(koi);
+  }
+  pondGroup.add(koiOrbit);
+  animatedObjects.push({ mesh: koiOrbit, type: 'spinY', speed: -1.4 });
+  group.add(pondGroup);
+
+  // Stone Lantern & Sakura Tree in Zen Garden
+  const lantern = createStoneLantern(0.95);
+  lantern.position.set(3.2, 0.6, -2.8);
+  const zenSakura = createSakuraTree(1.1);
+  zenSakura.position.set(-3.2, 0.6, 3.0);
+  group.add(lantern, zenSakura);
 
   enableShadow(group);
-  registerStationHitbox('goals', group, 6.2, 10);
+  registerStationHitbox('goals', group, 6.8, 10);
   scene.add(group);
 }
 
 // ============================================================================
-// RAILWAY TRACKS, MOVING TRAIN & CUTE 3D CHIBI WORKERS
+// SHINKANSEN BULLET TRAIN, JAPANESE KIMONO CHIBI WORKERS & SAKURA SCENERY
 // ============================================================================
 const trackWaypoints = [
   new THREE.Vector3(-18, 0.25, -5),
@@ -599,21 +902,19 @@ const trackCurve = new THREE.CatmullRomCurve3(trackWaypoints, true);
 
 function buildRailwaySystem() {
   const railGroup = new THREE.Group();
-  const points = trackCurve.getSpacedPoints(150);
+  const points = trackCurve.getSpacedPoints(160);
 
-  // Wooden sleepers along the curve
   for (let i = 0; i < points.length; i++) {
     const pt = points[i];
     const tangent = trackCurve.getTangent(i / points.length);
-    const sleeper = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.14, 0.42), MATS.railWood);
+    const sleeper = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.14, 0.42), MATS.railWood);
     sleeper.position.copy(pt);
     sleeper.lookAt(pt.clone().add(tangent));
     sleeper.receiveShadow = true;
     railGroup.add(sleeper);
   }
 
-  // Tube rail track
-  const tubeGeo = new THREE.TubeGeometry(trackCurve, 150, 0.14, 8, true);
+  const tubeGeo = new THREE.TubeGeometry(trackCurve, 160, 0.14, 8, true);
   const tubeMesh = new THREE.Mesh(tubeGeo, MATS.railSteel);
   tubeMesh.position.y = 0.08;
   railGroup.add(tubeMesh);
@@ -621,71 +922,117 @@ function buildRailwaySystem() {
   scene.add(railGroup);
 }
 
-// Animated Pastel Train riding the railway
+// Shinkansen High-Speed Bullet Train (2 Cars: Lead Nose Car + Passenger Car)
 let trainMesh;
+let carriageMesh;
 let trainProgress = 0;
 
 function buildTrain() {
   trainMesh = new THREE.Group();
 
-  const base = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.7, 3.2), MATS.maroon || new THREE.MeshStandardMaterial({ color: 0x7d2e38 }));
-  base.position.y = 0.6;
-  trainMesh.add(base);
+  // Main Shinkansen White Aerodynamic Body
+  const body = new THREE.Mesh(new THREE.BoxGeometry(1.85, 1.35, 3.6), MATS.white);
+  body.position.y = 0.95;
+  trainMesh.add(body);
 
-  const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.9, 1.4, 1.8), MATS.castlePink);
-  cabin.position.set(0, 1.6, -0.4);
-  trainMesh.add(cabin);
+  // Iconic Blue/Teal Racing Stripe along Shinkansen side
+  const stripe = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.28, 3.65), MATS.kawaraTeal);
+  stripe.position.y = 0.78;
+  trainMesh.add(stripe);
 
-  const chimney = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.28, 1.0, 12), MATS.goldTrim);
-  chimney.position.set(0, 1.5, 0.9);
-  trainMesh.add(chimney);
+  // Sleek Bullet Nose Cone at front (+Z)
+  const nose = new THREE.Mesh(new THREE.ConeGeometry(0.95, 2.2, 16), MATS.white);
+  nose.rotation.x = Math.PI / 2;
+  nose.position.set(0, 0.72, 2.8);
+  trainMesh.add(nose);
+
+  // Cockpit Windshield & Illuminated Passenger Windows
+  const cockpit = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.42, 0.9), MATS.kawaraRoof);
+  cockpit.position.set(0, 1.35, 1.45);
+  cockpit.rotation.x = 0.35;
+  const winStrip = new THREE.Mesh(new THREE.BoxGeometry(1.92, 0.38, 2.4), MATS.shojiGlow);
+  winStrip.position.set(0, 1.18, -0.2);
+  trainMesh.add(cockpit, winStrip);
+
+  // 2nd Passenger Carriage following behind
+  carriageMesh = new THREE.Group();
+  const cBody = new THREE.Mesh(new THREE.BoxGeometry(1.85, 1.35, 3.4), MATS.white);
+  cBody.position.y = 0.95;
+  const cStripe = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.28, 3.45), MATS.kawaraTeal);
+  cStripe.position.y = 0.78;
+  const cWin = new THREE.Mesh(new THREE.BoxGeometry(1.92, 0.38, 2.6), MATS.shojiGlow);
+  cWin.position.y = 1.18;
+  carriageMesh.add(cBody, cStripe, cWin);
 
   enableShadow(trainMesh);
+  enableShadow(carriageMesh);
   scene.add(trainMesh);
+  scene.add(carriageMesh);
 }
 
-// Cute 3D Chibi Workers (Walking between stations like the little characters in screenshot!)
+// Japanese Kimono / Samurai / Miko Chibi Workers
 const workers = [];
 const WORKER_CONFIGS = [
-  { name: 'Agent Nghiên cứu', hairColor: 0x2b2b2b, bodyColor: 0x7d2e38, from: 'hub', to: 'tasks', speed: 0.22 },
-  { name: 'Bot Lịch trình', hairColor: 0x5c3c24, bodyColor: 0xd67c3b, from: 'tasks', to: 'schedule', speed: 0.18 },
-  { name: 'Quản gia Ngân sách', hairColor: 0x3d2b56, bodyColor: 0x2eaa68, from: 'hub', to: 'finance', speed: 0.20 },
-  { name: 'Kỹ sư App 3D', hairColor: 0x1b4965, bodyColor: 0x5f9ea0, from: 'apps', to: 'hub', speed: 0.19 },
-  { name: 'Trợ lý Mục tiêu', hairColor: 0x6b242c, bodyColor: 0xe3b963, from: 'schedule', to: 'goals', speed: 0.24 }
+  { name: 'Võ sĩ Task (Samurai)', hairColor: 0x1e1e24, kimonoColor: 0x2b4c7e, obiColor: 0xf0c44d, hat: 'chonmage', from: 'hub', to: 'tasks', speed: 0.22 },
+  { name: 'Vu nữ Lịch trình (Miko)', hairColor: 0x1e1e24, kimonoColor: 0xd93829, obiColor: 0xffffff, hat: 'ribbon', from: 'tasks', to: 'schedule', speed: 0.18 },
+  { name: 'Thương nhân Ngân khố', hairColor: 0x3d261c, kimonoColor: 0x2d6a4f, obiColor: 0xf0c44d, hat: 'kasa', from: 'hub', to: 'finance', speed: 0.20 },
+  { name: 'Kỹ sư Neo-Tokyo', hairColor: 0x1b4965, kimonoColor: 0x3b6978, obiColor: 0x00f5d4, hat: 'chonmage', from: 'apps', to: 'hub', speed: 0.19 },
+  { name: 'Thiền sư Mục tiêu', hairColor: 0x4a2c2a, kimonoColor: 0xe07a5f, obiColor: 0xf7f1e5, hat: 'kasa', from: 'schedule', to: 'goals', speed: 0.24 }
 ];
 
 function buildChibiWorkers() {
   WORKER_CONFIGS.forEach((cfg, idx) => {
     const wGroup = new THREE.Group();
 
-    // Body
-    const torso = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.42, 0.55, 1.1, 14),
-      new THREE.MeshStandardMaterial({ color: cfg.bodyColor, roughness: 0.6 })
+    // Kimono Robe Body
+    const kimono = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.38, 0.62, 1.25, 16),
+      new THREE.MeshStandardMaterial({ color: cfg.kimonoColor, roughness: 0.6 })
     );
-    torso.position.y = 0.75;
-    wGroup.add(torso);
+    kimono.position.y = 0.72;
+    wGroup.add(kimono);
+
+    // Obi Sash Belt around waist
+    const obi = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.49, 0.52, 0.32, 16),
+      new THREE.MeshStandardMaterial({ color: cfg.obiColor, roughness: 0.5 })
+    );
+    obi.position.y = 0.78;
+    wGroup.add(obi);
 
     // Cute Oversized Head
     const head = new THREE.Mesh(
-      new THREE.SphereGeometry(0.68, 20, 20),
+      new THREE.SphereGeometry(0.66, 20, 20),
       new THREE.MeshStandardMaterial({ color: 0xffe5d9, roughness: 0.5 })
     );
     head.position.y = 1.85;
     wGroup.add(head);
 
-    // Hair cap
+    // Hair Cap
     const hair = new THREE.Mesh(
-      new THREE.SphereGeometry(0.72, 20, 20, 0, Math.PI * 2, 0, Math.PI * 0.58),
+      new THREE.SphereGeometry(0.7, 20, 20, 0, Math.PI * 2, 0, Math.PI * 0.56),
       new THREE.MeshStandardMaterial({ color: cfg.hairColor, roughness: 0.7 })
     );
     hair.position.y = 1.9;
     wGroup.add(hair);
 
+    // Japanese Topknot (Chonmage) or Straw Hat (Kasa)
+    if (cfg.hat === 'kasa') {
+      const kasa = new THREE.Mesh(new THREE.ConeGeometry(1.05, 0.48, 16), MATS.goldTrim);
+      kasa.position.y = 2.55;
+      wGroup.add(kasa);
+    } else {
+      const bun = new THREE.Mesh(
+        new THREE.SphereGeometry(0.26, 12, 12),
+        new THREE.MeshStandardMaterial({ color: cfg.hairColor })
+      );
+      bun.position.set(0, 2.58, -0.15);
+      wGroup.add(bun);
+    }
+
     enableShadow(wGroup);
     scene.add(wGroup);
 
-    // Create floating HTML tag for worker
     const labelEl = document.createElement('div');
     labelEl.className = 'worker-label';
     labelEl.textContent = cfg.name;
@@ -706,55 +1053,138 @@ function buildChibiWorkers() {
   });
 }
 
-// Scenery: Pastel Lollipop Trees, Bushes, Candy Canes & Lampposts
-function buildScenery() {
-  const treePositions = [
-    { x: -28, z: -2, color: 0x80ed99, s: 1.2 },
-    { x: -26, z: 8, color: 0x88d4ab, s: 1.0 },
-    { x: -12, z: -22, color: 0xa3c4f3, s: 1.3 },
-    { x: 18, z: -20, color: 0xf497b6, s: 1.2 },
-    { x: 26, z: -6, color: 0x80ed99, s: 1.4 },
-    { x: 27, z: 6, color: 0x90dbf4, s: 1.1 },
-    { x: 11, z: 18, color: 0x98f5e1, s: 0.9 },
-    { x: 4, z: 22, color: 0xffcfd2, s: 1.15 },
-    { x: -8, z: 23, color: 0x80ed99, s: 1.25 }
+// Helper: Multi-layered Blooming Japanese Sakura Tree (🌸)
+function createSakuraTree(scale = 1) {
+  const tg = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.38 * scale, 2.4 * scale, 10), MATS.woodDark);
+  trunk.position.y = 1.2 * scale;
+  tg.add(trunk);
+
+  const puffs = [
+    { x: 0, y: 2.8, z: 0, r: 1.45, mat: MATS.sakuraPink },
+    { x: -0.9, y: 2.4, z: 0.5, r: 1.05, mat: MATS.sakuraLight },
+    { x: 0.95, y: 2.5, z: -0.4, r: 1.1, mat: MATS.sakuraDeep },
+    { x: 0.3, y: 3.3, z: 0.7, r: 0.95, mat: MATS.sakuraPink },
+    { x: -0.5, y: 3.1, z: -0.7, r: 0.95, mat: MATS.sakuraLight }
   ];
-
-  treePositions.forEach(tp => {
-    const tg = new THREE.Group();
-    tg.position.set(tp.x, 0, tp.z);
-
-    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * tp.s, 0.32 * tp.s, 1.8 * tp.s, 10), MATS.railWood);
-    trunk.position.y = 0.9 * tp.s;
-    const foliage = new THREE.Mesh(
-      new THREE.SphereGeometry(1.35 * tp.s, 16, 16),
-      new THREE.MeshStandardMaterial({ color: tp.color, roughness: 0.65 })
-    );
-    foliage.position.y = 2.3 * tp.s;
-    tg.add(trunk, foliage);
-    enableShadow(tg);
-    scene.add(tg);
+  puffs.forEach(p => {
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(p.r * scale, 14, 14), p.mat);
+    mesh.scale.y = 0.78;
+    mesh.position.set(p.x * scale, p.y * scale, p.z * scale);
+    tg.add(mesh);
   });
+  return tg;
+}
+
+// Helper: Japanese Bamboo Cluster (🎋)
+function createBambooCluster(scale = 1) {
+  const bg = new THREE.Group();
+  const offsets = [[-0.35, -0.2, 4.2], [0.3, -0.3, 4.8], [0, 0.35, 3.8], [-0.25, 0.3, 4.5]];
+  offsets.forEach(([bx, bz, bh]) => {
+    const stalk = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.11 * scale, 0.14 * scale, bh * scale, 8),
+      MATS.bambooGreen
+    );
+    stalk.position.set(bx * scale, (bh * 0.5) * scale, bz * scale);
+    bg.add(stalk);
+  });
+  return bg;
+}
+
+// Falling Sakura Petals Particle System
+const sakuraPetals = [];
+
+function buildScenery() {
+  // 1. Lush Sakura Trees around the Japanese Town
+  const sakuraLocations = [
+    { x: -29, z: -3, s: 1.35 },
+    { x: -26, z: 8, s: 1.15 },
+    { x: -12, z: -22, s: 1.4 },
+    { x: 18, z: -21, s: 1.3 },
+    { x: 26, z: -6, s: 1.45 },
+    { x: 27, z: 6, s: 1.2 },
+    { x: 11, z: 19, s: 1.15 },
+    { x: 3, z: 22, s: 1.25 },
+    { x: -9, z: 23, s: 1.3 },
+    { x: 8, z: 1, s: 0.95 }
+  ];
+  sakuraLocations.forEach(loc => {
+    const st = createSakuraTree(loc.s);
+    st.position.set(loc.x, 0, loc.z);
+    enableShadow(st);
+    scene.add(st);
+  });
+
+  // 2. Bamboo Groves
+  const bambooLocations = [
+    { x: -28, z: 14, s: 1.1 },
+    { x: -27, z: 22, s: 1.2 },
+    { x: -14, z: 22, s: 1.0 },
+    { x: 24, z: 17, s: 1.15 },
+    { x: -27, z: -16, s: 1.2 }
+  ];
+  bambooLocations.forEach(loc => {
+    const b = createBambooCluster(loc.s);
+    b.position.set(loc.x, 0, loc.z);
+    enableShadow(b);
+    scene.add(b);
+  });
+
+  // 3. Roadside Japanese Stone Lanterns (Ishidoro) & Mini Torii Gates along pathways
+  const lanternCoords = [
+    [-8, 9], [2, 10], [11, 8], [14, -4], [-11, -6], [-15, 4]
+  ];
+  lanternCoords.forEach(([lx, lz]) => {
+    const sl = createStoneLantern(0.85);
+    sl.position.set(lx, 0, lz);
+    enableShadow(sl);
+    scene.add(sl);
+  });
+
+  // 4. 140 Floating & Falling 3D Sakura Petals drifting across the town
+  const petalGeo = new THREE.PlaneGeometry(0.28, 0.22);
+  const petalMat = new THREE.MeshBasicMaterial({
+    color: 0xffb7c5,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.88
+  });
+  for (let i = 0; i < 140; i++) {
+    const petal = new THREE.Mesh(petalGeo, petalMat);
+    petal.position.set(
+      (Math.random() - 0.5) * 68,
+      2 + Math.random() * 22,
+      (Math.random() - 0.5) * 60
+    );
+    petal.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+    scene.add(petal);
+    sakuraPetals.push({
+      mesh: petal,
+      speedY: 0.9 + Math.random() * 1.1,
+      driftX: 0.4 + Math.random() * 0.6,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
 }
 
 // Coin Burst 3D Effect when adding income/expense or completing task
 const bursts = [];
-function spawnCelebrationBurst(stationId, colorHex = 0xe3b963) {
+function spawnCelebrationBurst(stationId, colorHex = 0xf0c44d) {
   const st = STATIONS[stationId] || STATIONS.hub;
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 14; i++) {
     const p = new THREE.Mesh(
       new THREE.OctahedronGeometry(0.45, 0),
-      new THREE.MeshStandardMaterial({ color: colorHex, metalness: 0.3, roughness: 0.3 })
+      new THREE.MeshStandardMaterial({ color: colorHex, metalness: 0.35, roughness: 0.25 })
     );
-    p.position.set(st.pos.x, 4, st.pos.z);
-    const angle = (i / 12) * Math.PI * 2;
+    p.position.set(st.pos.x, 4.5, st.pos.z);
+    const angle = (i / 14) * Math.PI * 2;
     const vel = new THREE.Vector3(
-      Math.cos(angle) * (2.5 + Math.random() * 2),
-      6 + Math.random() * 4,
-      Math.sin(angle) * (2.5 + Math.random() * 2)
+      Math.cos(angle) * (2.5 + Math.random() * 2.2),
+      6.5 + Math.random() * 4,
+      Math.sin(angle) * (2.5 + Math.random() * 2.2)
     );
     scene.add(p);
-    bursts.push({ mesh: p, vel, life: 1.2 });
+    bursts.push({ mesh: p, vel, life: 1.25 });
   }
 }
 
@@ -1560,25 +1990,31 @@ document.getElementById('btn-theme').addEventListener('click', e => {
     scene.background.setHex(0xdcf0d5);
     scene.fog.color.setHex(0xdcf0d5);
     ambientLight.intensity = 0.72;
-    dirLight.intensity = 0.85;
+    dirLight.intensity = 0.9;
     dirLight.color.setHex(0xfff5e4);
-    groundMesh.material.color.setHex(0xd8efd2);
+    groundMesh.material.color.setHex(0xd5ebd0);
+    MATS.shojiGlow.emissiveIntensity = 0.35;
+    MATS.lanternGlow.emissiveIntensity = 0.65;
     e.currentTarget.textContent = '☀️ Sáng';
   } else if (themeMode === 1) {
-    scene.background.setHex(0xf7d1cd);
-    scene.fog.color.setHex(0xf7d1cd);
-    ambientLight.intensity = 0.62;
-    dirLight.intensity = 0.9;
-    dirLight.color.setHex(0xffb5a7);
-    groundMesh.material.color.setHex(0xe8d5c8);
+    scene.background.setHex(0xf7c5bd);
+    scene.fog.color.setHex(0xf7c5bd);
+    ambientLight.intensity = 0.6;
+    dirLight.intensity = 0.95;
+    dirLight.color.setHex(0xff9e7d);
+    groundMesh.material.color.setHex(0xe5d0c3);
+    MATS.shojiGlow.emissiveIntensity = 0.85;
+    MATS.lanternGlow.emissiveIntensity = 1.1;
     e.currentTarget.textContent = '🌅 Hoàng hôn';
   } else {
-    scene.background.setHex(0x1f243a);
-    scene.fog.color.setHex(0x1f243a);
-    ambientLight.intensity = 0.45;
+    scene.background.setHex(0x161b33);
+    scene.fog.color.setHex(0x161b33);
+    ambientLight.intensity = 0.42;
     dirLight.intensity = 0.55;
-    dirLight.color.setHex(0xa3c4f3);
-    groundMesh.material.color.setHex(0x2b3a4a);
+    dirLight.color.setHex(0x8ecae6);
+    groundMesh.material.color.setHex(0x223042);
+    MATS.shojiGlow.emissiveIntensity = 1.25;
+    MATS.lanternGlow.emissiveIntensity = 1.5;
     e.currentTarget.textContent = '🌙 Ban đêm';
   }
 });
@@ -1610,22 +2046,32 @@ function animate() {
   const elapsed = clock.getElapsedTime();
 
   if (simRunning) {
-    // 1. Rotate / Bob Building Rooftop Icons (Donut, Crown, Leaves, Coins, Radar)
+    // 1. Rotate / Wave Building Rooftop Icons, Maneki-Neko Paw & Swimming Koi
     animatedObjects.forEach(obj => {
       if (obj.type === 'spinY') {
         obj.mesh.rotation.y += dt * obj.speed;
         if (obj.baseY !== undefined) {
           obj.mesh.position.y = obj.baseY + Math.sin(elapsed * 2.2) * 0.22;
         }
+      } else if (obj.type === 'waveX') {
+        obj.mesh.rotation.x = 0.35 + Math.sin(elapsed * obj.speed) * 0.55;
       }
     });
 
-    // 2. Move Train along Railway Curve
-    trainProgress = (trainProgress + dt * 0.045) % 1;
+    // 2. Move 2-Car Shinkansen Bullet Train along Railway Curve
+    trainProgress = (trainProgress + dt * 0.05) % 1;
     const trainPos = trackCurve.getPointAt(trainProgress);
     const trainTangent = trackCurve.getTangentAt(trainProgress);
     trainMesh.position.copy(trainPos);
     trainMesh.lookAt(trainPos.clone().add(trainTangent));
+
+    if (carriageMesh) {
+      const carProgress = (trainProgress - 0.048 + 1) % 1;
+      const carPos = trackCurve.getPointAt(carProgress);
+      const carTangent = trackCurve.getTangentAt(carProgress);
+      carriageMesh.position.copy(carPos);
+      carriageMesh.lookAt(carPos.clone().add(carTangent));
+    }
 
     if (followTrain) {
       const camOffset = trainPos.clone().add(new THREE.Vector3(0, 14, 18));
@@ -1633,7 +2079,7 @@ function animate() {
       controls.target.lerp(trainPos, 0.12);
     }
 
-    // 3. Move Chibi Workers between Stations with cute walking bounce
+    // 3. Move Japanese Kimono Chibi Workers between Stations
     workers.forEach((w, idx) => {
       w.t += dt * w.speed * w.dir;
       if (w.t >= 1) {
@@ -1644,9 +2090,23 @@ function animate() {
         w.dir = 1;
       }
       w.mesh.position.lerpVectors(w.start, w.end, w.t);
-      w.mesh.position.y = Math.abs(Math.sin(elapsed * 8 + idx)) * 0.32;
+      w.mesh.position.y = Math.abs(Math.sin(elapsed * 8 + idx)) * 0.3;
       const lookTarget = w.dir === 1 ? w.end : w.start;
       w.mesh.lookAt(lookTarget.x, w.mesh.position.y, lookTarget.z);
+    });
+
+    // 4. Drift & Flutter Falling Sakura Petals
+    sakuraPetals.forEach(p => {
+      p.mesh.position.y -= p.speedY * dt;
+      p.mesh.position.x += Math.sin(elapsed * 1.5 + p.phase) * p.driftX * dt;
+      p.mesh.position.z += Math.cos(elapsed * 1.2 + p.phase) * p.driftX * dt;
+      p.mesh.rotation.x += dt * 1.8;
+      p.mesh.rotation.y += dt * 2.2;
+      if (p.mesh.position.y < 0.2) {
+        p.mesh.position.y = 20 + Math.random() * 6;
+        p.mesh.position.x = (Math.random() - 0.5) * 68;
+        p.mesh.position.z = (Math.random() - 0.5) * 60;
+      }
     });
   }
 
