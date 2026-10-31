@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifeTown 3D — Hệ Thống Quản Lý Công Việc & Tài Chính 3D</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Three.js, OrbitControls & MQTT Cloud Sync -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/mqtt@5.3.4/dist/mqtt.min.js"></script>
+</head>
+<body>
+  <!-- 3D WebGL Canvas -->
+  <div id="canvas-container"></div>
+
+  <!-- 3D Projected HTML Labels & Floating Progress Badges -->
+  <div id="labels-container"></div>
+
+  <!-- Activity Toast Area -->
+  <div id="toast-container"></div>
+
+  <!-- Private Room Passcode / Gatekeeper Lock Screen -->
+  <div class="lock-backdrop" id="lock-screen">
+    <div class="lock-card">
+      <div class="lock-icon">🏰</div>
+      <h2 class="lock-title">LifeTown · Hệ Thống Vận Hành 3D</h2>
+      <p class="lock-subtitle">
+        Không gian quản lý Công việc, Lịch trình, App & Ngân sách riêng tư.<br/>
+        Vui lòng nhập <strong>Mã Phòng (PIN)</strong> để truy cập dữ liệu của bạn:
+      </p>
+
+      <form id="lock-form" class="lock-form">
+        <input
+          type="password"
+          id="lock-room-input"
+          class="lock-input"
+          placeholder="Nhập mã phòng bí mật..."
+          autocomplete="off"
+          required
+        />
+        <div class="lock-options">
+          <label class="lock-remember">
+            <input type="checkbox" id="lock-show-pin" /> Hiện mã phòng
+          </label>
+          <label class="lock-remember">
+            <input type="checkbox" id="lock-remember-me" checked /> Nhớ trên máy này
+          </label>
+        </div>
+        <button type="submit" class="btn-primary lock-submit-btn">🔓 Mở Khóa Vào Phòng 3D</button>
+      </form>
+
+      <div class="lock-divider"><span>hoặc</span></div>
+      <button type="button" class="ctrl-btn lock-demo-btn" id="btn-enter-demo">
+        ✨ Xem bản Demo mẫu (Không kết nối phòng riêng)
+      </button>
+    </div>
+  </div>
+
+  <!-- Top Bar (Matched with reference UI) -->
+  <header class="top-bar">
+    <div class="brand-pill">
+      <span class="brand-title">solomi · LifeOS 3D</span>
+      <span class="brand-sub">thị trấn vận hành công việc & tài chính</span>
+    </div>
+
+    <div class="camera-controls">
+      <button class="ctrl-btn" id="btn-theme" title="Chuyển Ngày / Hoàng hôn / Đêm">☀️ Sáng</button>
+      <button class="ctrl-btn" id="btn-rotate" title="Bật/tắt tự động xoay camera">🔄 Đang xoay</button>
+      <button class="ctrl-btn active" id="btn-sim" title="Tạm dừng / Tiếp tục chuyển động 3D">⚡ Tự chạy ▶</button>
+      <button class="ctrl-btn" id="btn-cam-overview" title="Góc nhìn toàn cảnh">🗺️ Toàn cảnh</button>
+      <button class="ctrl-btn" id="btn-cam-top" title="Góc nhìn từ trên xuống">📐 Đứng bóng</button>
+      <button class="ctrl-btn" id="btn-follow-train" title="Camera đi theo tàu hỏa">🚂 Theo tàu</button>
+    </div>
+
+    <div class="status-summary-pill">
+      <button class="ctrl-btn sync-pill-btn" id="btn-open-sync" title="Cấu hình đồng bộ dữ liệu thời gian thực & lấy link chia sẻ">
+        <span class="status-dot" id="sync-status-dot"></span>
+        <span id="sync-status-text">☁️ Đang kết nối...</span>
+      </button>
+      <span class="status-divider">|</span>
+      <span id="top-stat-tasks">0/0 task xong</span>
+      <span class="status-divider">|</span>
+      <span id="top-stat-budget">Số dư: 0đ</span>
+    </div>
+  </header>
+
+  <!-- Cloud Real-time Sync & Share Modal -->
+  <div class="modal-backdrop hidden" id="sync-modal">
+    <div class="modal-card">
+      <div class="inspector-header">
+        <div class="inspector-title-group">
+          <div class="station-avatar">☁️</div>
+          <div>
+            <div class="inspector-title">Đồng Bộ Dữ Liệu Thời Gian Thực (Real-time)</div>
+            <div class="inspector-status">
+              <span class="status-dot" id="modal-sync-dot"></span>
+              <span id="modal-sync-desc">Đang đồng bộ trực tiếp qua Cloud</span>
+            </div>
+          </div>
+        </div>
+        <button class="close-btn" id="btn-close-sync">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="sync-section">
+          <div class="sync-label">1. Mã Phòng Đồng Bộ (Room ID) — Ai có cùng mã này sẽ thấy dữ liệu cập nhật tức thì:</div>
+          <div class="form-row">
+            <input class="form-input" id="input-room-id" placeholder="VD: phong-viec-cua-toi-2026" />
+            <button class="btn-primary" id="btn-apply-room">Đổi Mã Phòng</button>
+          </div>
+          <div class="sync-hint">
+            💡 Mặc định hệ thống đã tự tạo phòng Cloud tốc độ cao (WebSocket/MQTT Retained) — không cần đăng ký tài khoản! Khi bạn thêm/sửa Task, Lịch, Lương hay App, mọi người đang mở link sẽ thấy pháo hoa 3D và số liệu nhảy ngay lập tức (&lt; 0.1 giây).
+          </div>
+        </div>
+
+        <div class="sync-section">
+          <div class="sync-label">2. Gửi Link Cho Người Khác Truy Cập:</div>
+          <div class="share-box">
+            <input class="form-input" id="input-share-edit" readonly />
+            <button class="btn-primary" id="btn-copy-edit">📋 Copy Link Cùng Sửa</button>
+          </div>
+          <div class="share-box" style="margin-top:6px;">
+            <input class="form-input" id="input-share-view" readonly />
+            <button class="ctrl-btn" id="btn-copy-view" style="white-space:nowrap;">👁️ Copy Link Chỉ Xem</button>
+          </div>
+          <div class="sync-hint" id="local-file-warning" style="display:none; color:#c9303c; font-weight:600; margin-top:6px;">
+            ⚠️ Bạn đang mở từ ổ cứng (file://). Hãy kéo thư mục này lên <b>app.netlify.com/drop</b> để lấy link https:// gửi cho người khác nhé! (Hoặc hai máy cùng nhập chung "Mã Phòng" ở mục 1 là vẫn đồng bộ với nhau ngay cả khi mở trên máy!).
+          </div>
+        </div>
+
+        <div class="sync-section">
+          <div class="sync-label">3. Tùy chọn nâng cao: Kết nối Firebase Realtime Database riêng (Nếu muốn):</div>
+          <div class="form-row">
+            <input class="form-input" id="input-firebase-url" placeholder="https://ten-project-default-rtdb.asia-southeast1.firebasedatabase.app" />
+            <button class="ctrl-btn" id="btn-save-firebase">Lưu Firebase</button>
+          </div>
+          <div class="sync-hint">
+            Để trống nếu muốn dùng Cloud đồng bộ miễn phí có sẵn. Nếu nhập link Firebase Realtime Database của bạn, dữ liệu sẽ lưu song song lên cả Firebase của bạn.
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-top:10px; padding-top:10px; border-top:1px solid #ead8dc;">
+          <button class="ctrl-btn" id="btn-force-push">📤 Đẩy dữ liệu lên Cloud</button>
+          <button class="ctrl-btn" onclick="window.exportJsonFile()">💾 Tải Backup (.json)</button>
+          <button class="ctrl-btn" id="btn-lock-room" style="background:#ffe3e5; color:#c9303c; border-color:#f2a6be;">🔒 Khóa Phòng Ngay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Floating Inspector Card -->
+  <aside class="inspector-card" id="inspector-card">
+    <div class="inspector-header">
+      <div class="inspector-title-group">
+        <div class="station-avatar" id="insp-avatar">🏰</div>
+        <div>
+          <div class="inspector-title" id="insp-title">Trung Tâm Điều Phối</div>
+          <div class="inspector-status">
+            <span class="status-dot"></span>
+            <span id="insp-status">đang vận hành trơn tru</span>
+          </div>
+        </div>
+      </div>
+      <button class="close-btn" id="btn-close-inspector" title="Thu gọn bảng">✕</button>
+    </div>
+
+    <div class="inspector-quote" id="insp-quote">
+      "Bấm vào bất kỳ tòa nhà 3D nào để quản lý công việc, lịch & ngân sách!"
+    </div>
+
+    <div class="inspector-body" id="insp-body">
+      <!-- Dynamic Content Rendered by app.js -->
+    </div>
+  </aside>
+
+  <!-- Bottom Bar -->
+  <footer class="bottom-bar">
+    <div class="bottom-left-stack">
+      <div class="hero-banner">
+        mô hình hoá · hệ thống vận hành 3D
+      </div>
+      <div class="dock-bar" id="station-dock">
+        <button class="dock-btn active" data-station="hub">🏰 Điều phối</button>
+        <button class="dock-btn" data-station="tasks">📋 Task (Ngày/Tuần/Tháng)</button>
+        <button class="dock-btn" data-station="schedule">🥕 Lịch làm việc</button>
+        <button class="dock-btn" data-station="finance">🧁 Ngân sách & Lương</button>
+        <button class="dock-btn" data-station="apps">🚀 Quản lý App</button>
+        <button class="dock-btn" data-station="goals">🐰 Mục tiêu & Thói quen</button>
+      </div>
+    </div>
+
+    <div class="guide-card">
+      <strong>Thị trấn vận hành 3D</strong>
+      Mô hình 3D tương tác thời gian thực: Kéo chuột trái để xoay, chuột phải để trượt, cuộn để phóng to/thu nhỏ. Bấm vào từng tòa nhà hoặc nhân vật để mở bảng quản lý.
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
