@@ -1226,34 +1226,34 @@ function buildNeneSubStructures() {
 // ============================================================================
 function createMapleTree(scale = 1) {
   const tg = new THREE.Group();
-  // Thân cây cổ thụ uốn cong
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.38 * scale, 0.65 * scale, 3.4 * scale, 10), MATS.woodDark);
-  trunk.position.y = 1.7 * scale;
+  // Thân cây uốn cong nhẹ nhàng
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.24 * scale, 0.42 * scale, 2.8 * scale, 10), MATS.woodDark);
+  trunk.position.y = 1.4 * scale;
   tg.add(trunk);
 
-  // Nhánh cây lớn vươn rộng nâng đỡ tán cây
-  const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.24 * scale, 0.34 * scale, 2.2 * scale, 6), MATS.woodDark);
-  b1.position.set(-1.1 * scale, 2.7 * scale, 0.5 * scale);
-  b1.rotation.z = 0.58;
-  const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.24 * scale, 0.32 * scale, 2.2 * scale, 6), MATS.woodDark);
-  b2.position.set(1.2 * scale, 2.8 * scale, -0.5 * scale);
-  b2.rotation.z = -0.58;
+  // Nhánh cây nâng đỡ tán
+  const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.14 * scale, 0.22 * scale, 1.6 * scale, 6), MATS.woodDark);
+  b1.position.set(-0.6 * scale, 2.1 * scale, 0.3 * scale);
+  b1.rotation.z = 0.55;
+  const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.14 * scale, 0.2 * scale, 1.6 * scale, 6), MATS.woodDark);
+  b2.position.set(0.6 * scale, 2.2 * scale, -0.3 * scale);
+  b2.rotation.z = -0.55;
   tg.add(b1, b2);
 
-  // Tán lá phong đỏ rực rỡ nhiều lớp bồng bềnh
+  // Tán lá phong đỏ thu nhỏ 50% — thanh thoát, thoáng đãng không che khuất công trình
   const puffs = [
-    { x: 0, y: 5.2, z: 0, r: 3.6, mat: MATS.mapleRed },
-    { x: -2.6, y: 4.4, z: 0.9, r: 3.1, mat: MATS.mapleOrange },
-    { x: 2.8, y: 4.5, z: -0.8, r: 3.2, mat: MATS.mapleGold },
-    { x: 0.6, y: 3.8, z: 2.5, r: 2.8, mat: MATS.vermilionDeep },
-    { x: -1.0, y: 4.5, z: -2.4, r: 2.9, mat: MATS.mapleRed },
-    { x: 2.2, y: 5.4, z: 1.6, r: 2.4, mat: MATS.mapleOrange },
-    { x: -1.8, y: 5.8, z: -1.0, r: 2.6, mat: MATS.mapleGold }
+    { x: 0, y: 3.5, z: 0, r: 1.75, mat: MATS.mapleRed },
+    { x: -1.2, y: 3.0, z: 0.45, r: 1.45, mat: MATS.mapleOrange },
+    { x: 1.3, y: 3.1, z: -0.4, r: 1.5, mat: MATS.mapleGold },
+    { x: 0.3, y: 2.6, z: 1.1, r: 1.3, mat: MATS.vermilionDeep },
+    { x: -0.5, y: 3.0, z: -1.0, r: 1.35, mat: MATS.mapleRed },
+    { x: 1.0, y: 3.7, z: 0.7, r: 1.15, mat: MATS.mapleOrange },
+    { x: -0.8, y: 3.9, z: -0.45, r: 1.2, mat: MATS.mapleGold }
   ];
 
   puffs.forEach(p => {
     const puff = new THREE.Mesh(new THREE.DodecahedronGeometry(p.r * scale, 1), p.mat);
-    puff.scale.set(1.15, 0.85, 1.15);
+    puff.scale.set(1.12, 0.88, 1.12);
     puff.position.set(p.x * scale, p.y * scale, p.z * scale);
     tg.add(puff);
   });
@@ -1262,36 +1262,36 @@ function createMapleTree(scale = 1) {
 
 function createSakuraTree(scale = 1) {
   const tg = new THREE.Group();
-  // Thân cây anh đào cổ thụ uốn lượn phong cách Shinto
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.38 * scale, 0.62 * scale, 3.4 * scale, 10), MATS.woodWarm);
-  trunk.position.y = 1.7 * scale;
+  // Thân cây anh đào phong cách Nhật Bản
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.24 * scale, 0.4 * scale, 2.8 * scale, 10), MATS.woodWarm);
+  trunk.position.y = 1.4 * scale;
   tg.add(trunk);
 
-  const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.32 * scale, 2.2 * scale, 6), MATS.woodWarm);
-  b1.position.set(-1.1 * scale, 2.7 * scale, 0.5 * scale);
-  b1.rotation.z = 0.58;
-  const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.3 * scale, 2.2 * scale, 6), MATS.woodWarm);
-  b2.position.set(1.2 * scale, 2.8 * scale, -0.5 * scale);
-  b2.rotation.z = -0.58;
-  const b3 = new THREE.Mesh(new THREE.CylinderGeometry(0.2 * scale, 0.28 * scale, 2.0 * scale, 6), MATS.woodWarm);
-  b3.position.set(0.3 * scale, 3.0 * scale, 1.1 * scale);
-  b3.rotation.x = -0.5;
+  const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.14 * scale, 0.2 * scale, 1.6 * scale, 6), MATS.woodWarm);
+  b1.position.set(-0.6 * scale, 2.1 * scale, 0.3 * scale);
+  b1.rotation.z = 0.55;
+  const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.14 * scale, 0.2 * scale, 1.6 * scale, 6), MATS.woodWarm);
+  b2.position.set(0.6 * scale, 2.2 * scale, -0.3 * scale);
+  b2.rotation.z = -0.55;
+  const b3 = new THREE.Mesh(new THREE.CylinderGeometry(0.12 * scale, 0.18 * scale, 1.4 * scale, 6), MATS.woodWarm);
+  b3.position.set(0.2 * scale, 2.3 * scale, 0.6 * scale);
+  b3.rotation.x = -0.45;
   tg.add(b1, b2, b3);
 
-  // TÁN HOA ANH ĐÀO BỒNG BỀNH KHỔNG LỒ XÒE RỘNG (ĐÚNG THEO ẢNH THỨ 1)
+  // Tán hoa anh đào thu nhỏ 50% — bồng bềnh, gọn gàng, tôn vẻ đẹp phố cổ
   const puffs = [
-    { x: 0, y: 5.2, z: 0, r: 3.6, mat: MATS.sakuraCanopy },
-    { x: -2.6, y: 4.4, z: 0.9, r: 3.1, mat: MATS.sakuraPink },
-    { x: 2.8, y: 4.5, z: -0.8, r: 3.2, mat: MATS.sakuraVibrant },
-    { x: 0.6, y: 3.8, z: 2.5, r: 2.8, mat: MATS.sakuraLight },
-    { x: -1.0, y: 4.5, z: -2.4, r: 2.9, mat: MATS.sakuraDeep },
-    { x: 2.2, y: 5.4, z: 1.6, r: 2.4, mat: MATS.sakuraPink },
-    { x: -1.8, y: 5.8, z: -1.0, r: 2.6, mat: MATS.sakuraCanopy }
+    { x: 0, y: 3.5, z: 0, r: 1.75, mat: MATS.sakuraCanopy },
+    { x: -1.2, y: 3.0, z: 0.45, r: 1.45, mat: MATS.sakuraPink },
+    { x: 1.3, y: 3.1, z: -0.4, r: 1.5, mat: MATS.sakuraVibrant },
+    { x: 0.3, y: 2.6, z: 1.1, r: 1.3, mat: MATS.sakuraLight },
+    { x: -0.5, y: 3.0, z: -1.0, r: 1.35, mat: MATS.sakuraDeep },
+    { x: 1.0, y: 3.7, z: 0.7, r: 1.15, mat: MATS.sakuraPink },
+    { x: -0.8, y: 3.9, z: -0.45, r: 1.2, mat: MATS.sakuraCanopy }
   ];
 
   puffs.forEach(p => {
     const puff = new THREE.Mesh(new THREE.DodecahedronGeometry(p.r * scale, 1), p.mat);
-    puff.scale.set(1.15, 0.85, 1.15);
+    puff.scale.set(1.12, 0.88, 1.12);
     puff.position.set(p.x * scale, p.y * scale, p.z * scale);
     tg.add(puff);
   });
@@ -1495,9 +1495,9 @@ function buildRamenRestaurant() {
 
 function buildFloraScenery() {
   const maplePositions = [
-    [-9, 12, 1.2], [-14, 18, 1.35], [-24, 18, 1.2], [-34, 8, 1.4],
-    [-28, -6, 1.3], [-18, -20, 1.4], [-32, -18, 1.25], [-8, -14, 1.1],
-    [-11, -2, 1.15], [-20, 2, 1.3], [-40, -10, 1.4], [-38, 14, 1.3]
+    [-9, 12, 0.95], [-14, 18, 1.05], [-24, 18, 0.95], [-34, 8, 1.1],
+    [-28, -6, 1.0], [-18, -20, 1.05], [-32, -18, 0.95], [-8, -14, 0.9],
+    [-11, -2, 0.9], [-20, 2, 1.0], [-40, -10, 1.1], [-38, 14, 1.0]
   ];
   maplePositions.forEach(([mx, mz, ms]) => {
     const tree = createMapleTree(ms);
@@ -1507,9 +1507,9 @@ function buildFloraScenery() {
   });
 
   const sakuraPositions = [
-    [9, 12, 1.2], [14, 18, 1.35], [24, 18, 1.2], [34, 8, 1.4],
-    [28, -6, 1.3], [18, -20, 1.4], [32, -18, 1.25], [8, -14, 1.1],
-    [11, -2, 1.15], [20, 2, 1.3], [40, -10, 1.4], [38, 14, 1.3]
+    [9, 12, 0.95], [14, 18, 1.05], [24, 18, 0.95], [34, 8, 1.1],
+    [28, -6, 1.0], [18, -20, 1.05], [32, -18, 0.95], [8, -14, 0.9],
+    [11, -2, 0.9], [20, 2, 1.0], [40, -10, 1.1], [38, 14, 1.0]
   ];
   sakuraPositions.forEach(([sx, sz, ss]) => {
     const tree = createSakuraTree(ss);
