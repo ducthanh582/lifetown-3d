@@ -353,6 +353,34 @@ body, html {
   transform: translateY(-1px) scale(1.05);
 }
 
+/* Nút Tắm Onsen Thư Giãn */
+.bath-trigger-btn {
+  background: linear-gradient(135deg, #00cec9, #0984e3) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(9, 132, 227, 0.45) !important;
+}
+
+.bath-trigger-btn:hover {
+  transform: translateY(-1px) scale(1.06);
+}
+
+.bath-trigger-btn.active {
+  background: linear-gradient(135deg, #e17055, #d63031) !important;
+  box-shadow: 0 0 12px rgba(225, 112, 85, 0.7) !important;
+}
+
+/* Nút Ẩn/Hiện Chữ trên đầu */
+.label-toggle-btn.active {
+  background: #636e72 !important;
+  color: #dfe6e9 !important;
+}
+
+/* Chế độ Ẩn toàn bộ nhãn chữ trên đầu để đỡ vướng */
+body.labels-hidden #labels-container {
+  display: none !important;
+}
+
 /* Nút Hôn Nhau ngọt ngào giữa Thanh & Nene */
 .kiss-trigger-btn {
   background: linear-gradient(135deg, #fd79a8, #e84393) !important;

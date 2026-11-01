@@ -113,6 +113,12 @@ const DEFAULT_STATE = {
       { id: 'ne_g1', title: 'Tập Yoga hoặc Thiền định 30 phút mỗi ngày', streak: 21, target: 30, doneToday: true },
       { id: 'ne_g2', title: 'Uống đủ 2 lít nước ấm & trà hoa thảo mộc', streak: 15, target: 30, doneToday: true },
       { id: 'ne_g3', title: 'Viết lời cảm ơn hoặc nhật ký vui vẻ mỗi tối', streak: 9, target: 21, doneToday: false }
+    ],
+    ramenMenu: [
+      { id: 'rm_1', title: '🍜 Tô Mì Ramen Tonkotsu Khổng Lồ (Nước dùng hầm 12h, trứng lòng đào & rong biển)', energy: '+100 Năng Lượng', done: true },
+      { id: 'rm_2', title: '🥟 Đĩa Gyoza Áp Chảo Giòn Rụm (Thưởng khi hoàn thành 2 task)', energy: '+50 Năng Lượng', done: true },
+      { id: 'rm_3', title: '🍵 Trà Rang Hojicha Nóng & Trà Sữa Sakura Thơm Lừng', energy: '+40 Năng Lượng', done: false },
+      { id: 'rm_4', title: '🍡 Bánh Dango Mật Mía & Kem Matcha Tráng Miệng', energy: '+30 Năng Lượng', done: false }
     ]
   },
 
@@ -139,7 +145,11 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      return Object.assign({}, DEFAULT_STATE, parsed);
+      const merged = Object.assign({}, DEFAULT_STATE, parsed);
+      if (merged.nene && !merged.nene.ramenMenu) {
+        merged.nene.ramenMenu = JSON.parse(JSON.stringify(DEFAULT_STATE.nene.ramenMenu));
+      }
+      return merged;
     }
   } catch (e) {
     console.warn('Cannot read localStorage:', e);
@@ -299,6 +309,19 @@ const STATIONS = {
     camOffset: { x: 28, y: 18, z: 25 },
     quote: 'Tiệm bánh ngọt truyền thống và chú mèo Maneki-Neko nhỏ xinh, quản lý ví chi tiêu, mua sắm và tiết kiệm của Nene.',
     bubble: 'Tài chính ngọt ngào, tích lũy đều đặn!'
+  },
+  nene_ramen: {
+    id: 'nene_ramen',
+    side: 'nene',
+    owner: 'Nene',
+    name: 'Quán Mì Ramen Nene (Ảnh 3)',
+    shortName: 'Quán Mì Ramen',
+    icon: '🍜',
+    pos: { x: 21, y: 0, z: -6 },
+    labelHeight: 12.5,
+    camOffset: { x: 21, y: 18, z: 18 },
+    quote: 'Quán mì Ramen phong cách Kyoto mái ngói xanh với tô mì khổng lồ nghi ngút khói trên nóc! Thưởng thức bát mì thơm ngon để nạp năng lượng.',
+    bubble: 'Tô mì ramen nóng hổi sẵn sàng phục vụ!'
   }
 };
 
@@ -402,7 +425,23 @@ const MATS = {
   // Trang phục dân làng Kimono & Yukata
   kimonoPurple: new THREE.MeshStandardMaterial({ color: 0x8e44ad, roughness: 0.65 }),
   kimonoNavy: new THREE.MeshStandardMaterial({ color: 0x1b2631, roughness: 0.65 }),
-  kimonoMonk: new THREE.MeshStandardMaterial({ color: 0x566573, roughness: 0.85 })
+  kimonoMonk: new THREE.MeshStandardMaterial({ color: 0x566573, roughness: 0.85 }),
+  // Quán Mì Ramen Khổng Lồ (Ảnh 3)
+  ramenBowlWhite: new THREE.MeshStandardMaterial({ color: 0xfaf8f5, roughness: 0.25 }),
+  ramenSoup: new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.2, metalness: 0.1 }),
+  ramenNoodle: new THREE.MeshStandardMaterial({ color: 0xf5b041, roughness: 0.45 }),
+  ramenEggWhite: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.35 }),
+  ramenEggYolk: new THREE.MeshStandardMaterial({ color: 0xff8c00, roughness: 0.3 }),
+  ramenNori: new THREE.MeshStandardMaterial({ color: 0x1c351c, roughness: 0.8 }),
+  ramenChopsticks: new THREE.MeshStandardMaterial({ color: 0xd35400, roughness: 0.5 }),
+  ramenRoofGreen: new THREE.MeshStandardMaterial({ color: 0x4a7a58, roughness: 0.4 }),
+  ramenWallPeach: new THREE.MeshStandardMaterial({ color: 0xf5b7a7, roughness: 0.7 }),
+  ramenNorenRed: new THREE.MeshStandardMaterial({ color: 0xd63031, roughness: 0.6 }),
+  // Hòn non bộ & Thác nước Onsen (Ảnh 2)
+  waterfallWhite: new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.85, roughness: 0.1 }),
+  // Tán cây anh đào nở rộ khổng lồ (Ảnh 1)
+  sakuraVibrant: new THREE.MeshStandardMaterial({ color: 0xff69b4, roughness: 0.55 }),
+  sakuraCanopy: new THREE.MeshStandardMaterial({ color: 0xff80bf, roughness: 0.55 })
 };
 
 // Quản lý hệ thống chiếu sáng đèn phố và nguồn sáng PointLight
@@ -420,50 +459,34 @@ function enableShadow(obj) {
 }
 
 // ============================================================================
-// MỞ RỘNG BẢN ĐỒ 3D & DÒNG SUỐI NƯỚC NÓNG (ONSEN) CHÍNH GIỮA
+// MỞ RỘNG BẢN ĐỒ 3D: XÓA DÒNG SÔNG DÀI, GIỮ LẠI HỒ TẮM NƯỚC NÓNG (ẢNH 2)
 // ============================================================================
 const groundGroup = new THREE.Group();
 
-// Mở rộng bờ bên trái (Thanh - X < -3)
-const groundThanhGeo = new THREE.BoxGeometry(60, 1.8, 95);
+// Bờ bên trái (Thanh - Lá Phong Đỏ Momiji)
+const groundThanhGeo = new THREE.BoxGeometry(48, 1.8, 95);
 const groundThanhMesh = new THREE.Mesh(groundThanhGeo, MATS.groundThanh);
-groundThanhMesh.position.set(-33, -0.9, 0);
+groundThanhMesh.position.set(-27, -0.9, 0);
 groundThanhMesh.receiveShadow = true;
 groundGroup.add(groundThanhMesh);
 
-// Mở rộng bờ bên phải (Nene - X > 3)
-const groundNeneGeo = new THREE.BoxGeometry(60, 1.8, 95);
+// Bờ bên phải (Nene - Hoa Anh Đào Sakura)
+const groundNeneGeo = new THREE.BoxGeometry(48, 1.8, 95);
 const groundNeneMesh = new THREE.Mesh(groundNeneGeo, MATS.groundNene);
-groundNeneMesh.position.set(33, -0.9, 0);
+groundNeneMesh.position.set(27, -0.9, 0);
 groundNeneMesh.receiveShadow = true;
 groundGroup.add(groundNeneMesh);
 
-// Dòng suối Onsen kéo dài từ Bắc chí Nam
-const streamBedGeo = new THREE.BoxGeometry(10, 1.2, 95);
-const streamBedMesh = new THREE.Mesh(streamBedGeo, MATS.onsenRock);
-streamBedMesh.position.set(0, -1.2, 0);
-groundGroup.add(streamBedMesh);
+// Đất liền kết nối phía Bắc (Z < -10) và phía Nam (Z > 12) — XÓA BỎ DÒNG SÔNG CẮT NGANG
+const northBridgeGround = new THREE.Mesh(new THREE.BoxGeometry(16, 1.8, 38), MATS.groundNene);
+northBridgeGround.position.set(0, -0.9, -29);
+northBridgeGround.receiveShadow = true;
 
-const waterGeo = new THREE.BoxGeometry(8.6, 0.4, 93);
-const waterMesh = new THREE.Mesh(waterGeo, MATS.onsenWater);
-waterMesh.position.set(0, -0.22, 0);
-groundGroup.add(waterMesh);
+const southBridgeGround = new THREE.Mesh(new THREE.BoxGeometry(16, 1.8, 36), MATS.groundThanh);
+southBridgeGround.position.set(0, -0.9, 30);
+southBridgeGround.receiveShadow = true;
 
-// Rải đá cuội tự nhiên dọc 2 bờ suối
-for (let z = -44; z <= 44; z += 3.6) {
-  const rockL = new THREE.Mesh(
-    new THREE.DodecahedronGeometry(0.75 + Math.random() * 0.45, 0),
-    MATS.onsenRock
-  );
-  rockL.position.set(-4.2 + (Math.random() - 0.5) * 0.6, 0.1, z + (Math.random() - 0.5) * 1.2);
-  rockL.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
-  groundGroup.add(rockL);
-
-  const rockR = rockL.clone();
-  rockR.position.set(4.2 + (Math.random() - 0.5) * 0.6, 0.1, z + (Math.random() - 0.5) * 1.2);
-  groundGroup.add(rockR);
-}
-
+groundGroup.add(northBridgeGround, southBridgeGround);
 scene.add(groundGroup);
 
 // Interactive Hitboxes
@@ -533,56 +556,211 @@ function createToriiGate(scale = 1) {
   return tg;
 }
 
+// Helper: Cửa sổ Shoji gỗ đánh đèn phát sáng ấm cúng
+function createShojiWindow(width, height, cols = 3, rows = 3) {
+  const wg = new THREE.Group();
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(width, height, 0.08), MATS.woodDark);
+  const pane = new THREE.Mesh(new THREE.BoxGeometry(width - 0.12, height - 0.12, 0.1), MATS.shojiGlow);
+  wg.add(frame, pane);
+
+  for (let c = 1; c < cols; c++) {
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(0.04, height - 0.12, 0.12), MATS.woodDark);
+    bar.position.x = -width / 2 + (width / cols) * c;
+    wg.add(bar);
+  }
+  for (let r = 1; r < rows; r++) {
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(width - 0.12, 0.04, 0.12), MATS.woodDark);
+    bar.position.y = -height / 2 + (height / rows) * r;
+    wg.add(bar);
+  }
+  townLanternMeshes.push(pane);
+  return wg;
+}
+
+// Helper: Cửa chính Genkan phong cách Nhật Bản có rèm Noren & bậc thềm đá
+function createMainEntrance(width, height, norenColor = MATS.norenBlue) {
+  const eg = new THREE.Group();
+
+  // Bậc thềm đá bước vào (Dan)
+  const step = new THREE.Mesh(new THREE.BoxGeometry(width + 0.6, 0.2, 0.8), MATS.toroStone);
+  step.position.set(0, 0.1, 0.4);
+  // Khung cửa gỗ đen
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(width + 0.2, height + 0.2, 0.2), MATS.woodDark);
+  frame.position.y = height / 2;
+  // Cánh cửa trượt Shoji đôi
+  const doorL = new THREE.Mesh(new THREE.BoxGeometry(width / 2 - 0.04, height - 0.1, 0.08), MATS.shojiGlow);
+  doorL.position.set(-width / 4, height / 2, 0.02);
+  const doorR = doorL.clone();
+  doorR.position.x = width / 4;
+  doorR.position.z = -0.02;
+
+  // Nan cửa trượt
+  for (let dy = 0.4; dy < height - 0.2; dy += 0.5) {
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(width - 0.1, 0.04, 0.12), MATS.woodDark);
+    bar.position.set(0, dy, 0.02);
+    eg.add(bar);
+  }
+
+  // Mái che nhỏ trên cửa (Hisashi)
+  const porchRoof = createCurvedRoof(width + 0.8, 1.2, 0.4, MATS.kawaraRoofDark);
+  porchRoof.position.set(0, height + 0.3, 0.4);
+
+  // Rèm vải Noren truyền thống treo trên cửa
+  const noren = new THREE.Mesh(new THREE.BoxGeometry(width - 0.2, 0.55, 0.04), norenColor);
+  noren.position.set(0, height - 0.25, 0.15);
+
+  eg.add(step, frame, doorL, doorR, porchRoof, noren);
+  townLanternMeshes.push(doorL, doorR);
+  return eg;
+}
+
 // ============================================================================
-// 1. CÔNG TRÌNH TRUNG TÂM: SUỐI NƯỚC NÓNG UYÊN ƯƠNG & CẦU TAIKO-BASHI
+// 1. CÔNG TRÌNH TRUNG TÂM: HỒ TẮM SUỐI NƯỚC NÓNG ONSEN THEO ẢNH THỨ 2
+// (HÒN NON BỘ, THÁC NƯỚC, BỒN TẮM GỖ KHỔNG LỒ OFURO, BỂ ĐÁ PHỤ, CẦU TAIKO)
 // ============================================================================
+let ofuroWaterMesh, stoneTubWaterMesh;
+
 function buildOnsenCenter() {
   const group = new THREE.Group();
   group.position.set(STATIONS.onsen_hub.pos.x, 0, STATIONS.onsen_hub.pos.z);
 
-  // Hồ Onsen chính hình bầu dục đá cuội
-  const basinOuter = new THREE.Mesh(new THREE.CylinderGeometry(6.6, 7.0, 0.65, 32), MATS.onsenRock);
-  basinOuter.position.y = 0.32;
-  basinOuter.scale.set(1.15, 1, 1.4);
+  // 1. Hồ Tắm Nước Nóng Tự Nhiên Lớn (Ảnh 2)
+  const basinOuter = new THREE.Mesh(new THREE.CylinderGeometry(8.2, 9.0, 0.65, 32), MATS.onsenRock);
+  basinOuter.position.set(0, 0.32, 1.0);
+  basinOuter.scale.set(1.15, 1, 1.3);
   group.add(basinOuter);
 
-  const hotWater = new THREE.Mesh(new THREE.CylinderGeometry(5.9, 5.9, 0.72, 32), MATS.onsenWater);
-  hotWater.position.y = 0.4;
-  hotWater.scale.set(1.15, 1, 1.4);
+  const hotWater = new THREE.Mesh(new THREE.CylinderGeometry(7.6, 7.6, 0.5, 32), MATS.onsenWater);
+  hotWater.position.set(0, 0.38, 1.0);
+  hotWater.scale.set(1.15, 1, 1.3);
   group.add(hotWater);
 
-  // Đình ngâm chân Onsen
-  const gazebo = new THREE.Group();
-  gazebo.position.set(0, 0.4, -4.8);
-  for (let gx of [-2.4, 2.4]) {
-    for (let gz of [-1.8, 1.8]) {
-      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 3.2, 10), MATS.woodWarm);
-      col.position.set(gx, 1.6, gz);
-      gazebo.add(col);
-    }
+  // Bờ đá cuội tự nhiên nhiều tầng uốn lượn quanh hồ (Ảnh 2)
+  for (let i = 0; i < 22; i++) {
+    const angle = (i / 22) * Math.PI * 2;
+    const rx = Math.cos(angle) * 8.6;
+    const rz = 1.0 + Math.sin(angle) * 9.8;
+    const rock = new THREE.Mesh(
+      new THREE.DodecahedronGeometry(0.85 + Math.sin(i * 3) * 0.35, 0),
+      MATS.onsenRock
+    );
+    rock.position.set(rx, 0.45, rz);
+    rock.rotation.set(Math.random(), Math.random(), 0);
+    group.add(rock);
   }
-  const gazRoof = createCurvedRoof(6.2, 5.0, 1.5, MATS.kawaraRoofDark);
-  gazRoof.position.y = 3.2;
-  gazebo.add(gazRoof);
 
-  const sign = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.8, 0.2), MATS.woodWarm);
-  sign.position.set(0, 3.0, 2.6);
-  gazebo.add(sign);
-  group.add(gazebo);
+  // 2. Hòn Non Bộ & Thác Nước Nóng Chảy Xuống Hồ (Ảnh 2)
+  const rockeryGroup = new THREE.Group();
+  rockeryGroup.position.set(4.0, 0, -6.0);
 
-  // CẦU VÒM GỖ ĐỎ (TAIKO-BASHI) NƠI THANH VÀ NENE HÔN NHAU
+  // Các tảng đá xếp tầng tạo thế núi non bộ
+  const crag1 = new THREE.Mesh(new THREE.DodecahedronGeometry(2.2, 0), MATS.onsenRock);
+  crag1.position.set(0, 2.0, 0);
+  const crag2 = new THREE.Mesh(new THREE.DodecahedronGeometry(1.6, 0), MATS.onsenRock);
+  crag2.position.set(-1.2, 2.8, -0.4);
+  const crag3 = new THREE.Mesh(new THREE.DodecahedronGeometry(1.8, 0), MATS.onsenRock);
+  crag3.position.set(1.2, 2.4, 0.4);
+  rockeryGroup.add(crag1, crag2, crag3);
+
+  // Miệng thác nước bằng đá khắc (Ảnh 2)
+  const spout = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.45, 0.8, 8), MATS.toroStoneDark);
+  spout.rotation.x = Math.PI / 2;
+  spout.position.set(0, 3.2, 1.2);
+  rockeryGroup.add(spout);
+
+  // Dòng thác nước đổ trắng xóa (Waterfall chute)
+  const waterfallChute = new THREE.Mesh(new THREE.BoxGeometry(0.95, 3.0, 0.15), MATS.waterfallWhite);
+  waterfallChute.position.set(0, 1.6, 1.4);
+  waterfallChute.rotation.x = -0.15;
+  rockeryGroup.add(waterfallChute);
+
+  // Cây phong thu nhỏ mọc trên hòn non bộ (Ảnh 2)
+  const miniMaple = createMapleTree(0.7);
+  miniMaple.position.set(1.8, 3.2, -0.6);
+  rockeryGroup.add(miniMaple);
+
+  group.add(rockeryGroup);
+
+  // 3. Bồn Tắm Gỗ Khổng Lồ Ofuro Cho Nhân Vật Vào Tắm (Ảnh 2)
+  const ofuroGroup = new THREE.Group();
+  ofuroGroup.position.set(-6.2, 0, -3.2);
+
+  // Sàn gỗ nâng cao
+  const oDeck = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.5, 7.2), MATS.woodDark);
+  oDeck.position.y = 0.25;
+  // Bồn tắm tròn bằng thanh gỗ tuyết tùng (Cedar barrel tub)
+  const barrel = new THREE.Mesh(new THREE.CylinderGeometry(2.7, 2.5, 2.2, 20), MATS.woodWarm);
+  barrel.position.y = 1.35;
+  // Vành đai sắt bọc quanh bồn
+  const hoop1 = new THREE.Mesh(new THREE.TorusGeometry(2.65, 0.08, 8, 24), MATS.kawaraRoofDark);
+  hoop1.rotation.x = Math.PI / 2;
+  hoop1.position.y = 0.8;
+  const hoop2 = hoop1.clone();
+  hoop2.position.y = 1.9;
+
+  // Mái ngói che xòe quanh chân bồn & rèm Onsen (Ảnh 2)
+  const oRoofEave = createCurvedRoof(6.6, 6.6, 0.9, MATS.woodWarm);
+  oRoofEave.position.y = 0.75;
+
+  // Mặt nước ngâm khoáng nóng bên trong bồn gỗ
+  const oWater = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.4, 0.3, 20), MATS.onsenWater);
+  oWater.position.y = 1.3;
+  ofuroWaterMesh = oWater;
+
+  // Máng gỗ rót nước nóng tràn vào hồ chính (Overflow Chute - Ảnh 2)
+  const chute = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.25, 0.55), MATS.woodWarm);
+  chute.position.set(2.4, 1.4, 0.8);
+  chute.rotation.z = -0.25;
+  chute.rotation.y = 0.4;
+
+  // Cầu thang gỗ bước lên bồn tắm (Ảnh 2)
+  const oStairs = new THREE.Group();
+  oStairs.position.set(-2.8, 0, 1.8);
+  for (let s = 0; s < 4; s++) {
+    const step = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.25, 0.6), MATS.woodWarm);
+    step.position.set(0, 0.25 + s * 0.25, -s * 0.55);
+    oStairs.add(step);
+  }
+
+  // Rèm vải xanh Onsen ♨️ treo trước lối vào bồn tắm
+  const oCurtain = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.8, 0.04), MATS.norenBlue);
+  oCurtain.position.set(0, 1.4, 2.7);
+
+  ofuroGroup.add(oDeck, barrel, hoop1, hoop2, oRoofEave, oWater, chute, oStairs, oCurtain);
+  group.add(ofuroGroup);
+
+  // 4. Bể Ngâm Đá Phụ Riêng Tư Trên Sàn Gỗ (Ảnh 2)
+  const stoneTubGroup = new THREE.Group();
+  stoneTubGroup.position.set(6.2, 0, 0.2);
+
+  const stDeck = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.4, 4.8), MATS.woodWarm);
+  stDeck.position.y = 0.2;
+  const stoneTub = new THREE.Mesh(new THREE.CylinderGeometry(1.7, 1.9, 1.0, 16), MATS.onsenRock);
+  stoneTub.position.y = 0.7;
+  const stWater = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 0.2, 16), MATS.onsenWater);
+  stWater.position.y = 0.78;
+  stoneTubWaterMesh = stWater;
+
+  // Ghế nghỉ ngơi bằng gỗ cạnh bể đá
+  const stBench = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 0.5), MATS.woodDark);
+  stBench.position.set(1.4, 0.4, 1.4);
+
+  stoneTubGroup.add(stDeck, stoneTub, stWater, stBench);
+  group.add(stoneTubGroup);
+
+  // 5. CẦU VÒM GỖ ĐỎ (TAIKO-BASHI) BẮC QUA MẶT HỒ ONSEN NƠI THANH & NENE HÔN NHAU
   const bridge = new THREE.Group();
-  bridge.position.set(0, 0.4, 6.5);
-  const deck = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.4, 3.4), MATS.vermilionRed);
+  bridge.position.set(0, 0.4, 6.2);
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(11.2, 0.4, 3.4), MATS.vermilionRed);
   deck.position.y = 0.55;
-  const railL = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.75, 0.2), MATS.vermilionDeep);
+  const railL = new THREE.Mesh(new THREE.BoxGeometry(11.2, 0.75, 0.2), MATS.vermilionDeep);
   railL.position.set(0, 0.95, -1.6);
   const railR = railL.clone();
   railR.position.z = 1.6;
   bridge.add(deck, railL, railR);
 
-  // Đèn lồng giấy đỏ gắn trên cầu
-  for (let bx of [-4.5, -1.5, 1.5, 4.5]) {
+  // Đèn lồng giấy đỏ gắn trên lan can cầu
+  for (let bx of [-4.8, -1.6, 1.6, 4.8]) {
     const lPost = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 1.2, 8), MATS.woodDark);
     lPost.position.set(bx, 1.1, -1.6);
     const lantern = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), MATS.lanternRedGlow);
@@ -594,7 +772,7 @@ function buildOnsenCenter() {
 
   // Biểu tượng trái tim vàng xoay trên không trung
   const heartGroup = new THREE.Group();
-  heartGroup.position.set(0, 9.5, 0);
+  heartGroup.position.set(0, 9.5, 1.0);
   const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.16, 12, 32), MATS.goldTrim);
   ring1.rotation.x = Math.PI / 2;
   const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.14, 12, 32), MATS.onsenWater);
@@ -604,7 +782,7 @@ function buildOnsenCenter() {
   animatedObjects.push({ mesh: heartGroup, type: 'spinY', speed: 1.5, baseY: 9.5 });
 
   enableShadow(group);
-  registerStationHitbox('onsen_hub', group, 8.5, 12);
+  registerStationHitbox('onsen_hub', group, 9.5, 12);
   scene.add(group);
 }
 
@@ -626,6 +804,17 @@ function buildThanhDojo() {
   const shoji = new THREE.Mesh(new THREE.BoxGeometry(8.4, 2.6, 6.95), MATS.shojiGlow);
   shoji.position.set(0, 2.4, -0.5);
   group.add(hall, shoji);
+
+  // Cửa chính Genkan và Cửa sổ Shoji đánh đèn phát sáng (Shoji glowing lattice)
+  const dojoDoor = createMainEntrance(3.0, 2.6, MATS.norenBlue);
+  dojoDoor.position.set(0, 0.7, 2.95);
+  const dojoWinL = createShojiWindow(2.2, 1.8, 3, 3);
+  dojoWinL.rotation.y = Math.PI / 2;
+  dojoWinL.position.set(-4.12, 2.4, -0.5);
+  const dojoWinR = createShojiWindow(2.2, 1.8, 3, 3);
+  dojoWinR.rotation.y = -Math.PI / 2;
+  dojoWinR.position.set(4.12, 2.4, -0.5);
+  group.add(dojoDoor, dojoWinL, dojoWinR);
 
   for (let x = -3.8; x <= 3.8; x += 1.9) {
     const col = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.22, 4.4, 10), MATS.vermilionRed);
@@ -682,12 +871,30 @@ function buildThanhTower() {
     { w: 4.2, h: 2.8, y: 8.6, rw: 5.8, rh: 1.6 }
   ];
 
-  tiers.forEach((t) => {
+  tiers.forEach((t, idx) => {
     const body = new THREE.Mesh(new THREE.BoxGeometry(t.w, t.h, t.w), MATS.woodDark);
     body.position.y = t.y + t.h / 2;
     const glow = new THREE.Mesh(new THREE.BoxGeometry(t.w + 0.1, t.h * 0.65, t.w + 0.1), MATS.shojiGlow);
     glow.position.y = t.y + t.h / 2;
     group.add(body, glow);
+
+    // Cửa chính ở tầng 1 & Cửa sổ Shoji đánh đèn phát sáng ở các tầng
+    if (idx === 0) {
+      const towerDoor = createMainEntrance(2.4, 2.4, MATS.vermilionDeep);
+      towerDoor.position.set(0, t.y, t.w / 2 + 0.05);
+      group.add(towerDoor);
+    } else {
+      const winF = createShojiWindow(t.w * 0.45, t.h * 0.5, 3, 2);
+      winF.position.set(0, t.y + t.h / 2, t.w / 2 + 0.06);
+      group.add(winF);
+    }
+    const winL = createShojiWindow(t.w * 0.4, t.h * 0.5, 2, 2);
+    winL.rotation.y = Math.PI / 2;
+    winL.position.set(-t.w / 2 - 0.06, t.y + t.h / 2, 0);
+    const winR = createShojiWindow(t.w * 0.4, t.h * 0.5, 2, 2);
+    winR.rotation.y = -Math.PI / 2;
+    winR.position.set(t.w / 2 + 0.06, t.y + t.h / 2, 0);
+    group.add(winL, winR);
 
     const roof = createCurvedRoof(t.rw, t.rw, t.rh, MATS.kawaraRoofRed);
     roof.position.y = t.y + t.h;
@@ -837,11 +1044,20 @@ function buildNeneTeaHouse() {
   groundFloor.position.set(0, 2.1, -0.5);
   const shoji = new THREE.Mesh(new THREE.BoxGeometry(8.5, 2.2, 6.75), MATS.shojiGlow);
   shoji.position.set(0, 2.0, -0.5);
-  const noren = new THREE.Mesh(new THREE.BoxGeometry(3.6, 1.2, 0.15), MATS.norenBlue);
-  noren.position.set(0, 2.6, 2.9);
   const engawa = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.4, 2.2), MATS.woodWarm);
   engawa.position.set(0, 0.5, 3.8);
-  group.add(groundFloor, shoji, noren, engawa);
+  group.add(groundFloor, shoji, engawa);
+
+  // Cửa chính và cửa sổ Shoji Trà Quán Sakura
+  const teaDoor = createMainEntrance(3.0, 2.5, MATS.norenBlue);
+  teaDoor.position.set(0, 0.7, 2.82);
+  const teaWinL = createShojiWindow(2.2, 1.8, 3, 3);
+  teaWinL.rotation.y = Math.PI / 2;
+  teaWinL.position.set(-4.22, 2.1, -0.5);
+  const teaWinR = createShojiWindow(2.2, 1.8, 3, 3);
+  teaWinR.rotation.y = -Math.PI / 2;
+  teaWinR.position.set(4.22, 2.1, -0.5);
+  group.add(teaDoor, teaWinL, teaWinR);
 
   const roof1 = createCurvedRoof(10.2, 8.4, 1.6, MATS.kawaraRoofDark);
   roof1.position.set(0, 4.0, -0.5);
@@ -851,9 +1067,11 @@ function buildNeneTeaHouse() {
   upperFloor.position.set(0, 5.8, -0.5);
   const upperShoji = new THREE.Mesh(new THREE.BoxGeometry(6.75, 1.6, 5.35), MATS.shojiGlow);
   upperShoji.position.set(0, 5.8, -0.5);
+  const upperWin = createShojiWindow(3.2, 1.6, 4, 2);
+  upperWin.position.set(0, 5.8, 2.12);
   const roof2 = createCurvedRoof(8.4, 7.0, 1.6, MATS.kawaraRoofDark);
   roof2.position.set(0, 7.2, -0.5);
-  group.add(upperFloor, upperShoji, roof2);
+  group.add(upperFloor, upperShoji, upperWin, roof2);
 
   const lLeft = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.2, 0.6), MATS.lanternWarmGlow);
   lLeft.position.set(-2.8, 1.6, 3.6);
@@ -884,6 +1102,13 @@ function buildNeneExtras() {
   sPad.position.y = 0.4;
   const sBody1 = new THREE.Mesh(new THREE.BoxGeometry(7.6, 3.8, 6.8), MATS.woodWarm);
   sBody1.position.set(0, 2.5, 0);
+
+  const studioDoor = createMainEntrance(2.4, 2.4, MATS.ramenNorenRed);
+  studioDoor.position.set(0, 0.8, 3.42);
+  const studioWin = createShojiWindow(2.0, 1.4, 3, 2);
+  studioWin.rotation.y = Math.PI / 2;
+  studioWin.position.set(-3.82, 2.5, 0);
+
   const sRoof1 = createCurvedRoof(9.4, 8.4, 1.6, MATS.kawaraRoofDark);
   sRoof1.position.set(0, 4.6, 0);
   const sBody2 = new THREE.Mesh(new THREE.BoxGeometry(5.6, 2.8, 5.0), MATS.shikkuiWhite);
@@ -893,7 +1118,7 @@ function buildNeneExtras() {
   const ribbon = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.22, 12, 32), MATS.sakuraDeep);
   ribbon.rotation.x = Math.PI / 3;
   ribbon.position.set(0, 10.5, 0);
-  studioGroup.add(sPad, sBody1, sRoof1, sBody2, sRoof2, ribbon);
+  studioGroup.add(sPad, sBody1, studioDoor, studioWin, sRoof1, sBody2, sRoof2, ribbon);
   animatedObjects.push({ mesh: ribbon, type: 'spinY', speed: 2.0, baseY: 10.5 });
   enableShadow(studioGroup);
   registerStationHitbox('nene_studio', studioGroup, 8.0, 13);
@@ -923,11 +1148,18 @@ function buildNeneExtras() {
   wPad.position.y = 0.3;
   const wHouse = new THREE.Mesh(new THREE.BoxGeometry(6.6, 3.6, 5.4), MATS.shikkuiWhite);
   wHouse.position.set(0, 2.1, 0);
+
+  const wagashiDoor = createMainEntrance(2.2, 2.2, MATS.norenBlue);
+  wagashiDoor.position.set(0, 0.6, 2.72);
+  const wagashiWin = createShojiWindow(1.8, 1.4, 3, 2);
+  wagashiWin.rotation.y = -Math.PI / 2;
+  wagashiWin.position.set(3.32, 2.1, 0);
+
   const wRoof = createCurvedRoof(8.4, 7.0, 1.5, MATS.kawaraRoofDark);
   wRoof.position.set(0, 4.1, 0);
   const luckyCat = new THREE.Mesh(new THREE.SphereGeometry(1.0, 16, 16), MATS.white);
   luckyCat.position.set(0, 6.4, 0);
-  wagashiGroup.add(wPad, wHouse, wRoof, luckyCat);
+  wagashiGroup.add(wPad, wHouse, wagashiDoor, wagashiWin, wRoof, luckyCat);
   animatedObjects.push({ mesh: luckyCat, type: 'spinY', speed: 1.2, baseY: 6.4 });
   enableShadow(wagashiGroup);
   registerStationHitbox('nene_wagashi', wagashiGroup, 7.0, 10);
@@ -990,23 +1222,38 @@ function buildNeneSubStructures() {
 }
 
 // ============================================================================
-// 4. RỪNG CÂY LÁ PHONG ĐỎ (THANH) & HOA ANH ĐÀO (NENE)
+// 4. RỪNG CÂY LÁ PHONG ĐỎ (THANH) & HOA ANH ĐÀO (NENE) — TÁN CÂY KHỔNG LỒ (ẢNH 1)
 // ============================================================================
 function createMapleTree(scale = 1) {
   const tg = new THREE.Group();
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.36 * scale, 2.4 * scale, 8), MATS.woodDark);
-  trunk.position.y = 1.2 * scale;
+  // Thân cây cổ thụ uốn cong
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.38 * scale, 0.65 * scale, 3.4 * scale, 10), MATS.woodDark);
+  trunk.position.y = 1.7 * scale;
   tg.add(trunk);
 
+  // Nhánh cây lớn vươn rộng nâng đỡ tán cây
+  const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.24 * scale, 0.34 * scale, 2.2 * scale, 6), MATS.woodDark);
+  b1.position.set(-1.1 * scale, 2.7 * scale, 0.5 * scale);
+  b1.rotation.z = 0.58;
+  const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.24 * scale, 0.32 * scale, 2.2 * scale, 6), MATS.woodDark);
+  b2.position.set(1.2 * scale, 2.8 * scale, -0.5 * scale);
+  b2.rotation.z = -0.58;
+  tg.add(b1, b2);
+
+  // Tán lá phong đỏ rực rỡ nhiều lớp bồng bềnh
   const puffs = [
-    { x: 0, y: 2.8, z: 0, r: 1.4, mat: MATS.mapleRed },
-    { x: -0.85, y: 2.5, z: 0.4, r: 1.05, mat: MATS.mapleOrange },
-    { x: 0.85, y: 2.6, z: -0.4, r: 1.1, mat: MATS.mapleGold },
-    { x: 0.2, y: 3.3, z: 0.6, r: 0.95, mat: MATS.mapleRed }
+    { x: 0, y: 5.2, z: 0, r: 3.6, mat: MATS.mapleRed },
+    { x: -2.6, y: 4.4, z: 0.9, r: 3.1, mat: MATS.mapleOrange },
+    { x: 2.8, y: 4.5, z: -0.8, r: 3.2, mat: MATS.mapleGold },
+    { x: 0.6, y: 3.8, z: 2.5, r: 2.8, mat: MATS.vermilionDeep },
+    { x: -1.0, y: 4.5, z: -2.4, r: 2.9, mat: MATS.mapleRed },
+    { x: 2.2, y: 5.4, z: 1.6, r: 2.4, mat: MATS.mapleOrange },
+    { x: -1.8, y: 5.8, z: -1.0, r: 2.6, mat: MATS.mapleGold }
   ];
+
   puffs.forEach(p => {
     const puff = new THREE.Mesh(new THREE.DodecahedronGeometry(p.r * scale, 1), p.mat);
-    puff.scale.y = 0.85;
+    puff.scale.set(1.15, 0.85, 1.15);
     puff.position.set(p.x * scale, p.y * scale, p.z * scale);
     tg.add(puff);
   });
@@ -1015,23 +1262,235 @@ function createMapleTree(scale = 1) {
 
 function createSakuraTree(scale = 1) {
   const tg = new THREE.Group();
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.2 * scale, 0.34 * scale, 2.4 * scale, 8), MATS.woodWarm);
-  trunk.position.y = 1.2 * scale;
+  // Thân cây anh đào cổ thụ uốn lượn phong cách Shinto
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.38 * scale, 0.62 * scale, 3.4 * scale, 10), MATS.woodWarm);
+  trunk.position.y = 1.7 * scale;
   tg.add(trunk);
 
+  const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.32 * scale, 2.2 * scale, 6), MATS.woodWarm);
+  b1.position.set(-1.1 * scale, 2.7 * scale, 0.5 * scale);
+  b1.rotation.z = 0.58;
+  const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.3 * scale, 2.2 * scale, 6), MATS.woodWarm);
+  b2.position.set(1.2 * scale, 2.8 * scale, -0.5 * scale);
+  b2.rotation.z = -0.58;
+  const b3 = new THREE.Mesh(new THREE.CylinderGeometry(0.2 * scale, 0.28 * scale, 2.0 * scale, 6), MATS.woodWarm);
+  b3.position.set(0.3 * scale, 3.0 * scale, 1.1 * scale);
+  b3.rotation.x = -0.5;
+  tg.add(b1, b2, b3);
+
+  // TÁN HOA ANH ĐÀO BỒNG BỀNH KHỔNG LỒ XÒE RỘNG (ĐÚNG THEO ẢNH THỨ 1)
   const puffs = [
-    { x: 0, y: 2.8, z: 0, r: 1.4, mat: MATS.sakuraPink },
-    { x: -0.85, y: 2.5, z: 0.4, r: 1.05, mat: MATS.sakuraLight },
-    { x: 0.85, y: 2.6, z: -0.4, r: 1.1, mat: MATS.sakuraDeep },
-    { x: 0.2, y: 3.3, z: 0.6, r: 0.95, mat: MATS.sakuraPink }
+    { x: 0, y: 5.2, z: 0, r: 3.6, mat: MATS.sakuraCanopy },
+    { x: -2.6, y: 4.4, z: 0.9, r: 3.1, mat: MATS.sakuraPink },
+    { x: 2.8, y: 4.5, z: -0.8, r: 3.2, mat: MATS.sakuraVibrant },
+    { x: 0.6, y: 3.8, z: 2.5, r: 2.8, mat: MATS.sakuraLight },
+    { x: -1.0, y: 4.5, z: -2.4, r: 2.9, mat: MATS.sakuraDeep },
+    { x: 2.2, y: 5.4, z: 1.6, r: 2.4, mat: MATS.sakuraPink },
+    { x: -1.8, y: 5.8, z: -1.0, r: 2.6, mat: MATS.sakuraCanopy }
   ];
+
   puffs.forEach(p => {
-    const puff = new THREE.Mesh(new THREE.SphereGeometry(p.r * scale, 12, 12), p.mat);
-    puff.scale.y = 0.82;
+    const puff = new THREE.Mesh(new THREE.DodecahedronGeometry(p.r * scale, 1), p.mat);
+    puff.scale.set(1.15, 0.85, 1.15);
     puff.position.set(p.x * scale, p.y * scale, p.z * scale);
     tg.add(puff);
   });
   return tg;
+}
+
+// ============================================================================
+// QUÁN MÌ RAMEN NENE — CHUẨN ĐÚNG THEO ẢNH THỨ 3
+// ============================================================================
+function buildRamenRestaurant() {
+  const group = new THREE.Group();
+  group.position.set(STATIONS.nene_ramen.pos.x, 0, STATIONS.nene_ramen.pos.z);
+
+  // 1. Nền gạch đá đen viền trắng vuông vức (Ảnh 3)
+  const base = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.4, 9.6), MATS.kawaraRoofDark);
+  base.position.y = 0.2;
+  const baseRim = new THREE.Mesh(new THREE.BoxGeometry(10.0, 0.15, 10.0), MATS.shikkuiWhite);
+  baseRim.position.y = 0.08;
+  group.add(base, baseRim);
+
+  // 2. Thân nhà chính (Tường hồng đất/cam phấn - Cột gỗ ấm - Ảnh 3)
+  const wallBody = new THREE.Mesh(new THREE.BoxGeometry(6.6, 3.4, 5.8), MATS.ramenWallPeach);
+  wallBody.position.set(0, 1.9, -0.6);
+  const wainscot = new THREE.Mesh(new THREE.BoxGeometry(6.7, 0.8, 5.9), MATS.onsenRock);
+  wainscot.position.set(0, 0.6, -0.6);
+  group.add(wallBody, wainscot);
+
+  // 4 cột gỗ chính màu nâu trầm
+  for (let cx of [-3.2, 3.2]) {
+    for (let cz of [-3.4, 2.2]) {
+      const col = new THREE.Mesh(new THREE.BoxGeometry(0.42, 3.6, 0.42), MATS.woodWarm);
+      col.position.set(cx, 1.9, cz);
+      group.add(col);
+    }
+  }
+
+  // 3. Mái ngói dốc màu xanh rêu (Kawara Green) chuẩn theo ảnh 3
+  const roof = new THREE.Group();
+  roof.position.set(0, 3.65, -0.5);
+  const roofSlab = new THREE.Mesh(new THREE.BoxGeometry(7.8, 0.35, 6.8), MATS.ramenRoofGreen);
+  roofSlab.rotation.x = 0.12;
+  roof.add(roofSlab);
+
+  // Các đường sóng ngói xanh uốn lượn trên mái
+  for (let rx = -3.4; rx <= 3.4; rx += 0.52) {
+    const tileRidge = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 6.6, 6), MATS.ramenRoofGreen);
+    tileRidge.rotation.x = Math.PI / 2 + 0.12;
+    tileRidge.position.set(rx, 0.22, 0);
+    roof.add(tileRidge);
+  }
+  const ridgeBeam = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 8.0, 8), MATS.woodDark);
+  ridgeBeam.rotation.z = Math.PI / 2;
+  ridgeBeam.position.set(0, 0.6, -3.2);
+  roof.add(ridgeBeam);
+  group.add(roof);
+
+  // 4. TÔ MÌ RAMEN KHỔNG LỒ NGAY TRÊN NÓC MÁI NHÀ (ĐIỂM NHẤN CỦA ẢNH 3!)
+  const giantBowlGroup = new THREE.Group();
+  giantBowlGroup.position.set(0, 4.6, -0.4);
+
+  // Tô mì gốm trắng miệng loe tròn
+  const bowl = new THREE.Mesh(new THREE.CylinderGeometry(2.3, 1.4, 1.3, 18), MATS.ramenBowlWhite);
+  bowl.position.y = 0.65;
+  const bowlRim = new THREE.Mesh(new THREE.TorusGeometry(2.3, 0.12, 10, 24), MATS.shikkuiWhite);
+  bowlRim.rotation.x = Math.PI / 2;
+  bowlRim.position.y = 1.3;
+  // Nước dùng mì Ramen sóng sánh
+  const soup = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.2, 0.1, 18), MATS.ramenSoup);
+  soup.position.y = 1.15;
+  giantBowlGroup.add(bowl, bowlRim, soup);
+
+  // Các lọn mì Ramen vàng óng uốn lượn
+  for (let n = 0; n < 6; n++) {
+    const noodle = new THREE.Mesh(new THREE.TorusGeometry(1.2 - n * 0.15, 0.12, 8, 16, Math.PI * 1.2), MATS.ramenNoodle);
+    noodle.rotation.x = Math.PI / 2;
+    noodle.rotation.z = n * 0.8;
+    noodle.position.set((Math.random() - 0.5) * 0.4, 1.25, (Math.random() - 0.5) * 0.4);
+    giantBowlGroup.add(noodle);
+  }
+
+  // Nửa quả trứng luộc lòng đào (Ajitsuke Tamago)
+  const eggGroup = new THREE.Group();
+  eggGroup.position.set(-0.8, 1.35, 0.4);
+  const eggWhite = new THREE.Mesh(new THREE.SphereGeometry(0.55, 12, 12), MATS.ramenEggWhite);
+  eggWhite.scale.set(0.9, 0.45, 1.1);
+  const eggYolk = new THREE.Mesh(new THREE.SphereGeometry(0.32, 10, 10), MATS.ramenEggYolk);
+  eggYolk.scale.set(1.0, 0.5, 1.0);
+  eggYolk.position.y = 0.12;
+  eggGroup.add(eggWhite, eggYolk);
+  giantBowlGroup.add(eggGroup);
+
+  // 2 miếng rong biển Nori xanh thẫm cắm thẳng
+  for (let noriX of [0.4, 0.9]) {
+    const nori = new THREE.Mesh(new THREE.BoxGeometry(0.08, 1.2, 0.8), MATS.ramenNori);
+    nori.position.set(noriX, 1.6, -0.6);
+    nori.rotation.x = -0.2;
+    nori.rotation.y = 0.15;
+    giantBowlGroup.add(nori);
+  }
+
+  // Đôi đũa gỗ màu cam đỏ cắm chéo vươn lên
+  const chopstick1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.05, 3.6, 8), MATS.ramenChopsticks);
+  chopstick1.position.set(-0.3, 2.2, -0.2);
+  chopstick1.rotation.set(-0.35, 0.2, 0.3);
+  const chopstick2 = chopstick1.clone();
+  chopstick2.position.set(-0.1, 2.25, -0.3);
+  chopstick2.rotation.set(-0.38, 0.15, 0.25);
+  giantBowlGroup.add(chopstick1, chopstick2);
+
+  group.add(giantBowlGroup);
+
+  // 5. Rèm vải Noren trắng viền đỏ treo trước mái hiên
+  const norenGroup = new THREE.Group();
+  norenGroup.position.set(0, 3.15, 2.3);
+  for (let nx = -2.6; nx <= 2.6; nx += 0.88) {
+    const norenCloth = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.7, 0.04), MATS.white);
+    norenCloth.position.x = nx;
+    const norenPattern = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.35, 0.05), MATS.ramenNorenRed);
+    norenPattern.position.set(nx, -0.05, 0.01);
+    norenGroup.add(norenCloth, norenPattern);
+  }
+  group.add(norenGroup);
+
+  // 6. Quầy bar gỗ & 3 ghế đẩu tròn trước quán
+  const counter = new THREE.Mesh(new THREE.BoxGeometry(5.4, 0.18, 0.8), MATS.woodWarm);
+  counter.position.set(0, 1.1, 2.2);
+  const counterBase = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.9, 0.4), MATS.ramenWallPeach);
+  counterBase.position.set(0, 0.55, 1.95);
+  group.add(counter, counterBase);
+
+  // 3 ghế đẩu tròn bằng gỗ (Stools)
+  for (let sx of [-1.6, 0, 1.6]) {
+    const stool = new THREE.Group();
+    stool.position.set(sx, 0, 3.2);
+    const seat = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.12, 14), MATS.woodWarm);
+    seat.position.y = 0.65;
+    stool.add(seat);
+    for (let legA = 0; legA < 3; legA++) {
+      const angle = (legA / 3) * Math.PI * 2;
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.65, 6), MATS.woodDark);
+      leg.position.set(Math.cos(angle) * 0.22, 0.32, Math.sin(angle) * 0.22);
+      leg.rotation.z = Math.cos(angle) * 0.1;
+      leg.rotation.x = Math.sin(angle) * 0.1;
+      stool.add(leg);
+    }
+    group.add(stool);
+  }
+
+  // 2 bát mì Ramen tí hon bốc khói đặt trên quầy bar
+  for (let bx of [-0.8, 0.8]) {
+    const miniBowl = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.14, 0.16, 10), MATS.ramenBowlWhite);
+    miniBowl.position.set(bx, 1.25, 2.2);
+    const miniSoup = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.04, 10), MATS.ramenSoup);
+    miniSoup.position.set(bx, 1.3, 2.2);
+    group.add(miniBowl, miniSoup);
+  }
+
+  // 7. Cửa sổ phục vụ bên hông (Side Service Hatch) có rèm cuốn
+  const sideHatch = new THREE.Mesh(new THREE.BoxGeometry(0.1, 1.6, 2.2), MATS.shojiGlow);
+  sideHatch.position.set(3.32, 1.9, -0.6);
+  const hatchBlind = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.5, 2.3), MATS.shikkuiWhite);
+  hatchBlind.position.set(3.32, 2.5, -0.6);
+  group.add(sideHatch, hatchBlind);
+  townLanternMeshes.push(sideHatch);
+
+  // 8. Cột biển hiệu đứng bên trái & đèn lồng đỏ treo (Ảnh 3)
+  const signPost = new THREE.Group();
+  signPost.position.set(-3.6, 0, 2.4);
+  const pole = new THREE.Mesh(new THREE.BoxGeometry(0.18, 3.2, 0.18), MATS.woodDark);
+  pole.position.y = 1.6;
+  const arm = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.12, 0.12), MATS.woodDark);
+  arm.position.set(0.35, 3.0, 0);
+  const banner = new THREE.Mesh(new THREE.BoxGeometry(0.65, 1.6, 0.06), MATS.ramenNorenRed);
+  banner.position.set(0.55, 2.0, 0);
+  const bannerInner = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.45, 0.08), MATS.shojiGlow);
+  bannerInner.position.set(0.55, 2.0, 0);
+
+  const signLantern = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), MATS.lanternRedGlow);
+  signLantern.scale.y = 1.3;
+  signLantern.position.set(-0.25, 2.6, 0);
+
+  const rightLantern = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), MATS.lanternRedGlow);
+  rightLantern.scale.y = 1.3;
+  rightLantern.position.set(3.4, 2.7, 2.2);
+
+  signPost.add(pole, arm, banner, bannerInner, signLantern);
+  group.add(signPost, rightLantern);
+  townLanternMeshes.push(bannerInner, signLantern, rightLantern);
+
+  // 9. Nguồn sáng ấm cúng bên trong quán mì
+  const ramenLight = new THREE.PointLight(0xffaa44, 1.4, 16);
+  ramenLight.position.set(0, 2.2, 0.8);
+  ramenLight.userData.baseIntensity = 1.4;
+  group.add(ramenLight);
+  townPointLights.push(ramenLight);
+
+  enableShadow(group);
+  registerStationHitbox('nene_ramen', group, 7.8, 12);
+  scene.add(group);
 }
 
 function buildFloraScenery() {
@@ -1260,6 +1719,8 @@ function updateTownLighting(mode, notify = false) {
 // 6. NHÂN VẬT CHIBI THANH & NENE — DẠO CHƠI TOÀN BỘ BẢN ĐỒ & NỤ HÔN NGỌT NGÀO
 // ============================================================================
 let chibiThanhMesh, chibiNeneMesh;
+let thanhTowelMesh, neneTowelMesh;
+let isBathing = false;
 let isKissing = false;
 let kissProgress = 0;
 const characters = [];
@@ -1277,7 +1738,14 @@ function buildChibiCouple() {
   tHair.position.y = 1.95;
   const tBun = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), MATS.woodDark);
   tBun.position.set(0, 2.65, -0.15);
-  thanhGroup.add(tKimono, tHaori, tHead, tHair, tBun);
+
+  // Khăn tắm nhỏ màu trắng (Tenugui) đội đầu khi ngâm mình trong Onsen
+  const tTowel = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.16, 0.38), MATS.shikkuiWhite);
+  tTowel.position.set(0, 2.7, 0);
+  tTowel.visible = false;
+  thanhTowelMesh = tTowel;
+
+  thanhGroup.add(tKimono, tHaori, tHead, tHair, tBun, tTowel);
   thanhGroup.position.set(-0.6, 0.95, 6.5);
   enableShadow(thanhGroup);
   scene.add(thanhGroup);
@@ -1329,7 +1797,14 @@ function buildChibiCouple() {
   nHair.position.y = 1.92;
   const nFlower = new THREE.Mesh(new THREE.SphereGeometry(0.22, 8, 8), MATS.sakuraDeep);
   nFlower.position.set(0.55, 2.3, 0.2);
-  neneGroup.add(nKimono, nObi, nHead, nHair, nFlower);
+
+  // Khăn tắm nhỏ màu trắng (Tenugui) đội đầu khi ngâm mình trong Onsen
+  const nTowel = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.16, 0.36), MATS.shikkuiWhite);
+  nTowel.position.set(0, 2.65, 0);
+  nTowel.visible = false;
+  neneTowelMesh = nTowel;
+
+  neneGroup.add(nKimono, nObi, nHead, nHair, nFlower, nTowel);
   neneGroup.position.set(0.6, 0.95, 6.5);
   enableShadow(neneGroup);
   scene.add(neneGroup);
@@ -1417,6 +1892,75 @@ function triggerKiss(broadcast = true) {
     publishCloudState({ station: 'onsen_hub', msg: '💋 Thanh & Nene vừa hôn nhau lãng mạn!' });
   }
 }
+
+// Bọt hơi nước nóng bốc lên khi tắm Onsen
+const bathSteamList = [];
+
+function spawnBathSteam(posX, posY, posZ) {
+  const puff = new THREE.Mesh(
+    new THREE.SphereGeometry(0.22 + Math.random() * 0.16, 8, 8),
+    new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.55,
+      roughness: 1.0
+    })
+  );
+  puff.position.set(posX, posY, posZ);
+  scene.add(puff);
+  bathSteamList.push({
+    mesh: puff,
+    vy: 0.75 + Math.random() * 0.6,
+    vx: (Math.random() - 0.5) * 0.25,
+    vz: (Math.random() - 0.5) * 0.25,
+    life: 1.0,
+    decay: 0.45 + Math.random() * 0.3
+  });
+}
+
+function toggleBath(broadcast = true) {
+  isBathing = !isBathing;
+  if (thanhTowelMesh) thanhTowelMesh.visible = isBathing;
+  if (neneTowelMesh) neneTowelMesh.visible = isBathing;
+
+  const btn = document.getElementById('btn-toggle-bath');
+  if (btn) {
+    btn.classList.toggle('active', isBathing);
+    btn.textContent = isBathing ? '♨️ Rời Bồn Tắm' : '♨️ Tắm Onsen';
+  }
+
+  if (isBathing) {
+    selectStation('onsen_hub', true);
+    showToast('♨️ Thanh & Nene đang cùng ngâm mình thư giãn trong bồn nước nóng Onsen!');
+    for (let i = 0; i < 8; i++) {
+      spawnBathSteam(-6.2 + (Math.random() - 0.5) * 2.2, 1.4, -3.2 + (Math.random() - 0.5) * 2.2);
+    }
+  } else {
+    // Trở lại cầu Onsen
+    chibiThanhMesh.position.set(-0.6, 0.95, 6.5);
+    chibiNeneMesh.position.set(0.6, 0.95, 6.5);
+    chibiThanhMesh.rotation.set(0, 0, 0);
+    chibiNeneMesh.rotation.set(0, 0, 0);
+    showToast('♨️ Thanh & Nene đã tắm xong sảng khoái và tiếp tục dạo bước!');
+  }
+
+  if (broadcast && typeof publishBathAction === 'function') {
+    publishBathAction(isBathing);
+  }
+}
+
+function toggleLabels() {
+  const isHidden = document.body.classList.toggle('labels-hidden');
+  const btn = document.getElementById('btn-toggle-labels');
+  if (btn) {
+    btn.classList.toggle('active', isHidden);
+    btn.textContent = isHidden ? '🏷️ Hiện Chữ' : '🏷️ Ẩn Chữ';
+  }
+  showToast(isHidden ? '🏷️ Đã ẩn toàn bộ nhãn chữ trên đầu để ngắm cảnh thoáng hơn!' : '🏷️ Đã hiển thị lại nhãn chữ!');
+}
+
+window.toggleBath = toggleBath;
+window.toggleLabels = toggleLabels;
 
 // ============================================================================
 // 7. THÚ CƯNG (SHIBA, MÈO, CÁ KOI, HƯƠU NARA) & DÂN LÀNG THỊ TRẤN
@@ -1944,6 +2488,7 @@ buildThanhSubStructures(); // Mở rộng: Chợ đêm Yatai & Senbon Torii
 buildNeneTeaHouse();
 buildNeneExtras();
 buildNeneSubStructures();  // Mở rộng: Bánh xe nước & Vườn Zen
+buildRamenRestaurant();    // Quán mì Ramen Nene chuẩn theo Ảnh 3
 buildFloraScenery();
 buildTownLamps();
 buildChibiCouple();
@@ -2132,6 +2677,8 @@ function renderInspector() {
     renderFinancePanel(body, 'thanh');
   } else if (st.id === 'nene_tea') {
     renderTasksPanel(body, 'nene');
+  } else if (st.id === 'nene_ramen') {
+    renderRamenPanel(body);
   } else if (st.id === 'nene_studio') {
     renderAppsPanel(body, 'nene');
   } else if (st.id === 'nene_clock') {
@@ -2140,6 +2687,110 @@ function renderInspector() {
     renderFinancePanel(body, 'nene');
   }
 }
+
+// Render Quán Mì Ramen Nene (Ảnh 3)
+function renderRamenPanel(body) {
+  if (!state.nene.ramenMenu) {
+    state.nene.ramenMenu = JSON.parse(JSON.stringify(DEFAULT_STATE.nene.ramenMenu));
+  }
+  const list = state.nene.ramenMenu;
+  const doneCount = list.filter(m => m.done).length;
+
+  body.innerHTML = `
+    <div style="background: linear-gradient(135deg, rgba(230,126,34,0.15), rgba(214,48,49,0.15)); border: 1px solid rgba(230,126,34,0.3); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 4px;">
+        <span style="font-size:13px; font-weight:800; color:#e67e22;">🍜 Quán Mì Ramen Kyoto Nene (Ảnh 3)</span>
+        <span class="tag-badge orange">${doneCount}/${list.length} món đã thưởng</span>
+      </div>
+      <div style="font-size:11px; color:var(--text-sub); line-height:1.4;">
+        Mái ngói xanh Kawara uốn lượn, tô mì khổng lồ bốc khói trên nóc! Nơi nạp đầy năng lượng và tự thưởng cho bản thân mỗi khi hoàn thành xuất sắc các mục tiêu công việc.
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+      <span style="font-size:12px; font-weight:700; color:var(--text-main);">Thực đơn nạp năng lượng & Phần thưởng:</span>
+      <button class="add-btn" onclick="window.eatRamenNow()" style="background:#e67e22; border-color:#e67e22;">🥢 Thưởng Thức Mì Ngay</button>
+    </div>
+
+    <div class="item-list">
+      ${list.map(m => `
+        <div class="list-item ${m.done ? 'done' : ''}">
+          <div class="item-left">
+            <input type="checkbox" class="item-check" ${m.done ? 'checked' : ''}
+              onchange="window.toggleRamenMenu('${m.id}')" />
+            <div class="item-info">
+              <div class="item-title">${m.title}</div>
+              <div class="item-meta">
+                <span class="tag-badge green">⚡ ${m.energy}</span>
+                <span style="font-size:11px; color:var(--text-sub);">🌸 Bờ Nene</span>
+              </div>
+            </div>
+          </div>
+          <button class="delete-btn" onclick="window.deleteRamenMenu('${m.id}')">✕</button>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="add-row">
+      <input type="text" id="input-new-ramen" class="input-text" placeholder="Thêm món mì / phần thưởng mới..."
+        onkeydown="if(event.key==='Enter') window.addRamenMenu()" />
+      <button class="add-btn" onclick="window.addRamenMenu()">+ Thêm</button>
+    </div>
+  `;
+}
+
+window.toggleRamenMenu = function(id) {
+  if (!state.nene.ramenMenu) return;
+  const item = state.nene.ramenMenu.find(m => m.id === id);
+  if (item) {
+    item.done = !item.done;
+    if (item.done) {
+      showToast(`🍜 Nene & Thanh đã thưởng thức "${item.title}"! Đã nạp đầy năng lượng!`);
+      spawnSingleFirework(STATIONS.nene_ramen.pos.x, 8.5, STATIONS.nene_ramen.pos.z, 0xe67e22);
+    }
+    saveState({ station: 'nene_ramen', msg: `Cập nhật thực đơn Ramen` });
+    renderInspector();
+  }
+};
+
+window.addRamenMenu = function() {
+  const input = document.getElementById('input-new-ramen');
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+  if (!state.nene.ramenMenu) state.nene.ramenMenu = [];
+  state.nene.ramenMenu.push({
+    id: 'rm_' + Date.now(),
+    title: val,
+    energy: '+50 Năng Lượng',
+    done: false
+  });
+  input.value = '';
+  saveState({ station: 'nene_ramen', msg: `Thêm món thưởng: ${val}` });
+  renderInspector();
+  showToast(`🍜 Đã thêm món "${val}" vào Quán Mì Ramen!`);
+};
+
+window.deleteRamenMenu = function(id) {
+  if (!state.nene.ramenMenu) return;
+  state.nene.ramenMenu = state.nene.ramenMenu.filter(m => m.id !== id);
+  saveState({ station: 'nene_ramen', msg: `Xóa món thưởng Ramen` });
+  renderInspector();
+};
+
+window.eatRamenNow = function() {
+  showToast('🥢 Xì xụp... Tô mì Ramen nóng hổi thơm phức đã được dọn lên! Nạp 100% sinh lực!');
+  spawnSingleFirework(STATIONS.nene_ramen.pos.x, 9.5, STATIONS.nene_ramen.pos.z, 0xf39c12);
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      spawnBathSteam(
+        STATIONS.nene_ramen.pos.x + (Math.random() - 0.5) * 1.5,
+        5.8 + Math.random() * 0.5,
+        STATIONS.nene_ramen.pos.z + (Math.random() - 0.5) * 1.5
+      );
+    }, i * 200);
+  }
+};
 
 // 1. Render Onsen Hub Panel (Việc chung của 2 người)
 function renderOnsenHubPanel(body) {
@@ -2642,6 +3293,20 @@ document.getElementById('btn-trigger-kiss').addEventListener('click', () => {
   triggerKiss(true);
 });
 
+const btnToggleBath = document.getElementById('btn-toggle-bath');
+if (btnToggleBath) {
+  btnToggleBath.addEventListener('click', () => {
+    toggleBath(true);
+  });
+}
+
+const btnToggleLabels = document.getElementById('btn-toggle-labels');
+if (btnToggleLabels) {
+  btnToggleLabels.addEventListener('click', () => {
+    toggleLabels();
+  });
+}
+
 document.querySelectorAll('.dock-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     selectStation(btn.dataset.station, true);
@@ -2793,6 +3458,14 @@ function applyIncomingCloudData(payload) {
     return;
   }
 
+  // Nếu là sự kiện vào/rời bồn tắm Onsen từ máy của người kia
+  if (payload.isBath !== undefined) {
+    if (isBathing !== payload.isBath) {
+      toggleBath(false);
+    }
+    return;
+  }
+
   if (payload.data.thanh) state.thanh = payload.data.thanh;
   if (payload.data.nene) state.nene = payload.data.nene;
   if (payload.data.shared) state.shared = payload.data.shared;
@@ -2809,6 +3482,25 @@ function applyIncomingCloudData(payload) {
   if (payload.msg) {
     showToast(`⚡ Live: ${payload.msg}`);
   }
+}
+
+function publishBathAction(isBath) {
+  const now = Date.now();
+  const msgId = `${CLIENT_ID}_${now}_bath`;
+  seenMsgIds.add(msgId);
+  const payload = {
+    msgId,
+    clientId: CLIENT_ID,
+    isBath,
+    msg: isBath ? '♨️ Thanh & Nene đã cùng vào tắm Onsen!' : '♨️ Thanh & Nene đã rời bồn Onsen!'
+  };
+  const jsonStr = JSON.stringify(payload);
+  const topic = getSyncTopic(currentRoomId);
+  mqttClients.forEach(client => {
+    if (client && client.connected) {
+      try { client.publish(topic, jsonStr, { qos: 1 }); } catch (e) {}
+    }
+  });
 }
 
 function publishCloudState(syncMeta = { station: 'onsen_hub', msg: 'Đồng bộ dữ liệu' }) {
@@ -2951,10 +3643,9 @@ function animate() {
       waterWheelMesh.rotation.z -= dt * 0.95;
     }
 
-    // 3. Xử lý nhân vật Chibi Thanh & Nene và nụ hôn ngọt ngào
+    // 3. Xử lý nhân vật Chibi Thanh & Nene (Hôn nhau hoặc Tắm Onsen thư giãn)
     if (isKissing) {
       kissProgress -= dt;
-      // Hai nhân vật tiến sát nhau trên Cầu Onsen và nghiêng người hôn nhau
       chibiThanhMesh.position.lerp(new THREE.Vector3(-0.48, 0.95, 6.5), Math.min(1, dt * 5.0));
       chibiNeneMesh.position.lerp(new THREE.Vector3(0.48, 0.95, 6.5), Math.min(1, dt * 5.0));
       chibiThanhMesh.lookAt(1, 0.95, 6.5);
@@ -2967,12 +3658,28 @@ function animate() {
         chibiThanhMesh.rotation.z = 0;
         chibiNeneMesh.rotation.z = 0;
       }
+    } else if (isBathing) {
+      // Thanh & Nene ngâm mình thư giãn trong bồn tắm gỗ Ofuro khổng lồ (Ảnh 2)
+      const bathY = 0.85 + Math.sin(elapsed * 2.2) * 0.04;
+      chibiThanhMesh.position.set(-6.2 - 0.75, bathY, -3.2);
+      chibiNeneMesh.position.set(-6.2 + 0.75, bathY - 0.02, -3.2);
+      chibiThanhMesh.rotation.set(0, Math.PI / 2, 0);
+      chibiNeneMesh.rotation.set(0, -Math.PI / 2, 0);
+
+      // Thỉnh thoảng bốc lên một làn khói khoáng ấm áp
+      if (Math.random() < 0.16) {
+        spawnBathSteam(
+          -6.2 + (Math.random() - 0.5) * 2.0,
+          1.4,
+          -3.2 + (Math.random() - 0.5) * 2.0
+        );
+      }
     }
 
     // Cập nhật di chuyển theo lộ trình (Waypoints) cho tất cả nhân vật, thú cưng và dân làng
     characters.forEach(char => {
-      // Nếu đang trong thời gian hôn nhau, Thanh và Nene đã được điều khiển ở trên
-      if (isKissing && (char.id === 'thanh' || char.id === 'nene')) {
+      // Nếu đang trong thời gian hôn nhau hoặc tắm Onsen, Thanh và Nene đã được điều khiển ở trên
+      if ((isKissing || isBathing) && (char.id === 'thanh' || char.id === 'nene')) {
         return;
       }
 
@@ -3043,6 +3750,23 @@ function animate() {
       if (heart.life <= 0) {
         scene.remove(heart.mesh);
         kissHearts.splice(h, 1);
+      }
+    }
+
+    // 4b. Cập nhật bọt hơi nước bốc lên từ bồn tắm Onsen
+    for (let b = bathSteamList.length - 1; b >= 0; b--) {
+      const bs = bathSteamList[b];
+      bs.life -= dt * bs.decay;
+      bs.mesh.position.y += bs.vy * dt;
+      bs.mesh.position.x += bs.vx * dt;
+      bs.mesh.position.z += bs.vz * dt;
+      bs.mesh.scale.multiplyScalar(1.0 + dt * 0.4);
+      bs.mesh.material.opacity = Math.max(0, bs.life * 0.55);
+      if (bs.life <= 0) {
+        scene.remove(bs.mesh);
+        bs.mesh.geometry.dispose();
+        bs.mesh.material.dispose();
+        bathSteamList.splice(b, 1);
       }
     }
 
