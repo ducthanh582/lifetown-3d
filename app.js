@@ -380,11 +380,34 @@ const MATS = {
   sakuraLight: new THREE.MeshStandardMaterial({ color: 0xffe4ec, roughness: 0.55 }),
   // Ánh sáng phát quang đêm rực rỡ
   shojiGlow: new THREE.MeshStandardMaterial({ color: 0xffe49e, emissive: 0xff9900, emissiveIntensity: 0.95, roughness: 0.35 }),
-  lanternRedGlow: new THREE.MeshStandardMaterial({ color: 0xff3b30, emissive: 0xff2010, emissiveIntensity: 1.35, roughness: 0.35 }),
-  lanternWarmGlow: new THREE.MeshStandardMaterial({ color: 0xfff0b3, emissive: 0xffbb00, emissiveIntensity: 1.25, roughness: 0.35 }),
+  lanternRedGlow: new THREE.MeshStandardMaterial({ color: 0xff3b30, emissive: 0xff2010, emissiveIntensity: 1.45, roughness: 0.35 }),
+  lanternWarmGlow: new THREE.MeshStandardMaterial({ color: 0xfff0b3, emissive: 0xffbb00, emissiveIntensity: 1.35, roughness: 0.35 }),
   white: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4 }),
-  norenBlue: new THREE.MeshStandardMaterial({ color: 0x1e3a58, roughness: 0.7 })
+  norenBlue: new THREE.MeshStandardMaterial({ color: 0x1e3a58, roughness: 0.7 }),
+  // Đèn đá & Cột đèn phố
+  toroStone: new THREE.MeshStandardMaterial({ color: 0x5a5752, roughness: 0.85 }),
+  toroStoneDark: new THREE.MeshStandardMaterial({ color: 0x3d3a36, roughness: 0.9 }),
+  // Thú cưng đáng yêu: Chó Shiba & Mèo Calico & Hươu Nara & Cá Koi
+  shibaGold: new THREE.MeshStandardMaterial({ color: 0xd9822b, roughness: 0.65 }),
+  shibaWhite: new THREE.MeshStandardMaterial({ color: 0xfff6ec, roughness: 0.7 }),
+  shibaNose: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4 }),
+  catWhite: new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.6 }),
+  catOrange: new THREE.MeshStandardMaterial({ color: 0xd35400, roughness: 0.6 }),
+  catBlack: new THREE.MeshStandardMaterial({ color: 0x2c3e50, roughness: 0.6 }),
+  deerBrown: new THREE.MeshStandardMaterial({ color: 0x935116, roughness: 0.75 }),
+  deerWhite: new THREE.MeshStandardMaterial({ color: 0xfef9e7, roughness: 0.8 }),
+  koiKohakuRed: new THREE.MeshStandardMaterial({ color: 0xe74c3c, roughness: 0.25 }),
+  koiYamabuki: new THREE.MeshStandardMaterial({ color: 0xf39c12, metalness: 0.3, roughness: 0.2 }),
+  koiPlatinum: new THREE.MeshStandardMaterial({ color: 0xf0f3f4, metalness: 0.35, roughness: 0.15 }),
+  // Trang phục dân làng Kimono & Yukata
+  kimonoPurple: new THREE.MeshStandardMaterial({ color: 0x8e44ad, roughness: 0.65 }),
+  kimonoNavy: new THREE.MeshStandardMaterial({ color: 0x1b2631, roughness: 0.65 }),
+  kimonoMonk: new THREE.MeshStandardMaterial({ color: 0x566573, roughness: 0.85 })
 };
+
+// Quản lý hệ thống chiếu sáng đèn phố và nguồn sáng PointLight
+const townPointLights = [];
+const townLanternMeshes = [];
 
 function enableShadow(obj) {
   obj.traverse(child => {
@@ -1037,7 +1060,203 @@ function buildFloraScenery() {
 }
 
 // ============================================================================
-// 5. NHÂN VẬT CHIBI THANH & NENE — CÓ THỂ HÔN NHAU (KISSING ANIMATION)
+// 5. HỆ THỐNG ĐÈN THỊ TRẤN & TỰ ĐỘNG BẬT KHI TRỜI TỐI (TỔNG HỢP CẢ 2 BỜ)
+// ============================================================================
+function createIshidoro(x, z, rotY = 0) {
+  const g = new THREE.Group();
+  g.position.set(x, 0, z);
+  g.rotation.y = rotY;
+
+  // Đế đá Kiso
+  const base = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.28, 0.75), MATS.toroStone);
+  base.position.y = 0.14;
+  // Cột đá Sao
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.25, 1.05, 8), MATS.toroStone);
+  pole.position.y = 0.8;
+  // Bệ giữa Chudai
+  const mid = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.2, 0.8), MATS.toroStone);
+  mid.position.y = 1.4;
+  // Buồng phát sáng lồng giấy Hibukuro
+  const chamber = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.52, 0.52), MATS.lanternWarmGlow);
+  chamber.position.y = 1.76;
+  // 4 cột góc bảo vệ
+  for (let cx of [-0.27, 0.27]) {
+    for (let cz of [-0.27, 0.27]) {
+      const col = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.54, 0.08), MATS.toroStoneDark);
+      col.position.set(cx, 1.76, cz);
+      g.add(col);
+    }
+  }
+  // Mái đá che nón lục giác Kasa
+  const roof = new THREE.Mesh(new THREE.ConeGeometry(0.72, 0.42, 6), MATS.toroStone);
+  roof.position.y = 2.22;
+  // Đỉnh ngọc báu Hoju
+  const hoju = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), MATS.toroStoneDark);
+  hoju.position.y = 2.48;
+
+  g.add(base, pole, mid, chamber, roof, hoju);
+  enableShadow(g);
+  townLanternMeshes.push(chamber);
+  return g;
+}
+
+function createChochinPost(x, z, rotY = 0, isRed = true) {
+  const g = new THREE.Group();
+  g.position.set(x, 0, z);
+  g.rotation.y = rotY;
+
+  // Cột gỗ đen
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.14, 3.2, 8), MATS.woodDark);
+  post.position.y = 1.6;
+  // Tay vươn
+  const arm = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.09, 0.09), MATS.woodDark);
+  arm.position.set(0.38, 3.1, 0);
+  // Dây treo
+  const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.35, 6), MATS.woodDark);
+  cord.position.set(0.72, 2.9, 0);
+  // Lồng đèn bầu dục
+  const mat = isRed ? MATS.lanternRedGlow : MATS.lanternWarmGlow;
+  const lantern = new THREE.Mesh(new THREE.SphereGeometry(0.3, 12, 12), mat);
+  lantern.scale.set(1.0, 1.35, 1.0);
+  lantern.position.set(0.72, 2.45, 0);
+  // Chóp nón trên dưới
+  const capTop = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.28, 0.07, 8), MATS.woodDark);
+  capTop.position.set(0.72, 2.85, 0);
+  const capBtm = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.14, 0.07, 8), MATS.woodDark);
+  capBtm.position.set(0.72, 2.05, 0);
+
+  g.add(post, arm, cord, lantern, capTop, capBtm);
+  enableShadow(g);
+  townLanternMeshes.push(lantern);
+  return g;
+}
+
+function buildTownLamps() {
+  const lampsGroup = new THREE.Group();
+
+  // 1. Đèn đá Toro (Ishidoro) tại các vị trí trọng điểm ven suối Onsen & quanh công trình
+  const toroPositions = [
+    // 4 góc Cầu Onsen
+    [-2.8, 4.4, 0], [-2.8, 8.6, 0], [2.8, 4.4, Math.PI], [2.8, 8.6, Math.PI],
+    // Dọc bờ suối Onsen bên Thanh (X = -4.8)
+    [-4.8, -34, 0], [-4.8, -22, 0], [-4.8, -10, 0], [-4.8, 16, 0], [-4.8, 28, 0], [-4.8, 40, 0],
+    // Dọc bờ suối Onsen bên Nene (X = +4.8)
+    [4.8, -34, Math.PI], [4.8, -22, Math.PI], [4.8, -10, Math.PI], [4.8, 16, Math.PI], [4.8, 28, Math.PI], [4.8, 40, Math.PI],
+    // Vườn Sỏi Trắng Zen & Bánh xe nước bên Nene
+    [14, -18, 0.4], [18, -25, -0.6], [22, -18, 0.8], [9.5, -4, 0],
+    // Chòi Hanami & Đền thờ Thanh
+    [16, 20, 0], [26, 24, -0.5], [-16, 24, 0.5], [-24, 14, 0]
+  ];
+
+  toroPositions.forEach(([tx, tz, tr]) => {
+    lampsGroup.add(createIshidoro(tx, tz, tr));
+  });
+
+  // 2. Cột đèn lồng gỗ treo Chochin dọc các trục đường đi bộ chính
+  const postPositions = [
+    // Bờ Thanh: Trục đường Senbon Torii & Chợ Đêm Yatai
+    [-10, 6, 0, true], [-14, 10, 0.3, true], [-18, 2, -0.4, true],
+    [-14, -4, 0, true], [-18, -12, 0.5, true], [-24, -8, -0.5, true],
+    // Bờ Nene: Trục phố cổ Machiya & Vườn Trà
+    [10, 6, Math.PI, false], [14, 10, Math.PI - 0.3, false], [18, 2, Math.PI + 0.4, false],
+    [14, -4, Math.PI, false], [18, -12, Math.PI - 0.5, false], [24, -8, Math.PI + 0.5, false]
+  ];
+
+  postPositions.forEach(([px, pz, pr, isRed]) => {
+    lampsGroup.add(createChochinPost(px, pz, pr, isRed));
+  });
+
+  scene.add(lampsGroup);
+
+  // 3. Hệ thống PointLight tạo quầng sáng ấm áp thực tế khi trời tối
+  function addTownPointLight(x, y, z, color, intensity, distance) {
+    const pl = new THREE.PointLight(color, intensity, distance);
+    pl.position.set(x, y, z);
+    pl.userData.baseIntensity = intensity;
+    scene.add(pl);
+    townPointLights.push(pl);
+  }
+
+  addTownPointLight(0, 2.4, 6.5, 0xffaa55, 1.4, 18);     // Cầu Onsen trung tâm
+  addTownPointLight(-16, 3.2, 18, 0xff3311, 1.3, 18);    // Dãy cổng Senbon Torii Thanh
+  addTownPointLight(-17, 3.2, -3, 0xffaa33, 1.4, 20);    // Chợ Đêm lễ hội Yatai
+  addTownPointLight(-22, 3.5, -14, 0xff8833, 1.2, 18);   // Võ Đường rèn luyện Thanh
+  addTownPointLight(-16, 3.5, -26, 0xff5522, 1.2, 18);   // Lầu Trống Taiko
+  addTownPointLight(18, 3.2, 2, 0xffbb44, 1.4, 20);      // Nhà Trà Machiya Nene
+  addTownPointLight(11, 2.5, -6, 0x55ccff, 1.1, 16);     // Bánh Xe Nước Suisha
+  addTownPointLight(22, 3.0, 22, 0xff99bb, 1.3, 18);     // Chòi Ngắm Hoa Hanami Nene
+  addTownPointLight(17, 2.5, -21, 0xffcc66, 1.1, 16);    // Vườn Sỏi Trắng Zen Karesansui
+  addTownPointLight(0, 2.0, -15, 0xff8844, 1.3, 22);     // Suối Onsen khúc Bắc
+  addTownPointLight(0, 2.0, 26, 0xff8844, 1.2, 20);      // Suối Onsen khúc Nam
+}
+
+// Hàm chuyển đổi chiếu sáng ngày / hoàng hôn / đêm và TỰ ĐỘNG BẬT/TẮT ĐÈN
+function updateTownLighting(mode, notify = false) {
+  themeMode = mode;
+  const themeBtn = document.getElementById('btn-theme');
+
+  if (mode === 0) {
+    // ☀️ BAN NGÀY (SÁNG) — TỰ ĐỘNG TẮT ĐÈN TIẾT KIỆM NĂNG LƯỢNG
+    scene.background.setHex(0xdcebd5);
+    scene.fog.color.setHex(0xdcebd5);
+    ambientLight.color.setHex(0xd0e0d8);
+    ambientLight.intensity = 0.85;
+    dirLight.color.setHex(0xfff2df);
+    dirLight.intensity = 1.05;
+
+    // Tắt phát quang các đèn lồng
+    MATS.lanternRedGlow.emissiveIntensity = 0.05;
+    MATS.lanternWarmGlow.emissiveIntensity = 0.05;
+    MATS.shojiGlow.emissiveIntensity = 0.05;
+
+    // Tắt toàn bộ PointLight
+    townPointLights.forEach(pl => { pl.intensity = 0; });
+
+    if (themeBtn) themeBtn.textContent = '☀️ Sáng (Đèn Tắt)';
+    if (notify) showToast('☀️ Bình minh tỏa sáng — Hệ thống đèn lồng thị trấn đã tự động tắt!');
+  } else if (mode === 1) {
+    // 🌅 HOÀNG HÔN — TỰ ĐỘNG BẬT ĐÈN VÀNG ẤM ÁP
+    scene.background.setHex(0x381f28);
+    scene.fog.color.setHex(0x381f28);
+    ambientLight.color.setHex(0x55333e);
+    ambientLight.intensity = 0.65;
+    dirLight.color.setHex(0xff7744);
+    dirLight.intensity = 0.85;
+
+    // Bật đèn lồng ở mức ấm áp
+    MATS.lanternRedGlow.emissiveIntensity = 1.15;
+    MATS.lanternWarmGlow.emissiveIntensity = 1.05;
+    MATS.shojiGlow.emissiveIntensity = 0.85;
+
+    // Bật PointLight 75%
+    townPointLights.forEach(pl => { pl.intensity = pl.userData.baseIntensity * 0.75; });
+
+    if (themeBtn) themeBtn.textContent = '🌅 Hoàng Hôn (Đèn Bật)';
+    if (notify) showToast('🌅 Hoàng hôn buông xuống — Đèn lồng bắt đầu thắp sáng lung linh!');
+  } else {
+    // 🌙 BAN ĐÊM (MẶC ĐỊNH) — TỰ ĐỘNG BẬT ĐÈN RỰC RỠ NHẤT
+    scene.background.setHex(NIGHT_BG);
+    scene.fog.color.setHex(NIGHT_BG);
+    ambientLight.color.setHex(0x28324e);
+    ambientLight.intensity = 0.55;
+    dirLight.color.setHex(0x8aa8d6);
+    dirLight.intensity = 0.5;
+
+    // Bật rực rỡ lồng đèn và ánh cửa Shoji
+    MATS.lanternRedGlow.emissiveIntensity = 1.45;
+    MATS.lanternWarmGlow.emissiveIntensity = 1.35;
+    MATS.shojiGlow.emissiveIntensity = 1.1;
+
+    // Bật 100% cường độ PointLight
+    townPointLights.forEach(pl => { pl.intensity = pl.userData.baseIntensity; });
+
+    if (themeBtn) themeBtn.textContent = '🌙 Đêm (Đèn Bật)';
+    if (notify) showToast('🏮 Trời tối rồi — Hệ thống đèn lồng & đèn đá thị trấn đã tự động thắp sáng rực rỡ!');
+  }
+}
+
+// ============================================================================
+// 6. NHÂN VẬT CHIBI THANH & NENE — DẠO CHƠI TOÀN BỘ BẢN ĐỒ & NỤ HÔN NGỌT NGÀO
 // ============================================================================
 let chibiThanhMesh, chibiNeneMesh;
 let isKissing = false;
@@ -1045,7 +1264,7 @@ let kissProgress = 0;
 const characters = [];
 
 function buildChibiCouple() {
-  // 1. Chibi Thanh (Haori đỏ sẫm - Bờ Lá Phong)
+  // 1. Chibi Thanh (Haori đỏ sẫm - Bờ Lá Phong Momiji)
   const thanhGroup = new THREE.Group();
   const tKimono = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.62, 1.25, 14), MATS.woodDark);
   tKimono.position.y = 0.72;
@@ -1058,27 +1277,46 @@ function buildChibiCouple() {
   const tBun = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), MATS.woodDark);
   tBun.position.set(0, 2.65, -0.15);
   thanhGroup.add(tKimono, tHaori, tHead, tHair, tBun);
+  thanhGroup.position.set(-0.6, 0.95, 6.5);
   enableShadow(thanhGroup);
   scene.add(thanhGroup);
   chibiThanhMesh = thanhGroup;
 
   const tLabel = document.createElement('div');
-  tLabel.className = 'worker-label';
+  tLabel.className = 'worker-label label-thanh';
+  tLabel.dataset.side = 'thanh';
   tLabel.textContent = '🍁 Thanh';
   labelsContainer.appendChild(tLabel);
+
+  // Lộ trình đi dạo quanh toàn bộ bờ Thanh & gặp Nene trên cầu Onsen
+  const thanhWaypoints = [
+    { x: -0.6, y: 0.95, z: 6.5, wait: 2.5 }, // Trên Cầu Onsen ngắm suối
+    { x: -5.0, y: 0, z: 6.5 },                // Xuống cầu bờ Thanh
+    { x: -10.0, y: 0, z: 12.0 },              // Đi qua hàng cây lá phong đỏ
+    { x: -16.0, y: 0, z: 18.0 },              // Đi qua dãy cổng Senbon Torii
+    { x: -24.0, y: 0, z: 18.0, wait: 2.0 },   // Ngắm Lầu Vọng Cảnh & Đền thờ
+    { x: -24.0, y: 0, z: 4.0 },               // Đường nối trung tâm phố
+    { x: -16.0, y: 0, z: -2.0, wait: 2.0 },   // Dạo quanh Chợ Đêm Yatai
+    { x: -22.0, y: 0, z: -14.0, wait: 2.0 },  // Ghé thăm Võ Đường rèn luyện
+    { x: -16.0, y: 0, z: -26.0, wait: 2.0 },  // Đến thăm Lầu Trống Taiko
+    { x: -8.0, y: 0, z: -16.0 },              // Men theo đường đèn lồng ven suối
+    { x: -4.5, y: 0, z: 0.0 },                // Về chân cầu Onsen
+    { x: -0.6, y: 0.95, z: 6.5, wait: 3.0 }   // Lên cầu đón nụ hôn cùng Nene
+  ];
 
   characters.push({
     id: 'thanh',
     mesh: thanhGroup,
     labelEl: tLabel,
-    start: new THREE.Vector3(-12, 0, 4),
-    end: new THREE.Vector3(-0.6, 0.95, 6.5),
-    t: 0,
-    dir: 1,
-    speed: 0.16
+    labelHeight: 2.8,
+    waypoints: thanhWaypoints,
+    currentWpIndex: 0,
+    waitTime: 0,
+    walkClock: 0,
+    speed: 2.4
   });
 
-  // 2. Chibi Nene (Kimono hoa đào hồng - Bờ Sakura)
+  // 2. Chibi Nene (Kimono hoa đào hồng - Bờ Hoa Anh Đào Sakura)
   const neneGroup = new THREE.Group();
   const nKimono = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.62, 1.25, 14), MATS.sakuraPink);
   nKimono.position.y = 0.72;
@@ -1091,24 +1329,42 @@ function buildChibiCouple() {
   const nFlower = new THREE.Mesh(new THREE.SphereGeometry(0.22, 8, 8), MATS.sakuraDeep);
   nFlower.position.set(0.55, 2.3, 0.2);
   neneGroup.add(nKimono, nObi, nHead, nHair, nFlower);
+  neneGroup.position.set(0.6, 0.95, 6.5);
   enableShadow(neneGroup);
   scene.add(neneGroup);
   chibiNeneMesh = neneGroup;
 
   const nLabel = document.createElement('div');
-  nLabel.className = 'worker-label';
+  nLabel.className = 'worker-label label-nene';
+  nLabel.dataset.side = 'nene';
   nLabel.textContent = '🌸 Nene';
   labelsContainer.appendChild(nLabel);
+
+  // Lộ trình đi dạo quanh toàn bộ bờ Nene & gặp Thanh trên cầu Onsen
+  const neneWaypoints = [
+    { x: 0.6, y: 0.95, z: 6.5, wait: 2.5 },  // Trên Cầu Onsen ngắm suối
+    { x: 5.0, y: 0, z: 6.5 },                 // Xuống cầu bờ Nene
+    { x: 12.0, y: 0, z: 14.0 },               // Đường rợp bóng hoa anh đào
+    { x: 22.0, y: 0, z: 22.0, wait: 2.0 },    // Thăm Chòi Ngắm Hoa Hanami
+    { x: 24.0, y: 0, z: 10.0 },               // Dạo bước phố cổ Machiya
+    { x: 18.0, y: 0, z: 0.0, wait: 2.0 },     // Ghé Nhà Trà & Tiệm Bánh
+    { x: 12.0, y: 0, z: -8.0, wait: 2.0 },    // Ngắm Bánh Xe Nước Suisha
+    { x: 18.0, y: 0, z: -20.0, wait: 2.0 },   // Dạo Vườn Sỏi Trắng Zen
+    { x: 8.0, y: 0, z: -18.0 },               // Đường đèn đá ven suối
+    { x: 4.5, y: 0, z: 0.0 },                 // Về chân cầu Onsen
+    { x: 0.6, y: 0.95, z: 6.5, wait: 3.0 }    // Lên cầu đón nụ hôn cùng Thanh
+  ];
 
   characters.push({
     id: 'nene',
     mesh: neneGroup,
     labelEl: nLabel,
-    start: new THREE.Vector3(12, 0, 4),
-    end: new THREE.Vector3(0.6, 0.95, 6.5),
-    t: 0,
-    dir: 1,
-    speed: 0.16
+    labelHeight: 2.8,
+    waypoints: neneWaypoints,
+    currentWpIndex: 0,
+    waitTime: 0,
+    walkClock: 0,
+    speed: 2.4
   });
 }
 
@@ -1116,49 +1372,417 @@ function buildChibiCouple() {
 const kissHearts = [];
 
 function spawnKissHearts(posX, posY, posZ) {
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 22; i++) {
     const hMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(0.25, 10, 10),
+      new THREE.SphereGeometry(0.26, 10, 10),
       new THREE.MeshStandardMaterial({
         color: i % 2 === 0 ? 0xff2d55 : 0xff758f,
         emissive: 0xff2d55,
-        emissiveIntensity: 0.85
+        emissiveIntensity: 0.95
       })
     );
     hMesh.position.set(
-      posX + (Math.random() - 0.5) * 0.8,
-      posY + Math.random() * 0.5,
-      posZ + (Math.random() - 0.5) * 0.8
+      posX + (Math.random() - 0.5) * 1.0,
+      posY + Math.random() * 0.6,
+      posZ + (Math.random() - 0.5) * 1.0
     );
     scene.add(hMesh);
     kissHearts.push({
       mesh: hMesh,
-      velY: 1.8 + Math.random() * 2.2,
-      velX: (Math.random() - 0.5) * 1.5,
-      velZ: (Math.random() - 0.5) * 1.5,
-      life: 2.2,
-      maxLife: 2.2
+      velY: 2.0 + Math.random() * 2.5,
+      velX: (Math.random() - 0.5) * 1.8,
+      velZ: (Math.random() - 0.5) * 1.8,
+      life: 2.4,
+      maxLife: 2.4
     });
   }
 }
 
 function triggerKiss(broadcast = true) {
   isKissing = true;
-  kissProgress = 4.5; // Kéo dài 4.5 giây
+  kissProgress = 5.0; // Kéo dài 5.0 giây
 
   // Camera lướt nhẹ nhàng đến Cầu Onsen
   cameraLerp = {
-    targetPos: new THREE.Vector3(0, 8.5, 18),
+    targetPos: new THREE.Vector3(0, 7.8, 17.5),
     targetLook: new THREE.Vector3(0, 2.0, 6.5),
     alpha: 0
   };
 
   spawnKissHearts(0, 2.8, 6.5);
-  showToast('💖 Thanh & Nene trao nhau nụ hôn ngọt ngào trên Cầu Suối Nước Nóng!');
+  showToast('💖 Thanh & Nene hẹn nhau trên Cầu Suối Nước Nóng trao nhau nụ hôn ngọt ngào!');
 
   if (broadcast && typeof publishCloudState === 'function') {
     publishCloudState({ station: 'onsen_hub', msg: '💋 Thanh & Nene vừa hôn nhau lãng mạn!' });
   }
+}
+
+// ============================================================================
+// 7. THÚ CƯNG (SHIBA, MÈO, CÁ KOI, HƯƠU NARA) & DÂN LÀNG THỊ TRẤN
+// ============================================================================
+const koiFishList = [];
+let deerHeadMesh;
+
+function buildPetsAndVillagers() {
+  // 1. Chó Shiba Inu ("Hachi") vui vẻ vẫy đuôi dạo chơi bên bờ Thanh
+  const shibaGroup = new THREE.Group();
+  const sBody = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.45, 0.9), MATS.shibaGold);
+  sBody.position.y = 0.42;
+  const sBelly = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.22, 0.75), MATS.shibaWhite);
+  sBelly.position.set(0, 0.32, 0);
+
+  const sHead = new THREE.Mesh(new THREE.SphereGeometry(0.3, 12, 12), MATS.shibaGold);
+  sHead.position.set(0, 0.75, 0.48);
+  const sCheek = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), MATS.shibaWhite);
+  sCheek.position.set(0, 0.68, 0.54);
+  const sSnout = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.14, 0.22), MATS.shibaWhite);
+  sSnout.position.set(0, 0.72, 0.72);
+  const sNose = new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 6), MATS.shibaNose);
+  sNose.position.set(0, 0.76, 0.82);
+
+  const sEarL = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.22, 4), MATS.shibaGold);
+  sEarL.position.set(-0.18, 1.05, 0.44);
+  sEarL.rotation.z = 0.2;
+  const sEarR = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.22, 4), MATS.shibaGold);
+  sEarR.position.set(0.18, 1.05, 0.44);
+  sEarR.rotation.z = -0.2;
+
+  const legFL = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.35, 6), MATS.shibaWhite);
+  legFL.position.set(-0.2, 0.18, 0.32);
+  const legFR = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.35, 6), MATS.shibaWhite);
+  legFR.position.set(0.2, 0.18, 0.32);
+  const legBL = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.35, 6), MATS.shibaGold);
+  legBL.position.set(-0.2, 0.18, -0.32);
+  const legBR = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.35, 6), MATS.shibaGold);
+  legBR.position.set(0.2, 0.18, -0.32);
+
+  const sTailGroup = new THREE.Group();
+  sTailGroup.position.set(0, 0.6, -0.45);
+  const sTail = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.07, 8, 16, Math.PI * 1.4), MATS.shibaGold);
+  sTail.rotation.x = Math.PI / 2;
+  sTailGroup.add(sTail);
+
+  shibaGroup.add(sBody, sBelly, sHead, sCheek, sSnout, sNose, sEarL, sEarR, legFL, legFR, legBL, legBR, sTailGroup);
+  enableShadow(shibaGroup);
+  scene.add(shibaGroup);
+
+  const sLabel = document.createElement('div');
+  sLabel.className = 'pet-label';
+  sLabel.dataset.side = 'thanh';
+  sLabel.textContent = '🐕 Shiba Hachi';
+  labelsContainer.appendChild(sLabel);
+
+  characters.push({
+    id: 'shiba',
+    mesh: shibaGroup,
+    labelEl: sLabel,
+    labelHeight: 1.4,
+    waypoints: [
+      { x: -12, y: 0, z: 8, wait: 2.0 },
+      { x: -18, y: 0, z: 12 },
+      { x: -24, y: 0, z: 2, wait: 2.5 },
+      { x: -18, y: 0, z: -6 },
+      { x: -10, y: 0, z: 0, wait: 2.0 }
+    ],
+    currentWpIndex: 0,
+    waitTime: 0,
+    walkClock: 0,
+    speed: 2.6,
+    tailMesh: sTailGroup,
+    legs: [legFL, legFR, legBL, legBR],
+    animWalk: (c, dt, el) => {
+      if (c.tailMesh) c.tailMesh.rotation.y = Math.sin(el * 14) * 0.45;
+      c.legs[0].rotation.x = Math.sin(c.walkClock * 10) * 0.4;
+      c.legs[1].rotation.x = -Math.sin(c.walkClock * 10) * 0.4;
+      c.legs[2].rotation.x = -Math.sin(c.walkClock * 10) * 0.4;
+      c.legs[3].rotation.x = Math.sin(c.walkClock * 10) * 0.4;
+    },
+    animIdle: (c, dt, el) => {
+      if (c.tailMesh) c.tailMesh.rotation.y = Math.sin(el * 10) * 0.4;
+      c.legs.forEach(l => { l.rotation.x = 0; });
+    }
+  });
+
+  // 2. Mèo Calico ("Mimi") dạo chơi bên Nhà Trà bờ Nene
+  const catGroup = new THREE.Group();
+  const cBody = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.32, 0.65), MATS.catWhite);
+  cBody.position.y = 0.28;
+  const cSpot1 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.18, 0.25), MATS.catOrange);
+  cSpot1.position.set(0.1, 0.35, 0.1);
+  const cSpot2 = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.16, 0.22), MATS.catBlack);
+  cSpot2.position.set(-0.1, 0.35, -0.15);
+
+  const cHead = new THREE.Mesh(new THREE.SphereGeometry(0.24, 12, 12), MATS.catWhite);
+  cHead.position.set(0, 0.52, 0.35);
+  const cCollar = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.03, 8, 16), MATS.vermilionRed);
+  cCollar.position.set(0, 0.42, 0.32);
+  const cBell = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 8), MATS.goldTrim);
+  cBell.position.set(0, 0.38, 0.45);
+
+  const cEarL = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.16, 4), MATS.catOrange);
+  cEarL.position.set(-0.14, 0.74, 0.32);
+  const cEarR = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.16, 4), MATS.catWhite);
+  cEarR.position.set(0.14, 0.74, 0.32);
+
+  const cTailGroup = new THREE.Group();
+  cTailGroup.position.set(0, 0.36, -0.32);
+  const cTail = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.03, 0.45, 8), MATS.catBlack);
+  cTail.position.set(0, 0.2, -0.1);
+  cTail.rotation.x = -Math.PI / 4;
+  cTailGroup.add(cTail);
+
+  catGroup.add(cBody, cSpot1, cSpot2, cHead, cCollar, cBell, cEarL, cEarR, cTailGroup);
+  enableShadow(catGroup);
+  scene.add(catGroup);
+
+  const cLabel = document.createElement('div');
+  cLabel.className = 'pet-label';
+  cLabel.dataset.side = 'nene';
+  cLabel.textContent = '🐱 Mèo Mimi';
+  labelsContainer.appendChild(cLabel);
+
+  characters.push({
+    id: 'cat',
+    mesh: catGroup,
+    labelEl: cLabel,
+    labelHeight: 1.2,
+    waypoints: [
+      { x: 16, y: 0, z: 4, wait: 3.0 },
+      { x: 22, y: 0, z: 6 },
+      { x: 20, y: 0, z: -6, wait: 2.5 },
+      { x: 12, y: 0, z: 0, wait: 2.0 }
+    ],
+    currentWpIndex: 0,
+    waitTime: 0,
+    walkClock: 0,
+    speed: 1.8,
+    tailMesh: cTailGroup,
+    animWalk: (c, dt, el) => {
+      if (c.tailMesh) c.tailMesh.rotation.z = Math.sin(el * 6) * 0.3;
+    },
+    animIdle: (c, dt, el) => {
+      if (c.tailMesh) c.tailMesh.rotation.z = Math.sin(el * 3) * 0.25;
+    }
+  });
+
+  // 3. Đàn Cá Chép Koi (5 chú cá bơi lội dưới dòng suối Onsen)
+  const koiMats = [
+    MATS.koiKohakuRed,
+    MATS.koiYamabuki,
+    MATS.koiPlatinum,
+    MATS.mapleOrange,
+    MATS.koiKohakuRed
+  ];
+
+  for (let i = 0; i < 5; i++) {
+    const kGroup = new THREE.Group();
+    const kBody = new THREE.Mesh(new THREE.SphereGeometry(0.28, 8, 8), koiMats[i]);
+    kBody.scale.set(0.65, 0.45, 1.4);
+    const kBelly = new THREE.Mesh(new THREE.SphereGeometry(0.22, 8, 8), MATS.white);
+    kBelly.scale.set(0.55, 0.35, 1.2);
+    kBelly.position.y = -0.06;
+    const tailFin = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.25, 0.32), koiMats[i]);
+    tailFin.position.set(0, 0, -0.46);
+
+    kGroup.add(kBody, kBelly, tailFin);
+    kGroup.position.set((Math.random() - 0.5) * 4, -0.32, -10 + i * 5);
+    scene.add(kGroup);
+
+    koiFishList.push({
+      mesh: kGroup,
+      tail: tailFin,
+      phase: i * 1.3,
+      speed: 0.6 + i * 0.15,
+      radiusX: 1.6 + (i % 2) * 0.8,
+      centerZ: -8 + i * 4.5,
+      angle: i * 1.2
+    });
+  }
+
+  // 4. Hươu Nara ("Kojika") gặm cỏ thanh bình dưới bóng cây ven suối
+  const deerGroup = new THREE.Group();
+  deerGroup.position.set(8.5, 0, -22);
+
+  const dBody = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.65, 1.25), MATS.deerBrown);
+  dBody.position.y = 1.05;
+  for (let s = -0.4; s <= 0.4; s += 0.25) {
+    const spotL = new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 6), MATS.deerWhite);
+    spotL.position.set(-0.25, 1.35, s);
+    const spotR = spotL.clone();
+    spotR.position.x = 0.25;
+    deerGroup.add(spotL, spotR);
+  }
+
+  for (let lx of [-0.24, 0.24]) {
+    for (let lz of [-0.45, 0.45]) {
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.05, 0.85, 8), MATS.deerBrown);
+      leg.position.set(lx, 0.42, lz);
+      deerGroup.add(leg);
+    }
+  }
+
+  const dNeck = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.18, 0.7, 8), MATS.deerBrown);
+  dNeck.position.set(0, 1.45, 0.5);
+  dNeck.rotation.x = -Math.PI / 6;
+
+  const dHeadGroup = new THREE.Group();
+  dHeadGroup.position.set(0, 1.75, 0.75);
+  const dHead = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), MATS.deerBrown);
+  const dMuzzle = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.14, 0.3, 8), MATS.deerWhite);
+  dMuzzle.rotation.x = Math.PI / 2;
+  dMuzzle.position.set(0, -0.06, 0.2);
+  const dEarL = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.25, 4), MATS.deerBrown);
+  dEarL.position.set(-0.18, 0.22, -0.05);
+  dEarL.rotation.z = 0.4;
+  const dEarR = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.25, 4), MATS.deerBrown);
+  dEarR.position.set(0.18, 0.22, -0.05);
+  dEarR.rotation.z = -0.4;
+  dHeadGroup.add(dHead, dMuzzle, dEarL, dEarR);
+  deerHeadMesh = dHeadGroup;
+
+  deerGroup.add(dBody, dNeck, dHeadGroup);
+  enableShadow(deerGroup);
+  scene.add(deerGroup);
+
+  const dLabel = document.createElement('div');
+  dLabel.className = 'pet-label';
+  dLabel.dataset.side = 'center';
+  dLabel.textContent = '🦌 Hươu Nara';
+  labelsContainer.appendChild(dLabel);
+
+  characters.push({
+    id: 'deer',
+    mesh: deerGroup,
+    labelEl: dLabel,
+    labelHeight: 2.2,
+    waypoints: [{ x: 8.5, y: 0, z: -22, wait: 9999 }],
+    currentWpIndex: 0,
+    waitTime: 9999,
+    animIdle: (c, dt, el) => {
+      if (deerHeadMesh) {
+        deerHeadMesh.rotation.x = Math.sin(el * 1.5) * 0.22;
+      }
+    }
+  });
+
+  // 5. Dân Làng: Aoi (Kimono Nene), Ren (Yukata Thanh), Sensei (Thiền sư)
+  // A. Cô gái Kimono Aoi (Bờ Nene)
+  const aoiGroup = new THREE.Group();
+  const aKimono = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.58, 1.2, 12), MATS.kimonoPurple);
+  aKimono.position.y = 0.7;
+  const aObi = new THREE.Mesh(new THREE.CylinderGeometry(0.44, 0.48, 0.28, 12), MATS.sakuraDeep);
+  aObi.position.y = 0.76;
+  const aHead = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 16), new THREE.MeshStandardMaterial({ color: 0xffe0bd }));
+  aHead.position.y = 1.68;
+  const aHair = new THREE.Mesh(new THREE.SphereGeometry(0.58, 14, 14, 0, Math.PI * 2, 0, Math.PI * 0.6), MATS.woodDark);
+  aHair.position.y = 1.74;
+  const parasolPole = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.4, 6), MATS.woodWarm);
+  parasolPole.position.set(0.45, 1.5, 0.1);
+  parasolPole.rotation.z = -0.25;
+  const parasolCanopy = new THREE.Mesh(new THREE.ConeGeometry(0.7, 0.35, 12), MATS.sakuraPink);
+  parasolCanopy.position.set(0.62, 2.15, 0.1);
+  parasolCanopy.rotation.z = -0.25;
+  aoiGroup.add(aKimono, aObi, aHead, aHair, parasolPole, parasolCanopy);
+  enableShadow(aoiGroup);
+  scene.add(aoiGroup);
+
+  const aLabel = document.createElement('div');
+  aLabel.className = 'npc-label';
+  aLabel.dataset.side = 'nene';
+  aLabel.textContent = '🌸 Aoi (Kimono)';
+  labelsContainer.appendChild(aLabel);
+
+  characters.push({
+    id: 'aoi',
+    mesh: aoiGroup,
+    labelEl: aLabel,
+    labelHeight: 2.5,
+    waypoints: [
+      { x: 16, y: 0, z: 12, wait: 2.0 },
+      { x: 24, y: 0, z: 20, wait: 2.5 },
+      { x: 22, y: 0, z: 4, wait: 2.0 },
+      { x: 14, y: 0, z: 6 }
+    ],
+    currentWpIndex: 0,
+    waitTime: 0,
+    walkClock: 0,
+    speed: 1.9
+  });
+
+  // B. Chàng trai Yukata Ren (Bờ Thanh)
+  const renGroup = new THREE.Group();
+  const rKimono = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.6, 1.25, 12), MATS.kimonoNavy);
+  rKimono.position.y = 0.72;
+  const rObi = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.5, 0.25, 12), MATS.white);
+  rObi.position.y = 0.78;
+  const rHead = new THREE.Mesh(new THREE.SphereGeometry(0.58, 16, 16), new THREE.MeshStandardMaterial({ color: 0xffe0bd }));
+  rHead.position.y = 1.72;
+  const rHair = new THREE.Mesh(new THREE.SphereGeometry(0.62, 14, 14, 0, Math.PI * 2, 0, Math.PI * 0.55), MATS.woodDark);
+  rHair.position.y = 1.78;
+  const fan = new THREE.Mesh(new THREE.CircleGeometry(0.24, 12), MATS.vermilionRed);
+  fan.position.set(-0.5, 1.1, 0.3);
+  fan.rotation.y = Math.PI / 4;
+  renGroup.add(rKimono, rObi, rHead, rHair, fan);
+  enableShadow(renGroup);
+  scene.add(renGroup);
+
+  const rLabel = document.createElement('div');
+  rLabel.className = 'npc-label';
+  rLabel.dataset.side = 'thanh';
+  rLabel.textContent = '🍁 Ren (Lễ Hội)';
+  labelsContainer.appendChild(rLabel);
+
+  characters.push({
+    id: 'ren',
+    mesh: renGroup,
+    labelEl: rLabel,
+    labelHeight: 2.5,
+    waypoints: [
+      { x: -14, y: 0, z: -2, wait: 2.0 },
+      { x: -22, y: 0, z: -4, wait: 2.5 },
+      { x: -18, y: 0, z: -20, wait: 2.0 },
+      { x: -10, y: 0, z: -12 }
+    ],
+    currentWpIndex: 0,
+    waitTime: 0,
+    walkClock: 0,
+    speed: 2.1
+  });
+
+  // C. Thiền sư Sensei (Vườn Zen & Cầu Onsen)
+  const senGroup = new THREE.Group();
+  const sRobe = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.6, 1.3, 12), MATS.kimonoMonk);
+  sRobe.position.y = 0.72;
+  const senHead = new THREE.Mesh(new THREE.SphereGeometry(0.54, 16, 16), new THREE.MeshStandardMaterial({ color: 0xffe0bd }));
+  senHead.position.y = 1.7;
+  const sStaff = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.9, 8), MATS.woodDark);
+  sStaff.position.set(0.48, 0.95, 0.2);
+  senGroup.add(sRobe, senHead, sStaff);
+  enableShadow(senGroup);
+  scene.add(senGroup);
+
+  const senLabel = document.createElement('div');
+  senLabel.className = 'npc-label';
+  senLabel.dataset.side = 'center';
+  senLabel.textContent = '🍵 Sensei (Vườn Zen)';
+  labelsContainer.appendChild(senLabel);
+
+  characters.push({
+    id: 'sensei',
+    mesh: senGroup,
+    labelEl: senLabel,
+    labelHeight: 2.5,
+    waypoints: [
+      { x: 18, y: 0, z: -18, wait: 3.0 },
+      { x: 14, y: 0, z: -24, wait: 2.5 },
+      { x: 8, y: 0, z: -14, wait: 2.0 },
+      { x: 14, y: 0, z: -10 }
+    ],
+    currentWpIndex: 0,
+    waitTime: 0,
+    walkClock: 0,
+    speed: 1.4
+  });
 }
 
 // ============================================================================
@@ -1320,8 +1944,11 @@ buildNeneTeaHouse();
 buildNeneExtras();
 buildNeneSubStructures();  // Mở rộng: Bánh xe nước & Vườn Zen
 buildFloraScenery();
+buildTownLamps();
 buildChibiCouple();
+buildPetsAndVillagers();
 initWeatherParticles();
+updateTownLighting(themeMode, false);
 
 // Tạo các nhãn 3D nổi trên màn hình có gán data-side
 const stationLabelEls = {};
@@ -2037,32 +2664,11 @@ document.getElementById('btn-sim').addEventListener('click', e => {
   e.currentTarget.textContent = simRunning ? '⚡ Tự chạy ▶' : '⏸ Đã dừng';
 });
 
-// Chuyển đổi Ngày / Hoàng hôn / Đêm
-let themeMode = 2; // Mặc định Đêm huyền ảo
-document.getElementById('btn-theme').addEventListener('click', e => {
+// Chuyển đổi Ngày / Hoàng hôn / Đêm — Tự động bật/tắt toàn bộ đèn phố thị trấn
+let themeMode = 2; // Mặc định Đêm huyền ảo (Đèn tự động bật sáng)
+document.getElementById('btn-theme').addEventListener('click', () => {
   themeMode = (themeMode + 1) % 3;
-  if (themeMode === 0) {
-    scene.background.setHex(0xdcebd5);
-    scene.fog.color.setHex(0xdcebd5);
-    ambientLight.intensity = 0.75;
-    dirLight.intensity = 0.95;
-    dirLight.color.setHex(0xfff0dd);
-    e.currentTarget.textContent = '☀️ Sáng';
-  } else if (themeMode === 1) {
-    scene.background.setHex(0x381f28);
-    scene.fog.color.setHex(0x381f28);
-    ambientLight.intensity = 0.6;
-    dirLight.intensity = 0.85;
-    dirLight.color.setHex(0xff7755);
-    e.currentTarget.textContent = '🌅 Hoàng hôn';
-  } else {
-    scene.background.setHex(NIGHT_BG);
-    scene.fog.color.setHex(NIGHT_BG);
-    ambientLight.intensity = 0.45;
-    dirLight.intensity = 0.55;
-    dirLight.color.setHex(0x90caf9);
-    e.currentTarget.textContent = '🌙 Đêm';
-  }
+  updateTownLighting(themeMode, true);
 });
 
 // ============================================================================
@@ -2322,12 +2928,12 @@ function animate() {
       waterWheelMesh.rotation.z -= dt * 0.95;
     }
 
-    // 3. Xử lý nhân vật Chibi Thanh & Nene (Bao gồm nụ hôn ngọt ngào)
+    // 3. Xử lý nhân vật Chibi Thanh & Nene và nụ hôn ngọt ngào
     if (isKissing) {
       kissProgress -= dt;
       // Hai nhân vật tiến sát nhau trên Cầu Onsen và nghiêng người hôn nhau
-      chibiThanhMesh.position.set(-0.48, 0.95, 6.5);
-      chibiNeneMesh.position.set(0.48, 0.95, 6.5);
+      chibiThanhMesh.position.lerp(new THREE.Vector3(-0.48, 0.95, 6.5), Math.min(1, dt * 5.0));
+      chibiNeneMesh.position.lerp(new THREE.Vector3(0.48, 0.95, 6.5), Math.min(1, dt * 5.0));
       chibiThanhMesh.lookAt(1, 0.95, 6.5);
       chibiNeneMesh.lookAt(-1, 0.95, 6.5);
       chibiThanhMesh.rotation.z = -0.18;
@@ -2338,23 +2944,69 @@ function animate() {
         chibiThanhMesh.rotation.z = 0;
         chibiNeneMesh.rotation.z = 0;
       }
-    } else {
-      characters.forEach((char) => {
-        char.t += dt * char.speed * char.dir;
-        if (char.t >= 1) {
-          char.t = 1;
-          char.dir = -1;
-        } else if (char.t <= 0) {
-          char.t = 0;
-          char.dir = 1;
-        }
-        char.mesh.position.lerpVectors(char.start, char.end, char.t);
-        char.mesh.position.y = (char.mesh.position.z > 5 && Math.abs(char.mesh.position.x) < 4) ? 0.75 : 0;
-        char.mesh.position.y += Math.abs(Math.sin(elapsed * 7)) * 0.22;
-        const target = char.dir === 1 ? char.end : char.start;
-        char.mesh.lookAt(target.x, char.mesh.position.y, target.z);
-      });
     }
+
+    // Cập nhật di chuyển theo lộ trình (Waypoints) cho tất cả nhân vật, thú cưng và dân làng
+    characters.forEach(char => {
+      // Nếu đang trong thời gian hôn nhau, Thanh và Nene đã được điều khiển ở trên
+      if (isKissing && (char.id === 'thanh' || char.id === 'nene')) {
+        return;
+      }
+
+      if (!char.waypoints || char.waypoints.length === 0) return;
+
+      if (char.waitTime > 0) {
+        char.waitTime -= dt;
+        if (char.animIdle) char.animIdle(char, dt, elapsed);
+        return;
+      }
+
+      const target = char.waypoints[char.currentWpIndex];
+      const curPos = char.mesh.position;
+      const dx = target.x - curPos.x;
+      const dz = target.z - curPos.z;
+      const dist = Math.hypot(dx, dz);
+
+      if (dist < 0.35) {
+        if (target.wait) {
+          char.waitTime = target.wait;
+        }
+        char.currentWpIndex = (char.currentWpIndex + 1) % char.waypoints.length;
+        return;
+      }
+
+      const speed = target.speed || char.speed || 2.2;
+      const moveDist = Math.min(speed * dt, dist);
+      const moveAngle = Math.atan2(dx, dz);
+
+      curPos.x += Math.sin(moveAngle) * moveDist;
+      curPos.z += Math.cos(moveAngle) * moveDist;
+
+      // Độ cao Y: nếu ở trên Cầu Onsen (X: [-3.8, 3.8], Z: [4.2, 8.8]) thì nâng lên 0.95
+      const onBridge = (curPos.z > 4.2 && curPos.z < 8.8 && Math.abs(curPos.x) < 3.8);
+      const baseY = onBridge ? 0.95 : (target.y !== undefined ? target.y : 0);
+      curPos.y = baseY + Math.abs(Math.sin((char.walkClock || 0) * 7.5)) * 0.15;
+      char.walkClock = (char.walkClock || 0) + dt;
+
+      // Xoay hướng nhìn về đích đến
+      let diff = moveAngle - char.mesh.rotation.y;
+      while (diff < -Math.PI) diff += Math.PI * 2;
+      while (diff > Math.PI) diff -= Math.PI * 2;
+      char.mesh.rotation.y += diff * Math.min(1, dt * 7);
+
+      if (char.animWalk) char.animWalk(char, dt, elapsed);
+    });
+
+    // Cập nhật bơi lội đàn cá Koi dưới suối Onsen
+    koiFishList.forEach(k => {
+      k.angle += dt * k.speed;
+      k.mesh.position.x = Math.sin(k.angle + k.phase) * k.radiusX;
+      k.mesh.position.z = k.centerZ + Math.cos(k.angle + k.phase) * 3.2;
+      k.mesh.rotation.y = (k.angle + k.phase) + Math.PI / 2;
+      if (k.tail) {
+        k.tail.rotation.y = Math.sin(elapsed * 9 + k.phase) * 0.45;
+      }
+    });
 
     // 4. Cập nhật các hạt trái tim bay khi hôn nhau
     for (let h = kissHearts.length - 1; h >= 0; h--) {
@@ -2432,9 +3084,11 @@ function animate() {
   });
 
   characters.forEach(c => {
-    const pos = c.mesh.position.clone();
-    pos.y += 2.8;
-    projectToScreen(pos, c.labelEl);
+    if (c.labelEl && c.mesh) {
+      const pos = c.mesh.position.clone();
+      pos.y += (c.labelHeight || 2.8);
+      projectToScreen(pos, c.labelEl);
+    }
   });
 }
 

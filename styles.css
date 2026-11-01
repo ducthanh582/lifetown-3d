@@ -149,19 +149,61 @@ body, html {
   margin-top: -2px;
 }
 
-/* Worker floating tags */
+/* Worker & NPC & Pet floating tags */
 .worker-label {
   position: absolute;
   transform: translate(-50%, -100%);
   pointer-events: none;
-  background: rgba(107, 36, 44, 0.88);
+  background: rgba(107, 36, 44, 0.92);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.4);
+  letter-spacing: 0.2px;
+}
+
+.worker-label.label-thanh {
+  background: linear-gradient(135deg, rgba(192, 57, 43, 0.95), rgba(146, 43, 33, 0.95));
+  border-color: #ff7675;
+}
+
+.worker-label.label-nene {
+  background: linear-gradient(135deg, rgba(232, 67, 147, 0.95), rgba(214, 48, 49, 0.95));
+  border-color: #fd79a8;
+}
+
+.pet-label {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(230, 126, 34, 0.92), rgba(211, 84, 0, 0.92));
   color: #fff;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 2px 7px;
   border-radius: 10px;
   white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.npc-label {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(41, 128, 185, 0.92), rgba(52, 73, 94, 0.92));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.5);
 }
 
 /* Top Navigation Bar */
@@ -331,12 +373,18 @@ body, html {
 
 /* Tự động ẩn các nút và nhãn không thuộc Persona hiện tại để tránh rối mắt */
 body.persona-nene .dock-thanh,
-body.persona-nene .world-label[data-side="thanh"] {
+body.persona-nene .world-label[data-side="thanh"],
+body.persona-nene .worker-label[data-side="thanh"],
+body.persona-nene .pet-label[data-side="thanh"],
+body.persona-nene .npc-label[data-side="thanh"] {
   display: none !important;
 }
 
 body.persona-thanh .dock-nene,
-body.persona-thanh .world-label[data-side="nene"] {
+body.persona-thanh .world-label[data-side="nene"],
+body.persona-thanh .worker-label[data-side="nene"],
+body.persona-thanh .pet-label[data-side="nene"],
+body.persona-thanh .npc-label[data-side="nene"] {
   display: none !important;
 }
 
