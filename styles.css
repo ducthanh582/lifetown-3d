@@ -185,26 +185,266 @@ body, html {
 .brand-pill {
   background: var(--maroon-main);
   color: #fff;
-  padding: 8px 18px;
-  border-radius: 24px;
+  padding: 6px 14px;
+  border-radius: 26px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   box-shadow: var(--shadow-pill);
   border: 2px solid rgba(255, 255, 255, 0.25);
 }
 
 .brand-title {
   font-weight: 800;
-  font-size: 16px;
-  letter-spacing: 0.4px;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
-.brand-sub {
+/* Persona Switcher on Top Bar */
+.persona-switcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.22);
+  padding: 3px 5px;
+  border-radius: 20px;
+}
+
+.role-btn {
+  border: none;
+  background: transparent;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 16px;
   font-size: 12px;
-  opacity: 0.88;
-  border-left: 1px solid rgba(255,255,255,0.35);
-  padding-left: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.role-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.role-btn.active#btn-role-thanh {
+  background: #d63031;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(214, 48, 49, 0.5);
+}
+
+.role-btn.active#btn-role-nene {
+  background: #e84393;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(232, 67, 147, 0.5);
+}
+
+.role-btn.active#btn-role-all {
+  background: #0984e3;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(9, 132, 227, 0.5);
+}
+
+/* 4 Seasons Pill */
+.seasons-pill {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid rgba(140, 74, 83, 0.25);
+  border-radius: 20px;
+  padding: 2px 4px;
+  box-shadow: var(--shadow-pill);
+}
+
+.season-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  padding: 4px 8px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.season-btn:hover {
+  background: var(--pastel-pink);
+}
+
+.season-btn.active {
+  background: var(--maroon-main);
+  color: #fff;
+}
+
+/* Fireworks counter badge & trigger */
+.fireworks-counter-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+  color: #d63031;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  border: 1.5px solid #e17055;
+  box-shadow: 0 2px 6px rgba(225, 112, 85, 0.3);
+  animation: pulseBadge 2.5s infinite;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.fireworks-trigger-btn {
+  background: linear-gradient(135deg, #d63031, #e84393) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(232, 67, 147, 0.4) !important;
+}
+
+.fireworks-trigger-btn:hover {
+  transform: translateY(-1px) scale(1.05);
+}
+
+/* Mega Fireworks Full Banner */
+.fireworks-banner {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+  background: linear-gradient(135deg, rgba(214, 48, 49, 0.96), rgba(108, 92, 231, 0.96));
+  color: #fff;
+  border: 3px solid #fdcb6e;
+  border-radius: 28px;
+  padding: 14px 28px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(253, 203, 110, 0.6);
+  pointer-events: none;
+  animation: bannerPop 4.5s ease forwards;
+}
+
+.fireworks-banner.hidden {
+  display: none;
+}
+
+@keyframes bannerPop {
+  0% { opacity: 0; transform: translate(-50%, -30px) scale(0.8); }
+  10% { opacity: 1; transform: translate(-50%, 0) scale(1.05); }
+  15% { transform: translate(-50%, 0) scale(1); }
+  85% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
+}
+
+.fw-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fw-sparkle {
+  font-size: 32px;
+  animation: spinSparkle 2s linear infinite;
+}
+
+@keyframes spinSparkle {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.25); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.fw-headline {
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.fw-sub {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.95;
+  margin-top: 2px;
+}
+
+/* Persona Select Cards in Lock Screen */
+.persona-select-group {
+  margin-bottom: 14px;
+}
+
+.persona-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--maroon-main);
+  text-align: left;
+  margin-bottom: 6px;
+}
+
+.persona-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.persona-option input[type="radio"] {
+  display: none;
+}
+
+.persona-card {
+  border: 2px solid #dec8cd;
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.persona-card .p-avatar {
+  font-size: 26px;
+  margin-bottom: 4px;
+}
+
+.persona-card .p-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.persona-card .p-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.persona-option input[type="radio"]:checked + .persona-card {
+  border-color: var(--maroon-main);
+  background: #fff3f5;
+  box-shadow: 0 0 0 3px rgba(125, 46, 56, 0.2);
+  transform: translateY(-2px);
+}
+
+#label-role-thanh input[type="radio"]:checked + .persona-card {
+  border-color: #d63031;
+  background: #fff0f0;
+}
+
+#label-role-nene input[type="radio"]:checked + .persona-card {
+  border-color: #e84393;
+  background: #fdf0f7;
+}
+
+.dock-divider {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  padding: 0 4px;
 }
 
 .camera-controls {

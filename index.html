@@ -23,19 +23,46 @@
   <!-- Private Room Passcode / Gatekeeper Lock Screen -->
   <div class="lock-backdrop" id="lock-screen">
     <div class="lock-card">
-      <div class="lock-icon">🏰</div>
-      <h2 class="lock-title">LifeTown · Hệ Thống Vận Hành 3D</h2>
+      <div class="lock-icon">⛩️</div>
+      <h2 class="lock-title">LifeTown 3D · Thị Trấn Đôi Thanh & Nene</h2>
       <p class="lock-subtitle">
-        Không gian quản lý Công việc, Lịch trình, App & Ngân sách riêng tư.<br/>
-        Vui lòng nhập <strong>Mã Phòng (PIN)</strong> để truy cập dữ liệu của bạn:
+        Thế giới 3D phong cách Nhật Bản chia đôi bờ:<br/>
+        🍁 <strong>Bên Thanh (Lá Phong Đỏ)</strong> &amp; 🌸 <strong>Bên Nene (Hoa Anh Đào)</strong><br/>
+        kết nối bằng Suối Nước Nóng Onsen ở giữa!
       </p>
 
       <form id="lock-form" class="lock-form">
+        <div class="persona-select-group">
+          <div class="persona-title">Chọn nhân vật của bạn:</div>
+          <div class="persona-options">
+            <label class="persona-option" id="label-role-thanh">
+              <input type="radio" name="lock_role" value="thanh" checked />
+              <div class="persona-card">
+                <span class="p-avatar">🍁</span>
+                <span class="p-name">Thanh (Nam)</span>
+                <span class="p-sub">Bờ Lá Phong Đỏ</span>
+              </div>
+            </label>
+            <label class="persona-option" id="label-role-nene">
+              <input type="radio" name="lock_role" value="nene" />
+              <div class="persona-card">
+                <span class="p-avatar">🌸</span>
+                <span class="p-name">Nene (Nữ)</span>
+                <span class="p-sub">Bờ Hoa Anh Đào</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div style="text-align:left; font-size:12px; font-weight:700; color:var(--maroon-main); margin-top:4px;">
+          Mã phòng chung:
+        </div>
         <input
           type="password"
           id="lock-room-input"
           class="lock-input"
           placeholder="Nhập mã phòng bí mật..."
+          value="280900"
           autocomplete="off"
           required
         />
@@ -47,7 +74,7 @@
             <input type="checkbox" id="lock-remember-me" checked /> Nhớ trên máy này
           </label>
         </div>
-        <button type="submit" class="btn-primary lock-submit-btn">🔓 Mở Khóa Vào Phòng 3D</button>
+        <button type="submit" class="btn-primary lock-submit-btn">🔓 Mở Cổng Vào Thị Trấn 3D</button>
       </form>
 
       <div class="lock-divider"><span>hoặc</span></div>
@@ -60,26 +87,41 @@
   <!-- Top Bar (Matched with reference UI) -->
   <header class="top-bar">
     <div class="brand-pill">
-      <span class="brand-title">solomi · LifeOS 3D</span>
-      <span class="brand-sub">thị trấn vận hành công việc & tài chính</span>
+      <span class="brand-title">LifeTown 3D · Đôi Bạn Đồng Hành</span>
+      <div class="persona-switcher">
+        <button class="role-btn active" id="btn-role-thanh" title="Chuyển sang góc nhìn bờ Thanh (Lá Phong Đỏ)">🍁 Thanh</button>
+        <button class="role-btn" id="btn-role-nene" title="Chuyển sang góc nhìn bờ Nene (Hoa Anh Đào)">🌸 Nene</button>
+        <button class="role-btn" id="btn-role-all" title="Góc nhìn toàn cảnh cả hai bờ và suối Onsen">♨️ Toàn Cảnh</button>
+      </div>
     </div>
 
     <div class="camera-controls">
-      <button class="ctrl-btn" id="btn-theme" title="Chuyển Ngày / Hoàng hôn / Đêm">☀️ Sáng</button>
+      <!-- 4 Seasons Switcher -->
+      <div class="seasons-pill" id="seasons-pill">
+        <button class="season-btn" data-season="spring" title="Mùa Xuân: Mưa hoa anh đào rơi lãng mạn">🌸 Xuân</button>
+        <button class="season-btn" data-season="summer" title="Mùa Hạ: Lễ hội đèn lồng & đom đóm đêm">☀️ Hạ</button>
+        <button class="season-btn active" data-season="autumn" title="Mùa Thu: Mưa lá phong đỏ Momiji ấm áp">🍁 Thu</button>
+        <button class="season-btn" data-season="winter" title="Mùa Đông: Tuyết trắng rơi phủ mái ngói & khói Onsen">❄️ Đông</button>
+      </div>
+
+      <button class="ctrl-btn" id="btn-theme" title="Chuyển Sáng / Hoàng hôn / Đêm">🌙 Đêm</button>
       <button class="ctrl-btn" id="btn-rotate" title="Bật/tắt tự động xoay camera">🔄 Đang xoay</button>
       <button class="ctrl-btn active" id="btn-sim" title="Tạm dừng / Tiếp tục chuyển động 3D">⚡ Tự chạy ▶</button>
-      <button class="ctrl-btn" id="btn-cam-overview" title="Góc nhìn toàn cảnh">🗺️ Toàn cảnh</button>
-      <button class="ctrl-btn" id="btn-cam-top" title="Góc nhìn từ trên xuống">📐 Đứng bóng</button>
-      <button class="ctrl-btn" id="btn-follow-train" title="Camera đi theo tàu hỏa">🚂 Theo tàu</button>
+      <button class="ctrl-btn" id="btn-follow-train" title="Camera đi theo tàu Shinkansen">🚄 Theo tàu</button>
+      <button class="ctrl-btn fireworks-trigger-btn" id="btn-trigger-fireworks" title="Bắn pháo hoa ăn mừng ngay lập tức!">🎆 Bắn Pháo Hoa</button>
     </div>
 
     <div class="status-summary-pill">
       <button class="ctrl-btn sync-pill-btn" id="btn-open-sync" title="Cấu hình đồng bộ dữ liệu thời gian thực & lấy link chia sẻ">
         <span class="status-dot" id="sync-status-dot"></span>
-        <span id="sync-status-text">☁️ Đang kết nối...</span>
+        <span id="sync-status-text">☁️ 280900</span>
       </button>
       <span class="status-divider">|</span>
-      <span id="top-stat-tasks">0/0 task xong</span>
+      <div class="fireworks-counter-badge" id="fw-counter-badge" title="Tích lũy 5 task hoàn thành để kích hoạt Đại Tiệc Pháo Hoa Lớn!">
+        🎆 <span id="fw-streak-text">0/5 task</span>
+      </div>
+      <span class="status-divider">|</span>
+      <span id="top-stat-tasks">0/0 task</span>
       <span class="status-divider">|</span>
       <span id="top-stat-budget">Số dư: 0đ</span>
     </div>
@@ -174,25 +216,43 @@
     </div>
   </aside>
 
+  <!-- Mega Fireworks 5-Task Celebration Overlay Banner -->
+  <div class="fireworks-banner hidden" id="mega-fireworks-banner">
+    <div class="fw-content">
+      <span class="fw-sparkle">🎆</span>
+      <div class="fw-text-group">
+        <div class="fw-headline">ĐẠI TIỆC PHÁO HOA RỰC SÁNG!</div>
+        <div class="fw-sub" id="fw-banner-sub">Xuất sắc! Đã hoàn thành mốc 5 công việc trong thị trấn!</div>
+      </div>
+      <span class="fw-sparkle">✨</span>
+    </div>
+  </div>
+
   <!-- Bottom Bar -->
   <footer class="bottom-bar">
     <div class="bottom-left-stack">
-      <div class="hero-banner">
-        mô hình hoá · hệ thống vận hành 3D
+      <div class="hero-banner" id="hero-banner-title">
+        🍁 Bên Thanh &amp; 🌸 Bên Nene · Cùng Nhau Hoàn Thành Task
       </div>
       <div class="dock-bar" id="station-dock">
-        <button class="dock-btn active" data-station="hub">🏯 Thiên Thủ Các (Tổng quan)</button>
-        <button class="dock-btn" data-station="tasks">⛩️ Đền Task (Ngày/Tuần/Tháng)</button>
-        <button class="dock-btn" data-station="schedule">🗼 Bảo Tháp Lịch Trình</button>
-        <button class="dock-btn" data-station="finance">🐱 Ngân Khố Maneki-Neko</button>
-        <button class="dock-btn" data-station="apps">🗼 Trạm App Neo-Tokyo</button>
-        <button class="dock-btn" data-station="goals">🌸 Vườn Thiền & Mục Tiêu</button>
+        <!-- Rendered dynamically or styled with 3 sections: Thanh | Onsen | Nene -->
+        <button class="dock-btn active" data-station="onsen_hub">♨️ Suối Nước Nóng (Chung)</button>
+        <span class="dock-divider">| 🍁 Thanh:</span>
+        <button class="dock-btn" data-station="thanh_dojo">⛩️ Võ Đường Task</button>
+        <button class="dock-btn" data-station="thanh_tower">🏯 Lầu Vọng Cảnh</button>
+        <button class="dock-btn" data-station="thanh_bell">🔔 Tháp Kỷ Luật</button>
+        <button class="dock-btn" data-station="thanh_forge">⚔️ Tiệm Rèn &amp; Tiền</button>
+        <span class="dock-divider">| 🌸 Nene:</span>
+        <button class="dock-btn" data-station="nene_tea">🍵 Trà Quán Task</button>
+        <button class="dock-btn" data-station="nene_studio">👘 Tiệm Sáng Tạo</button>
+        <button class="dock-btn" data-station="nene_clock">🕰️ Lầu Nguyệt Quang</button>
+        <button class="dock-btn" data-station="nene_wagashi">🍡 Wagashi &amp; Tiền</button>
       </div>
     </div>
 
     <div class="guide-card">
-      <strong>Thị trấn vận hành 3D</strong>
-      Mô hình 3D tương tác thời gian thực: Kéo chuột trái để xoay, chuột phải để trượt, cuộn để phóng to/thu nhỏ. Bấm vào từng tòa nhà hoặc nhân vật để mở bảng quản lý.
+      <strong>Thị trấn đôi Nhật Bản</strong>
+      Bên trái là 🍁 <b>khu lá phong đỏ của Thanh</b> (ảnh 1), bên phải là 🌸 <b>khu hoa anh đào của Nene</b> (ảnh 2), ở giữa là ♨️ <b>suối nước nóng Onsen</b> chung. Bấm vào từng tòa nhà để mở task cần làm!
     </div>
   </footer>
 
