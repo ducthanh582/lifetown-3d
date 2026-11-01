@@ -406,6 +406,7 @@ const MATS = {
 };
 
 // Quản lý hệ thống chiếu sáng đèn phố và nguồn sáng PointLight
+let themeMode = 2; // 0: Sáng (Đèn tắt), 1: Hoàng hôn (Đèn bật), 2: Đêm (Đèn bật rực rỡ)
 const townPointLights = [];
 const townLanternMeshes = [];
 
@@ -2665,7 +2666,6 @@ document.getElementById('btn-sim').addEventListener('click', e => {
 });
 
 // Chuyển đổi Ngày / Hoàng hôn / Đêm — Tự động bật/tắt toàn bộ đèn phố thị trấn
-let themeMode = 2; // Mặc định Đêm huyền ảo (Đèn tự động bật sáng)
 document.getElementById('btn-theme').addEventListener('click', () => {
   themeMode = (themeMode + 1) % 3;
   updateTownLighting(themeMode, true);
@@ -2689,41 +2689,64 @@ const lockRoomInput = document.getElementById('lock-room-input');
 const lockShowPin = document.getElementById('lock-show-pin');
 const lockRememberMe = document.getElementById('lock-remember-me');
 
-if (lockShowPin) {
+if (lockShowPin && lockRoomInput) {
   lockShowPin.addEventListener('change', e => {
     lockRoomInput.type = e.target.checked ? 'text' : 'password';
   });
 }
 
-document.getElementById('lock-form').addEventListener('submit', e => {
-  e.preventDefault();
-  const pin = lockRoomInput.value.trim() || DEFAULT_ROOM_ID;
+function handleLockSubmit(e) {
+  if (e) e.preventDefault();
+  const pin = (lockRoomInput && lockRoomInput.value.trim()) || DEFAULT_ROOM_ID;
   const roleRadios = document.getElementsByName('lock_role');
   let chosenRole = 'thanh';
   for (const r of roleRadios) {
     if (r.checked) chosenRole = r.value;
   }
-  unlockWithRoomAndRole(pin, chosenRole, lockRememberMe.checked);
-});
+  unlockWithRoomAndRole(pin, chosenRole, lockRememberMe ? lockRememberMe.checked : true);
+}
 
-document.getElementById('btn-enter-demo').addEventListener('click', () => {
-  document.body.classList.remove('room-locked');
-  lockScreenEl.classList.add('hidden');
-  showToast('✨ Đang xem bản Demo mẫu!');
-});
+const lockFormEl = document.getElementById('lock-form');
+if (lockFormEl) {
+  lockFormEl.addEventListener('submit', handleLockSubmit);
+}
+const btnSubmitLock = document.getElementById('btn-submit-lock');
+if (btnSubmitLock) {
+  btnSubmitLock.addEventListener('click', handleLockSubmit);
+}
+
+const btnEnterDemo = document.getElementById('btn-enter-demo');
+if (btnEnterDemo) {
+  btnEnterDemo.addEventListener('click', () => {
+    document.body.classList.remove('room-locked');
+    if (lockScreenEl) {
+      lockScreenEl.classList.add('hidden');
+      lockScreenEl.style.display = 'none';
+    }
+    showToast('✨ Đang xem bản Demo mẫu!');
+  });
+}
 
 function unlockWithRoomAndRole(roomId, role, remember = true) {
-  currentRoomId = roomId.trim().replace(/[^a-zA-Z0-9_-]/g, '-');
+  currentRoomId = (roomId || DEFAULT_ROOM_ID).trim().replace(/[^a-zA-Z0-9_-]/g, '-');
+  if (!currentRoomId) currentRoomId = DEFAULT_ROOM_ID;
   isRoomUnlocked = true;
 
   if (remember) {
-    localStorage.setItem(ROOM_KEY, currentRoomId);
-    localStorage.setItem(UNLOCKED_KEY, '1');
-    localStorage.setItem(ROLE_KEY, role);
+    try {
+      localStorage.setItem(ROOM_KEY, currentRoomId);
+      localStorage.setItem(UNLOCKED_KEY, '1');
+      localStorage.setItem(ROLE_KEY, role);
+    } catch (err) {
+      console.warn('LocalStorage error:', err);
+    }
   }
 
   document.body.classList.remove('room-locked');
-  lockScreenEl.classList.add('hidden');
+  if (lockScreenEl) {
+    lockScreenEl.classList.add('hidden');
+    lockScreenEl.style.display = 'none';
+  }
 
   setPersonaView(role);
   buildShareLinks();
@@ -3106,13 +3129,19 @@ renderInspector();
 const savedRole = localStorage.getItem(ROLE_KEY) || 'thanh';
 if (isRoomUnlocked && currentRoomId) {
   document.body.classList.remove('room-locked');
-  lockScreenEl.classList.add('hidden');
+  if (lockScreenEl) {
+    lockScreenEl.classList.add('hidden');
+    lockScreenEl.style.display = 'none';
+  }
   setPersonaView(savedRole);
   buildShareLinks();
   connectRealtimeCloud();
 } else {
   document.body.classList.add('room-locked');
-  lockScreenEl.classList.remove('hidden');
+  if (lockScreenEl) {
+    lockScreenEl.classList.remove('hidden');
+    lockScreenEl.style.display = 'flex';
+  }
 }
 
 applySeason('autumn'); // Mặc định mùa Thu ấm cúng
