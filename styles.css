@@ -311,6 +311,56 @@ body, html {
   transform: translateY(-1px) scale(1.05);
 }
 
+/* Nút Hôn Nhau ngọt ngào giữa Thanh & Nene */
+.kiss-trigger-btn {
+  background: linear-gradient(135deg, #fd79a8, #e84393) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(253, 121, 168, 0.5) !important;
+  animation: pulseKiss 2s infinite ease-in-out;
+}
+
+.kiss-trigger-btn:hover {
+  transform: translateY(-1px) scale(1.08);
+}
+
+@keyframes pulseKiss {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); box-shadow: 0 0 14px rgba(232, 67, 147, 0.8); }
+}
+
+/* Tự động ẩn các nút và nhãn không thuộc Persona hiện tại để tránh rối mắt */
+body.persona-nene .dock-thanh,
+body.persona-nene .world-label[data-side="thanh"] {
+  display: none !important;
+}
+
+body.persona-thanh .dock-nene,
+body.persona-thanh .world-label[data-side="nene"] {
+  display: none !important;
+}
+
+body.persona-all .dock-thanh,
+body.persona-all .dock-nene {
+  display: inline-flex !important;
+}
+
+/* Floating Heart Icon for Kiss Animation */
+.kiss-heart-particle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 24px;
+  animation: floatKissHeart 2.5s ease-out forwards;
+  z-index: 100;
+}
+
+@keyframes floatKissHeart {
+  0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+  20% { opacity: 1; transform: translate(-50%, -25px) scale(1.3); }
+  80% { opacity: 1; transform: translate(-50%, -85px) scale(1.1); }
+  100% { opacity: 0; transform: translate(-50%, -120px) scale(0.8); }
+}
+
 /* Mega Fireworks Full Banner */
 .fireworks-banner {
   position: fixed;

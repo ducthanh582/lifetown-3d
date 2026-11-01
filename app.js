@@ -1,6 +1,6 @@
 // ============================================================================
 // LIFETOWN 3D — THỊ TRẤN ĐÔI THANH (LÁ PHONG ĐỎ) & NENE (HOA ANH ĐÀO)
-// TÍCH HỢP ONSEN TRUNG TÂM, THỜI TIẾT 4 MÙA & ĐẠI TIỆC PHÁO HOA 5 TASKS
+// TÍCH HỢP ONSEN TRUNG TÂM, THỜI TIẾT 4 MÙA, ĐẠI TIỆC PHÁO HOA & NỤ HÔN NGỌT NGÀO
 // ============================================================================
 
 const STORAGE_KEY = 'lifetown_3d_state_dual_v2';
@@ -175,7 +175,7 @@ function showToast(msg) {
 }
 
 // ============================================================================
-// STATIONS METADATA — PHÂN CHIA 2 BỜ THANH & NENE + ONSEN TRUNG TÂM
+// STATIONS METADATA — PHÂN CHIA RÕ RÀNG THEO SIDE: 'thanh' | 'nene' | 'center'
 // ============================================================================
 const STATIONS = {
   // --- TRUNG TÂM GIAO THOA: SUỐI NƯỚC NÓNG ON-SEN ---
@@ -187,8 +187,8 @@ const STATIONS = {
     shortName: 'Onsen Chung',
     icon: '♨️',
     pos: { x: 0, y: 0, z: 0 },
-    labelHeight: 9.5,
-    camOffset: { x: 0, y: 32, z: 42 },
+    labelHeight: 9.8,
+    camOffset: { x: 0, y: 30, z: 40 },
     quote: 'Nơi giao thoa giữa bờ Lá Phong Đỏ của Thanh và bờ Hoa Anh Đào của Nene. Nước khoáng ấm áp, gắn kết mục tiêu chung!',
     bubble: 'Khói Onsen nghi ngút · Đôi bạn hòa hợp 100%!'
   },
@@ -201,9 +201,9 @@ const STATIONS = {
     name: 'Võ Đường Phong Diệp (Task Thanh)',
     shortName: 'Võ Đường Task',
     icon: '⛩️',
-    pos: { x: -16, y: 0, z: 6 },
-    labelHeight: 12.0,
-    camOffset: { x: -16, y: 20, z: 24 },
+    pos: { x: -18, y: 0, z: 6 },
+    labelHeight: 12.2,
+    camOffset: { x: -18, y: 20, z: 24 },
     quote: 'Võ đường rực rỡ đèn lồng đỏ dưới tán lá phong Momiji! Tập trung tinh thần dứt điểm từng Task Ngày - Tuần - Tháng.',
     bubble: 'Thanh đang xử lý các Task ưu tiên cao!'
   },
@@ -214,9 +214,9 @@ const STATIONS = {
     name: 'Lầu Vọng Cảnh Lễ Hội (App & Dự Án)',
     shortName: 'Lầu Vọng Cảnh',
     icon: '🏯',
-    pos: { x: -22, y: 0, z: -14 },
-    labelHeight: 16.5,
-    camOffset: { x: -22, y: 26, z: 12 },
+    pos: { x: -26, y: 0, z: -16 },
+    labelHeight: 16.8,
+    camOffset: { x: -26, y: 26, z: 12 },
     quote: 'Tháp vọng cảnh nhiều tầng rực rỡ sắc đỏ lễ hội, quan sát toàn bộ các App, phần mềm & dự án công nghệ của Thanh.',
     bubble: 'Hệ thống App & Server đang vận hành mượt mà!'
   },
@@ -227,9 +227,9 @@ const STATIONS = {
     name: 'Tháp Chuông Kỷ Luật (Lịch Trình Thanh)',
     shortName: 'Tháp Kỷ Luật',
     icon: '🔔',
-    pos: { x: -14, y: 0, z: -8 },
-    labelHeight: 13.0,
-    camOffset: { x: -14, y: 19, z: 16 },
+    pos: { x: -15, y: 0, z: -10 },
+    labelHeight: 13.2,
+    camOffset: { x: -15, y: 19, z: 16 },
     quote: 'Tiếng chuông cổ kính nhắc nhở các khung giờ làm việc Deep Work, rèn luyện thể thao và lịch họp quan trọng.',
     bubble: 'Khung giờ Deep Work của Thanh đang diễn ra!'
   },
@@ -240,9 +240,9 @@ const STATIONS = {
     name: 'Tiệm Rèn Đao & Ngân Khố (Tài Chính)',
     shortName: 'Tiệm Rèn & Tiền',
     icon: '⚔️',
-    pos: { x: -25, y: 0, z: 7 },
-    labelHeight: 10.5,
-    camOffset: { x: -25, y: 18, z: 25 },
+    pos: { x: -28, y: 0, z: 8 },
+    labelHeight: 10.8,
+    camOffset: { x: -28, y: 18, z: 25 },
     quote: 'Quản lý thu nhập, lương, ngân sách chi tiêu và phần đóng góp vào Quỹ Chung của Thanh.',
     bubble: 'Ngân sách của Thanh trong vùng an toàn!'
   },
@@ -255,9 +255,9 @@ const STATIONS = {
     name: 'Trà Quán Sakura (Task Nene)',
     shortName: 'Trà Quán Task',
     icon: '🍵',
-    pos: { x: 16, y: 0, z: 6 },
-    labelHeight: 11.5,
-    camOffset: { x: 16, y: 20, z: 24 },
+    pos: { x: 18, y: 0, z: 6 },
+    labelHeight: 11.8,
+    camOffset: { x: 18, y: 20, z: 24 },
     quote: 'Trà quán phố cổ Machiya Kyoto xinh xắn bên rặng hoa anh đào! Thưởng trà và giải quyết nhẹ nhàng từng công việc.',
     bubble: 'Nene đang hoàn thành các nhiệm vụ hôm nay!'
   },
@@ -268,9 +268,9 @@ const STATIONS = {
     name: 'Thương Điếm Nhuộm Vải & Sáng Tạo',
     shortName: 'Tiệm Sáng Tạo',
     icon: '👘',
-    pos: { x: 23, y: 0, z: -12 },
-    labelHeight: 14.5,
-    camOffset: { x: 23, y: 24, z: 14 },
+    pos: { x: 26, y: 0, z: -14 },
+    labelHeight: 14.8,
+    camOffset: { x: 26, y: 24, z: 14 },
     quote: 'Không gian sáng tạo lụa là, thiết kế nghệ thuật, nội dung và các dự án truyền cảm hứng của Nene.',
     bubble: 'Các dự án sáng tạo đang tràn đầy cảm hứng!'
   },
@@ -281,9 +281,9 @@ const STATIONS = {
     name: 'Lầu Nguyệt Quang Điểm Giờ (Lịch Nene)',
     shortName: 'Lầu Nguyệt Quang',
     icon: '🕰️',
-    pos: { x: 14, y: 0, z: -8 },
-    labelHeight: 13.0,
-    camOffset: { x: 14, y: 19, z: 16 },
+    pos: { x: 15, y: 0, z: -10 },
+    labelHeight: 13.2,
+    camOffset: { x: 15, y: 19, z: 16 },
     quote: 'Tháp đồng hồ gỗ cổ kính bên dòng suối, quản lý khung giờ sáng tạo, các lớp Yoga và lịch hẹn hò ấm áp.',
     bubble: 'Lịch trình thảnh thơi & đúng hẹn của Nene!'
   },
@@ -294,26 +294,28 @@ const STATIONS = {
     name: 'Tiệm Bánh Wagashi & Ngân Khố Nene',
     shortName: 'Wagashi & Tiền',
     icon: '🍡',
-    pos: { x: 25, y: 0, z: 7 },
-    labelHeight: 10.5,
-    camOffset: { x: 25, y: 18, z: 25 },
+    pos: { x: 28, y: 0, z: 8 },
+    labelHeight: 10.8,
+    camOffset: { x: 28, y: 18, z: 25 },
     quote: 'Tiệm bánh ngọt truyền thống và chú mèo Maneki-Neko nhỏ xinh, quản lý ví chi tiêu, mua sắm và tiết kiệm của Nene.',
     bubble: 'Tài chính ngọt ngào, tích lũy đều đặn!'
   }
 };
 
 // ============================================================================
-// THREE.JS SCENE SETUP
+// THREE.JS SETUP — TÔNG MÀU TỐI HUYỀN ẢO & COZY (DARK NIGHT AESTHETIC)
 // ============================================================================
 const container = document.getElementById('canvas-container');
 const labelsContainer = document.getElementById('labels-container');
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xdcebd5);
-scene.fog = new THREE.FogExp2(0xdcebd5, 0.007);
+// Tông màu đêm xanh than huyền bí (Moody Midnight Blue)
+const NIGHT_BG = 0x0f1423;
+scene.background = new THREE.Color(NIGHT_BG);
+scene.fog = new THREE.FogExp2(NIGHT_BG, 0.0075);
 
-const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.5, 350);
-camera.position.set(0, 36, 48);
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.5, 400);
+camera.position.set(0, 36, 50);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -325,26 +327,26 @@ container.appendChild(renderer.domElement);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
-controls.maxPolarAngle = Math.PI / 2 - 0.05;
-controls.minDistance = 14;
-controls.maxDistance = 110;
+controls.maxPolarAngle = Math.PI / 2 - 0.04;
+controls.minDistance = 12;
+controls.maxDistance = 125;
 controls.target.set(0, 2, 0);
 
-// Ánh sáng môi trường
-const ambientLight = new THREE.AmbientLight(0xfff5ee, 0.75);
+// Hệ thống chiếu sáng đêm ấm cúng (Cozy Night Lantern Glow)
+const ambientLight = new THREE.AmbientLight(0x28324e, 0.85);
 scene.add(ambientLight);
 
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0xcde0c9, 0.4);
+const hemiLight = new THREE.HemisphereLight(0x7da4d4, 0x1a2130, 0.45);
 scene.add(hemiLight);
 
-const dirLight = new THREE.DirectionalLight(0xfff0dd, 0.95);
-dirLight.position.set(35, 60, 30);
+const dirLight = new THREE.DirectionalLight(0xa3c5e8, 0.65);
+dirLight.position.set(30, 65, 30);
 dirLight.castShadow = true;
 dirLight.shadow.mapSize.width = 2048;
 dirLight.shadow.mapSize.height = 2048;
 dirLight.shadow.camera.near = 5;
-dirLight.shadow.camera.far = 160;
-const d = 52;
+dirLight.shadow.camera.far = 180;
+const d = 60;
 dirLight.shadow.camera.left = -d;
 dirLight.shadow.camera.right = d;
 dirLight.shadow.camera.top = d;
@@ -352,34 +354,36 @@ dirLight.shadow.camera.bottom = -d;
 dirLight.shadow.bias = -0.0004;
 scene.add(dirLight);
 
-// Vật liệu (Materials Palette: Kết hợp Lễ hội đỏ ấm & Phố cổ thanh lịch & Suối nước nóng)
+// Vật liệu (Materials: Tông tối sang trọng, phát sáng đèn lồng rực rỡ)
 const MATS = {
-  groundThanh: new THREE.MeshStandardMaterial({ color: 0xd9c2a7, roughness: 0.9 }), // Bờ Thanh gạch đá nâu ấm
-  groundNene: new THREE.MeshStandardMaterial({ color: 0xdde6d5, roughness: 0.9 }),  // Bờ Nene sỏi rêu thanh nhã
-  onsenRock: new THREE.MeshStandardMaterial({ color: 0x5a5652, roughness: 0.85 }),
-  onsenWater: new THREE.MeshStandardMaterial({ color: 0x38b6ff, roughness: 0.15, metalness: 0.2, transparent: true, opacity: 0.88 }),
-  woodDark: new THREE.MeshStandardMaterial({ color: 0x3a2318, roughness: 0.75 }),
-  woodWarm: new THREE.MeshStandardMaterial({ color: 0x825438, roughness: 0.7 }),
-  shikkuiWhite: new THREE.MeshStandardMaterial({ color: 0xfcfaf5, roughness: 0.55 }),
-  kawaraRoofDark: new THREE.MeshStandardMaterial({ color: 0x2c333a, roughness: 0.48 }), // Ngói đen xám
-  kawaraRoofRed: new THREE.MeshStandardMaterial({ color: 0x8a2820, roughness: 0.5 }),   // Ngói đỏ sẫm lễ hội
-  vermilionRed: new THREE.MeshStandardMaterial({ color: 0xd93829, roughness: 0.45 }),   // Đỏ son Torii / Đèn lồng
-  vermilionDeep: new THREE.MeshStandardMaterial({ color: 0x9e1f14, roughness: 0.55 }),
-  goldTrim: new THREE.MeshStandardMaterial({ color: 0xf3c14b, roughness: 0.3, metalness: 0.45 }),
-  // Cây lá phong đỏ (Thanh)
-  mapleRed: new THREE.MeshStandardMaterial({ color: 0xd92027, roughness: 0.6 }),
-  mapleOrange: new THREE.MeshStandardMaterial({ color: 0xf37121, roughness: 0.6 }),
-  mapleGold: new THREE.MeshStandardMaterial({ color: 0xffa41b, roughness: 0.6 }),
-  // Cây hoa anh đào (Nene)
-  sakuraPink: new THREE.MeshStandardMaterial({ color: 0xffb7c5, roughness: 0.6 }),
-  sakuraDeep: new THREE.MeshStandardMaterial({ color: 0xf48fb1, roughness: 0.6 }),
-  sakuraLight: new THREE.MeshStandardMaterial({ color: 0xffe4ec, roughness: 0.6 }),
-  // Ánh sáng đèn lồng và cửa giấy Shoji
-  shojiGlow: new THREE.MeshStandardMaterial({ color: 0xfff3d1, emissive: 0xffaa40, emissiveIntensity: 0.45, roughness: 0.4 }),
-  lanternRedGlow: new THREE.MeshStandardMaterial({ color: 0xff3b30, emissive: 0xff2d20, emissiveIntensity: 0.8, roughness: 0.4 }),
-  lanternWarmGlow: new THREE.MeshStandardMaterial({ color: 0xfff0b3, emissive: 0xffcc00, emissiveIntensity: 0.75, roughness: 0.4 }),
+  // Mặt đất đêm tối dịu mắt
+  groundThanh: new THREE.MeshStandardMaterial({ color: 0x302722, roughness: 0.92 }), // Đất gạch sẫm đêm bên Thanh
+  groundNene: new THREE.MeshStandardMaterial({ color: 0x222d26, roughness: 0.92 }),  // Đất đá rêu sẫm đêm bên Nene
+  onsenRock: new THREE.MeshStandardMaterial({ color: 0x484643, roughness: 0.85 }),
+  // Mặt nước Onsen phản chiếu lấp lánh trong đêm
+  onsenWater: new THREE.MeshStandardMaterial({ color: 0x2bb8ff, roughness: 0.12, metalness: 0.35, transparent: true, opacity: 0.92 }),
+  woodDark: new THREE.MeshStandardMaterial({ color: 0x241710, roughness: 0.8 }),
+  woodWarm: new THREE.MeshStandardMaterial({ color: 0x6e432a, roughness: 0.72 }),
+  shikkuiWhite: new THREE.MeshStandardMaterial({ color: 0xded8ce, roughness: 0.6 }),
+  kawaraRoofDark: new THREE.MeshStandardMaterial({ color: 0x1e242b, roughness: 0.5, metalness: 0.2 }),
+  kawaraRoofRed: new THREE.MeshStandardMaterial({ color: 0x731e16, roughness: 0.5 }),
+  vermilionRed: new THREE.MeshStandardMaterial({ color: 0xd93829, roughness: 0.4 }),
+  vermilionDeep: new THREE.MeshStandardMaterial({ color: 0x8a150c, roughness: 0.5 }),
+  goldTrim: new THREE.MeshStandardMaterial({ color: 0xf3c14b, roughness: 0.25, metalness: 0.55 }),
+  // Cây Lá Phong Đỏ
+  mapleRed: new THREE.MeshStandardMaterial({ color: 0xd92027, roughness: 0.55 }),
+  mapleOrange: new THREE.MeshStandardMaterial({ color: 0xf37121, roughness: 0.55 }),
+  mapleGold: new THREE.MeshStandardMaterial({ color: 0xffa41b, roughness: 0.55 }),
+  // Cây Hoa Anh Đào
+  sakuraPink: new THREE.MeshStandardMaterial({ color: 0xffb7c5, roughness: 0.55 }),
+  sakuraDeep: new THREE.MeshStandardMaterial({ color: 0xf48fb1, roughness: 0.55 }),
+  sakuraLight: new THREE.MeshStandardMaterial({ color: 0xffe4ec, roughness: 0.55 }),
+  // Ánh sáng phát quang đêm rực rỡ
+  shojiGlow: new THREE.MeshStandardMaterial({ color: 0xffe49e, emissive: 0xff9900, emissiveIntensity: 0.95, roughness: 0.35 }),
+  lanternRedGlow: new THREE.MeshStandardMaterial({ color: 0xff3b30, emissive: 0xff2010, emissiveIntensity: 1.35, roughness: 0.35 }),
+  lanternWarmGlow: new THREE.MeshStandardMaterial({ color: 0xfff0b3, emissive: 0xffbb00, emissiveIntensity: 1.25, roughness: 0.35 }),
   white: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4 }),
-  norenBlue: new THREE.MeshStandardMaterial({ color: 0x204060, roughness: 0.7 })
+  norenBlue: new THREE.MeshStandardMaterial({ color: 0x1e3a58, roughness: 0.7 })
 };
 
 function enableShadow(obj) {
@@ -392,50 +396,47 @@ function enableShadow(obj) {
 }
 
 // ============================================================================
-// XÂY DỰNG MẶT ĐẤT 2 BỜ & DÒNG SUỐI NƯỚC NÓNG (ONSEN) CHÍNH GIỮA
+// MỞ RỘNG BẢN ĐỒ 3D & DÒNG SUỐI NƯỚC NÓNG (ONSEN) CHÍNH GIỮA
 // ============================================================================
 const groundGroup = new THREE.Group();
 
-// Nửa bờ bên trái (Thanh - X < -2.5)
-const groundThanhGeo = new THREE.BoxGeometry(45, 1.8, 80);
+// Mở rộng bờ bên trái (Thanh - X < -3)
+const groundThanhGeo = new THREE.BoxGeometry(60, 1.8, 95);
 const groundThanhMesh = new THREE.Mesh(groundThanhGeo, MATS.groundThanh);
-groundThanhMesh.position.set(-25, -0.9, 0);
+groundThanhMesh.position.set(-33, -0.9, 0);
 groundThanhMesh.receiveShadow = true;
 groundGroup.add(groundThanhMesh);
 
-// Nửa bờ bên phải (Nene - X > 2.5)
-const groundNeneGeo = new THREE.BoxGeometry(45, 1.8, 80);
+// Mở rộng bờ bên phải (Nene - X > 3)
+const groundNeneGeo = new THREE.BoxGeometry(60, 1.8, 95);
 const groundNeneMesh = new THREE.Mesh(groundNeneGeo, MATS.groundNene);
-groundNeneMesh.position.set(25, -0.9, 0);
+groundNeneMesh.position.set(33, -0.9, 0);
 groundNeneMesh.receiveShadow = true;
 groundGroup.add(groundNeneMesh);
 
-// Lòng suối Onsen chính giữa (-2.5 <= X <= 2.5)
-const streamBedGeo = new THREE.BoxGeometry(9, 1.2, 80);
+// Dòng suối Onsen kéo dài từ Bắc chí Nam
+const streamBedGeo = new THREE.BoxGeometry(10, 1.2, 95);
 const streamBedMesh = new THREE.Mesh(streamBedGeo, MATS.onsenRock);
 streamBedMesh.position.set(0, -1.2, 0);
 groundGroup.add(streamBedMesh);
 
-// Mặt nước khoáng nóng bốc hơi
-const waterGeo = new THREE.BoxGeometry(7.6, 0.4, 78);
+const waterGeo = new THREE.BoxGeometry(8.6, 0.4, 93);
 const waterMesh = new THREE.Mesh(waterGeo, MATS.onsenWater);
-waterMesh.position.set(0, -0.25, 0);
+waterMesh.position.set(0, -0.22, 0);
 groundGroup.add(waterMesh);
 
 // Rải đá cuội tự nhiên dọc 2 bờ suối
-for (let z = -38; z <= 38; z += 3.8) {
-  // Bờ đá bên trái
+for (let z = -44; z <= 44; z += 3.6) {
   const rockL = new THREE.Mesh(
-    new THREE.DodecahedronGeometry(0.7 + Math.random() * 0.45, 0),
+    new THREE.DodecahedronGeometry(0.75 + Math.random() * 0.45, 0),
     MATS.onsenRock
   );
-  rockL.position.set(-3.7 + (Math.random() - 0.5) * 0.6, 0.1, z + (Math.random() - 0.5) * 1.2);
+  rockL.position.set(-4.2 + (Math.random() - 0.5) * 0.6, 0.1, z + (Math.random() - 0.5) * 1.2);
   rockL.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
   groundGroup.add(rockL);
 
-  // Bờ đá bên phải
   const rockR = rockL.clone();
-  rockR.position.set(3.7 + (Math.random() - 0.5) * 0.6, 0.1, z + (Math.random() - 0.5) * 1.2);
+  rockR.position.set(4.2 + (Math.random() - 0.5) * 0.6, 0.1, z + (Math.random() - 0.5) * 1.2);
   groundGroup.add(rockR);
 }
 
@@ -470,7 +471,7 @@ function registerStationHitbox(stationId, group, radius = 6.5, height = 11) {
   activeRingMeshes[stationId] = ringMesh;
 }
 
-// Helper: Mái ngói Nhật Bản uốn cong viền góc
+// Helper: Mái ngói Nhật Bản cong viền góc
 function createCurvedRoof(width, depth, height, roofMat = MATS.kawaraRoofDark) {
   const rg = new THREE.Group();
   const eave = new THREE.Mesh(new THREE.BoxGeometry(width * 1.1, height * 0.25, depth * 1.1), roofMat);
@@ -491,6 +492,23 @@ function createCurvedRoof(width, depth, height, roofMat = MATS.kawaraRoofDark) {
   return rg;
 }
 
+// Helper: Cổng Torii
+function createToriiGate(scale = 1) {
+  const tg = new THREE.Group();
+  const pillarGeo = new THREE.CylinderGeometry(0.2 * scale, 0.24 * scale, 3.8 * scale, 12);
+  const pL = new THREE.Mesh(pillarGeo, MATS.vermilionRed);
+  pL.position.set(-1.4 * scale, 1.9 * scale, 0);
+  const pR = pL.clone();
+  pR.position.x = 1.4 * scale;
+
+  const nuki = new THREE.Mesh(new THREE.BoxGeometry(3.5 * scale, 0.22 * scale, 0.2 * scale), MATS.vermilionRed);
+  nuki.position.y = 2.9 * scale;
+  const kasagi = new THREE.Mesh(new THREE.BoxGeometry(4.2 * scale, 0.28 * scale, 0.38 * scale), MATS.vermilionRed);
+  kasagi.position.y = 3.8 * scale;
+  tg.add(pL, pR, nuki, kasagi);
+  return tg;
+}
+
 // ============================================================================
 // 1. CÔNG TRÌNH TRUNG TÂM: SUỐI NƯỚC NÓNG UYÊN ƯƠNG & CẦU TAIKO-BASHI
 // ============================================================================
@@ -499,19 +517,19 @@ function buildOnsenCenter() {
   group.position.set(STATIONS.onsen_hub.pos.x, 0, STATIONS.onsen_hub.pos.z);
 
   // Hồ Onsen chính hình bầu dục đá cuội
-  const basinOuter = new THREE.Mesh(new THREE.CylinderGeometry(6.4, 6.8, 0.65, 32), MATS.onsenRock);
+  const basinOuter = new THREE.Mesh(new THREE.CylinderGeometry(6.6, 7.0, 0.65, 32), MATS.onsenRock);
   basinOuter.position.y = 0.32;
   basinOuter.scale.set(1.15, 1, 1.4);
   group.add(basinOuter);
 
-  const hotWater = new THREE.Mesh(new THREE.CylinderGeometry(5.7, 5.7, 0.72, 32), MATS.onsenWater);
+  const hotWater = new THREE.Mesh(new THREE.CylinderGeometry(5.9, 5.9, 0.72, 32), MATS.onsenWater);
   hotWater.position.y = 0.4;
   hotWater.scale.set(1.15, 1, 1.4);
   group.add(hotWater);
 
-  // Đình nghỉ ngâm chân Onsen (Chòi gỗ mộc Nhật Bản)
+  // Đình ngâm chân Onsen
   const gazebo = new THREE.Group();
-  gazebo.position.set(0, 0.4, -4.5);
+  gazebo.position.set(0, 0.4, -4.8);
   for (let gx of [-2.4, 2.4]) {
     for (let gz of [-1.8, 1.8]) {
       const col = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 3.2, 10), MATS.woodWarm);
@@ -523,44 +541,43 @@ function buildOnsenCenter() {
   gazRoof.position.y = 3.2;
   gazebo.add(gazRoof);
 
-  // Biển hiệu gỗ ♨️ ONSEN UYÊN ƯƠNG
   const sign = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.8, 0.2), MATS.woodWarm);
   sign.position.set(0, 3.0, 2.6);
   gazebo.add(sign);
   group.add(gazebo);
 
-  // CẦU VÒM GỖ ĐỎ (TAIKO-BASHI) NỐI 2 BỜ THANH & NENE
+  // CẦU VÒM GỖ ĐỎ (TAIKO-BASHI) NƠI THANH VÀ NENE HÔN NHAU
   const bridge = new THREE.Group();
   bridge.position.set(0, 0.4, 6.5);
-  const deck = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.38, 3.2), MATS.vermilionRed);
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.4, 3.4), MATS.vermilionRed);
   deck.position.y = 0.55;
-  const railL = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.75, 0.2), MATS.vermilionDeep);
-  railL.position.set(0, 0.95, -1.5);
+  const railL = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.75, 0.2), MATS.vermilionDeep);
+  railL.position.set(0, 0.95, -1.6);
   const railR = railL.clone();
-  railR.position.z = 1.5;
+  railR.position.z = 1.6;
   bridge.add(deck, railL, railR);
 
   // Đèn lồng giấy đỏ gắn trên cầu
-  for (let bx of [-4.2, -1.4, 1.4, 4.2]) {
+  for (let bx of [-4.5, -1.5, 1.5, 4.5]) {
     const lPost = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 1.2, 8), MATS.woodDark);
-    lPost.position.set(bx, 1.1, -1.5);
+    lPost.position.set(bx, 1.1, -1.6);
     const lantern = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), MATS.lanternRedGlow);
     lantern.scale.y = 1.3;
-    lantern.position.set(bx, 1.8, -1.5);
+    lantern.position.set(bx, 1.8, -1.6);
     bridge.add(lPost, lantern);
   }
   group.add(bridge);
 
-  // Biểu tượng trái tim vàng & suối khoáng xoay trên không trung
+  // Biểu tượng trái tim vàng xoay trên không trung
   const heartGroup = new THREE.Group();
-  heartGroup.position.set(0, 9.2, 0);
+  heartGroup.position.set(0, 9.5, 0);
   const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.16, 12, 32), MATS.goldTrim);
   ring1.rotation.x = Math.PI / 2;
   const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.14, 12, 32), MATS.onsenWater);
   ring2.rotation.y = Math.PI / 2;
   heartGroup.add(ring1, ring2);
   group.add(heartGroup);
-  animatedObjects.push({ mesh: heartGroup, type: 'spinY', speed: 1.5, baseY: 9.2 });
+  animatedObjects.push({ mesh: heartGroup, type: 'spinY', speed: 1.5, baseY: 9.5 });
 
   enableShadow(group);
   registerStationHitbox('onsen_hub', group, 8.5, 12);
@@ -568,10 +585,10 @@ function buildOnsenCenter() {
 }
 
 // ============================================================================
-// 2. CÁC CÔNG TRÌNH BỜ THANH (PHONG CÁCH ẢNH 1: LỄ HỘI & LÁ PHONG ĐỎ)
+// 2. CÁC CÔNG TRÌNH CHÍNH & PHỤ BỜ THANH (LỄ HỘI & LÁ PHONG ĐỎ - ẢNH 1)
 // ============================================================================
 
-// A. Võ Đường Phong Diệp (Task Thanh)
+// A. Võ Đường Phong Diệp
 function buildThanhDojo() {
   const group = new THREE.Group();
   group.position.set(STATIONS.thanh_dojo.pos.x, 0, STATIONS.thanh_dojo.pos.z);
@@ -580,37 +597,28 @@ function buildThanhDojo() {
   pad.position.y = 0.35;
   group.add(pad);
 
-  // Tòa chính võ đường 2 tầng gỗ sẫm & đèn lồng lễ hội
   const hall = new THREE.Mesh(new THREE.BoxGeometry(8.2, 4.2, 6.8), MATS.woodDark);
   hall.position.set(0, 2.5, -0.5);
-  group.add(hall);
-
   const shoji = new THREE.Mesh(new THREE.BoxGeometry(8.4, 2.6, 6.95), MATS.shojiGlow);
   shoji.position.set(0, 2.4, -0.5);
-  group.add(shoji);
+  group.add(hall, shoji);
 
-  // Cột đỏ son & hiên đón
   for (let x = -3.8; x <= 3.8; x += 1.9) {
     const col = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.22, 4.4, 10), MATS.vermilionRed);
     col.position.set(x, 2.5, 3.1);
     group.add(col);
   }
 
-  // Mái ngói cong tầng 1
   const roof1 = createCurvedRoof(10.6, 8.8, 1.8, MATS.kawaraRoofRed);
   roof1.position.set(0, 4.4, -0.5);
   group.add(roof1);
 
-  // Tầng 2 võ đường
   const upper = new THREE.Mesh(new THREE.BoxGeometry(6.0, 2.6, 4.8), MATS.woodDark);
   upper.position.set(0, 6.2, -0.5);
-  group.add(upper);
-
   const roof2 = createCurvedRoof(7.8, 6.4, 1.6, MATS.kawaraRoofRed);
   roof2.position.set(0, 7.6, -0.5);
-  group.add(roof2);
+  group.add(upper, roof2);
 
-  // Hàng đèn lồng đỏ lễ hội rực sáng phía trước
   for (let lx = -3.6; lx <= 3.6; lx += 1.2) {
     const lantern = new THREE.Mesh(new THREE.SphereGeometry(0.32, 12, 12), MATS.lanternRedGlow);
     lantern.scale.y = 1.35;
@@ -618,12 +626,10 @@ function buildThanhDojo() {
     group.add(lantern);
   }
 
-  // Cổng Torii võ đường phong diệp phía trước
   const torii = createToriiGate(1.0);
   torii.position.set(0, 0.5, 5.0);
   group.add(torii);
 
-  // Biểu tượng quạt giấy đỏ Momiji xoay trên đỉnh
   const fanGroup = new THREE.Group();
   fanGroup.position.set(0, 10.4, -0.5);
   const fan = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.12, 16, 1, false, 0, Math.PI), MATS.vermilionRed);
@@ -637,7 +643,7 @@ function buildThanhDojo() {
   scene.add(group);
 }
 
-// B. Lầu Vọng Cảnh Lễ Hội (App & Dự Án của Thanh - Giống tháp ảnh 1)
+// B. Lầu Vọng Cảnh Lễ Hội
 function buildThanhTower() {
   const group = new THREE.Group();
   group.position.set(STATIONS.thanh_tower.pos.x, 0, STATIONS.thanh_tower.pos.z);
@@ -646,7 +652,6 @@ function buildThanhTower() {
   pad.position.y = 0.4;
   group.add(pad);
 
-  // Tháp vọng cảnh 3 tầng lộng lẫy phong cách lễ hội đêm
   const tiers = [
     { w: 7.6, h: 3.4, y: 0.8, rw: 9.6, rh: 1.6 },
     { w: 5.8, h: 3.0, y: 4.8, rw: 7.6, rh: 1.5 },
@@ -664,7 +669,6 @@ function buildThanhTower() {
     roof.position.y = t.y + t.h;
     group.add(roof);
 
-    // Đèn lồng đỏ 4 góc mỗi tầng tháp
     const offsets = [[-t.rw*0.48, -t.rw*0.48], [t.rw*0.48, -t.rw*0.48], [-t.rw*0.48, t.rw*0.48], [t.rw*0.48, t.rw*0.48]];
     offsets.forEach(([ox, oz]) => {
       const lan = new THREE.Mesh(new THREE.SphereGeometry(0.28, 10, 10), MATS.lanternRedGlow);
@@ -674,7 +678,6 @@ function buildThanhTower() {
     });
   });
 
-  // Đỉnh tháp vàng lễ hội xoay tròn
   const apex = new THREE.Mesh(new THREE.OctahedronGeometry(1.1, 0), MATS.goldTrim);
   apex.position.y = 15.4;
   group.add(apex);
@@ -685,7 +688,7 @@ function buildThanhTower() {
   scene.add(group);
 }
 
-// C. Tháp Chuông Kỷ Luật & Tiệm Rèn của Thanh
+// C. Tháp Chuông & Tiệm Rèn của Thanh
 function buildThanhExtras() {
   // Tháp Chuông
   const bellGroup = new THREE.Group();
@@ -718,7 +721,6 @@ function buildThanhExtras() {
   fGlow.position.set(0, 2.0, 0);
   const fRoof = createCurvedRoof(8.5, 7.2, 1.6, MATS.kawaraRoofRed);
   fRoof.position.set(0, 4.2, 0);
-  // Đồng tiền vàng Koban xoay
   const goldKoban = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.2, 16), MATS.goldTrim);
   goldKoban.scale.z = 1.45;
   goldKoban.rotation.x = Math.PI / 2;
@@ -730,11 +732,75 @@ function buildThanhExtras() {
   scene.add(forgeGroup);
 }
 
+// D. CÔNG TRÌNH PHỤ BỜ THANH (MỞ RỘNG: CHỢ ĐÊM YATAI, ĐƯỜNG CỔNG TORII, LẦU TRỐNG TAIKO)
+function buildThanhSubStructures() {
+  const subGroup = new THREE.Group();
+
+  // 1. Dãy cổng Torii liên hoàn (Senbon Torii Path)
+  for (let tz = -26; tz <= -12; tz += 3.2) {
+    const miniTorii = createToriiGate(0.75);
+    miniTorii.position.set(-8.5, 0.1, tz);
+    subGroup.add(miniTorii);
+  }
+
+  // 2. Các gian hàng lễ hội chợ đêm Yatai (Yatai Food Stalls)
+  const yataiPositions = [
+    { x: -16, z: 18, rot: 0.2 },
+    { x: -23, z: 19, rot: -0.15 },
+    { x: -10, z: -2, rot: 1.57 }
+  ];
+  yataiPositions.forEach(yp => {
+    const yatai = new THREE.Group();
+    yatai.position.set(yp.x, 0.1, yp.z);
+    yatai.rotation.y = yp.rot;
+
+    const cart = new THREE.Mesh(new THREE.BoxGeometry(3.6, 1.2, 2.2), MATS.woodWarm);
+    cart.position.y = 0.6;
+    const counter = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.15, 2.4), MATS.shikkuiWhite);
+    counter.position.y = 1.25;
+
+    // Mái bạt sọc đỏ trắng lễ hội
+    const canopy = new THREE.Mesh(new THREE.BoxGeometry(4.0, 0.2, 2.6), MATS.vermilionRed);
+    canopy.position.y = 2.6;
+    for (let cx of [-1.7, 1.7]) {
+      for (let cz of [-1.0, 1.0]) {
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.4, 8), MATS.woodDark);
+        pole.position.set(cx, 1.9, cz);
+        yatai.add(pole);
+      }
+    }
+    // Đèn lồng đỏ treo ở quầy
+    const l1 = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), MATS.lanternRedGlow);
+    l1.position.set(-1.2, 2.3, 1.1);
+    const l2 = l1.clone();
+    l2.position.x = 1.2;
+    yatai.add(cart, counter, canopy, l1, l2);
+    subGroup.add(yatai);
+  });
+
+  // 3. Vọng Lâu Trống Taiko (Kagura Festival Stage)
+  const taikoStage = new THREE.Group();
+  taikoStage.position.set(-36, 0.1, 0);
+  const tPlatform = new THREE.Mesh(new THREE.BoxGeometry(6.4, 1.2, 6.4), MATS.woodDark);
+  tPlatform.position.y = 0.6;
+  const tRoof = createCurvedRoof(7.8, 7.8, 1.6, MATS.kawaraRoofRed);
+  tRoof.position.y = 4.2;
+  // Trống Taiko lớn ở giữa
+  const taikoDrum = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.9, 1.4, 16), MATS.woodWarm);
+  taikoDrum.rotation.z = Math.PI / 2;
+  taikoDrum.position.y = 1.8;
+  taikoStage.add(tPlatform, tRoof, taikoDrum);
+  subGroup.add(taikoStage);
+
+  enableShadow(subGroup);
+  scene.add(subGroup);
+}
+
 // ============================================================================
-// 3. CÁC CÔNG TRÌNH BỜ NENE (PHONG CÁCH ẢNH 2: PHỐ CỔ MACHIYA & HOA ANH ĐÀO)
+// 3. CÁC CÔNG TRÌNH CHÍNH & PHỤ BỜ NENE (PHỐ CỔ MACHIYA & HOA ANH ĐÀO - ẢNH 2)
 // ============================================================================
 
-// A. Trà Quán Sakura (Task Nene - Giống nhà mặt tiền ảnh 2)
+// A. Trà Quán Sakura
 function buildNeneTeaHouse() {
   const group = new THREE.Group();
   group.position.set(STATIONS.nene_tea.pos.x, 0, STATIONS.nene_tea.pos.z);
@@ -743,47 +809,34 @@ function buildNeneTeaHouse() {
   pad.position.y = 0.35;
   group.add(pad);
 
-  // Nhà phố Machiya 2 tầng truyền thống Kyoto
   const groundFloor = new THREE.Mesh(new THREE.BoxGeometry(8.4, 3.6, 6.6), MATS.woodWarm);
   groundFloor.position.set(0, 2.1, -0.5);
-  group.add(groundFloor);
-
-  // Vách giấy Shoji trắng ấm áp & rèm noren xanh chàm
   const shoji = new THREE.Mesh(new THREE.BoxGeometry(8.5, 2.2, 6.75), MATS.shojiGlow);
   shoji.position.set(0, 2.0, -0.5);
   const noren = new THREE.Mesh(new THREE.BoxGeometry(3.6, 1.2, 0.15), MATS.norenBlue);
   noren.position.set(0, 2.6, 2.9);
-  group.add(shoji, noren);
-
-  // Hiên gỗ Engawa bước vào quán trà
   const engawa = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.4, 2.2), MATS.woodWarm);
   engawa.position.set(0, 0.5, 3.8);
-  group.add(engawa);
+  group.add(groundFloor, shoji, noren, engawa);
 
-  // Mái ngói cong tầng 1
   const roof1 = createCurvedRoof(10.2, 8.4, 1.6, MATS.kawaraRoofDark);
   roof1.position.set(0, 4.0, -0.5);
   group.add(roof1);
 
-  // Tầng 2 trà quán
   const upperFloor = new THREE.Mesh(new THREE.BoxGeometry(6.6, 2.6, 5.2), MATS.shikkuiWhite);
   upperFloor.position.set(0, 5.8, -0.5);
   const upperShoji = new THREE.Mesh(new THREE.BoxGeometry(6.75, 1.6, 5.35), MATS.shojiGlow);
   upperShoji.position.set(0, 5.8, -0.5);
-  group.add(upperFloor, upperShoji);
-
   const roof2 = createCurvedRoof(8.4, 7.0, 1.6, MATS.kawaraRoofDark);
   roof2.position.set(0, 7.2, -0.5);
-  group.add(roof2);
+  group.add(upperFloor, upperShoji, roof2);
 
-  // Đèn lồng giấy ấm Andon phong cách Kyoto trước cửa
   const lLeft = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.2, 0.6), MATS.lanternWarmGlow);
   lLeft.position.set(-2.8, 1.6, 3.6);
   const lRight = lLeft.clone();
   lRight.position.x = 2.8;
   group.add(lLeft, lRight);
 
-  // Chén trà hoa anh đào khổng lồ xoay trên nóc
   const teaCupGroup = new THREE.Group();
   teaCupGroup.position.set(0, 9.8, -0.5);
   const cup = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 0.7, 1.2, 16), MATS.white);
@@ -813,7 +866,6 @@ function buildNeneExtras() {
   sBody2.position.set(0, 6.4, 0);
   const sRoof2 = createCurvedRoof(7.2, 6.4, 1.5, MATS.kawaraRoofDark);
   sRoof2.position.set(0, 8.0, 0);
-  // Dải lụa sáng tạo hoa đào xoay tròn
   const ribbon = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.22, 12, 32), MATS.sakuraDeep);
   ribbon.rotation.x = Math.PI / 3;
   ribbon.position.set(0, 10.5, 0);
@@ -823,7 +875,7 @@ function buildNeneExtras() {
   registerStationHitbox('nene_studio', studioGroup, 8.0, 13);
   scene.add(studioGroup);
 
-  // Lầu Nguyệt Quang (Tháp Đồng Hồ Nene)
+  // Lầu Nguyệt Quang
   const clockGroup = new THREE.Group();
   clockGroup.position.set(STATIONS.nene_clock.pos.x, 0, STATIONS.nene_clock.pos.z);
   const cPad = new THREE.Mesh(new THREE.BoxGeometry(8.5, 0.6, 8.5), MATS.groundNene);
@@ -832,7 +884,6 @@ function buildNeneExtras() {
   cTower.position.y = 3.6;
   const cRoof = createCurvedRoof(7.0, 7.0, 1.8, MATS.kawaraRoofDark);
   cRoof.position.y = 7.0;
-  // Mặt trăng lưỡi liềm vàng trên đỉnh
   const moon = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.2, 8, 24, Math.PI * 1.3), MATS.goldTrim);
   moon.position.set(0, 9.4, 0);
   clockGroup.add(cPad, cTower, cRoof, moon);
@@ -850,7 +901,6 @@ function buildNeneExtras() {
   wHouse.position.set(0, 2.1, 0);
   const wRoof = createCurvedRoof(8.4, 7.0, 1.5, MATS.kawaraRoofDark);
   wRoof.position.set(0, 4.1, 0);
-  // Mèo Thần Tài nhỏ nhắn Maneki-Neko
   const luckyCat = new THREE.Mesh(new THREE.SphereGeometry(1.0, 16, 16), MATS.white);
   luckyCat.position.set(0, 6.4, 0);
   wagashiGroup.add(wPad, wHouse, wRoof, luckyCat);
@@ -860,25 +910,63 @@ function buildNeneExtras() {
   scene.add(wagashiGroup);
 }
 
-// Helper: Cây Cổng Torii
-function createToriiGate(scale = 1) {
-  const tg = new THREE.Group();
-  const pillarGeo = new THREE.CylinderGeometry(0.2 * scale, 0.24 * scale, 3.8 * scale, 12);
-  const pL = new THREE.Mesh(pillarGeo, MATS.vermilionRed);
-  pL.position.set(-1.4 * scale, 1.9 * scale, 0);
-  const pR = pL.clone();
-  pR.position.x = 1.4 * scale;
+// C. CÔNG TRÌNH PHỤ BỜ NENE (MỞ RỘNG: BÁNH XE NƯỚC SUISHA, CHÒI HANAMI, VƯỜN ZEN)
+let waterWheelMesh;
 
-  const nuki = new THREE.Mesh(new THREE.BoxGeometry(3.5 * scale, 0.22 * scale, 0.2 * scale), MATS.vermilionRed);
-  nuki.position.y = 2.9 * scale;
-  const kasagi = new THREE.Mesh(new THREE.BoxGeometry(4.2 * scale, 0.28 * scale, 0.38 * scale), MATS.vermilionRed);
-  kasagi.position.y = 3.8 * scale;
-  tg.add(pL, pR, nuki, kasagi);
-  return tg;
+function buildNeneSubStructures() {
+  const subGroup = new THREE.Group();
+
+  // 1. Bánh xe nước cối xay gỗ cổ truyền (Suisha Waterwheel) bên suối Onsen
+  const wheelGroup = new THREE.Group();
+  wheelGroup.position.set(6.0, 1.4, -4.0);
+
+  const wheelHub = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.6, 12), MATS.woodDark);
+  wheelHub.rotation.x = Math.PI / 2;
+  wheelGroup.add(wheelHub);
+
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.1, 8, 24), MATS.woodWarm);
+  wheelGroup.add(rim);
+
+  for (let b = 0; b < 8; b++) {
+    const blade = new THREE.Mesh(new THREE.BoxGeometry(0.35, 1.5, 0.08), MATS.woodWarm);
+    blade.rotation.z = (b / 8) * Math.PI * 2;
+    blade.position.set(Math.cos(blade.rotation.z) * 0.8, Math.sin(blade.rotation.z) * 0.8, 0);
+    wheelGroup.add(blade);
+  }
+  waterWheelMesh = wheelGroup;
+  subGroup.add(wheelGroup);
+
+  // 2. Chòi ngắm hoa anh đào Hanami ven suối (Hanami Tea Gazebo)
+  const hanamiGazebo = new THREE.Group();
+  hanamiGazebo.position.set(36, 0.1, 0);
+  const hFloor = new THREE.Mesh(new THREE.BoxGeometry(5.8, 0.4, 5.8), MATS.woodWarm);
+  hFloor.position.y = 0.2;
+  const hRoof = createCurvedRoof(7.2, 7.2, 1.6, MATS.kawaraRoofDark);
+  hRoof.position.y = 3.6;
+  const hTable = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.4, 16), MATS.shikkuiWhite);
+  hTable.position.y = 0.6;
+  hanamiGazebo.add(hFloor, hRoof, hTable);
+  subGroup.add(hanamiGazebo);
+
+  // 3. Vườn rải sỏi trắng phong cách Zen Karesansui
+  const zenGarden = new THREE.Group();
+  zenGarden.position.set(16, 0.1, -22);
+  const gravel = new THREE.Mesh(new THREE.BoxGeometry(10, 0.15, 8), MATS.shikkuiWhite);
+  gravel.position.y = 0.1;
+  // 3 tảng đá thiền rêu phong
+  const zRock1 = new THREE.Mesh(new THREE.DodecahedronGeometry(0.9, 0), MATS.onsenRock);
+  zRock1.position.set(-2, 0.8, 0);
+  const zRock2 = new THREE.Mesh(new THREE.DodecahedronGeometry(0.65, 0), MATS.onsenRock);
+  zRock2.position.set(1.5, 0.6, 1.2);
+  zenGarden.add(gravel, zRock1, zRock2);
+  subGroup.add(zenGarden);
+
+  enableShadow(subGroup);
+  scene.add(subGroup);
 }
 
 // ============================================================================
-// 4. CÂY CỐI & CẢNH QUAN 2 BỜ: LÁ PHONG ĐỎ (THANH) & HOA ANH ĐÀO (NENE)
+// 4. RỪNG CÂY LÁ PHONG ĐỎ (THANH) & HOA ANH ĐÀO (NENE)
 // ============================================================================
 function createMapleTree(scale = 1) {
   const tg = new THREE.Group();
@@ -923,11 +1011,10 @@ function createSakuraTree(scale = 1) {
 }
 
 function buildFloraScenery() {
-  // Rừng cây Lá phong đỏ bên bờ Thanh (X < -4)
   const maplePositions = [
-    [-9, 12, 1.2], [-14, 18, 1.35], [-24, 18, 1.2], [-32, 8, 1.4],
-    [-28, -6, 1.3], [-18, -20, 1.4], [-30, -18, 1.25], [-8, -14, 1.1],
-    [-11, -2, 1.15], [-20, 2, 1.3]
+    [-9, 12, 1.2], [-14, 18, 1.35], [-24, 18, 1.2], [-34, 8, 1.4],
+    [-28, -6, 1.3], [-18, -20, 1.4], [-32, -18, 1.25], [-8, -14, 1.1],
+    [-11, -2, 1.15], [-20, 2, 1.3], [-40, -10, 1.4], [-38, 14, 1.3]
   ];
   maplePositions.forEach(([mx, mz, ms]) => {
     const tree = createMapleTree(ms);
@@ -936,11 +1023,10 @@ function buildFloraScenery() {
     scene.add(tree);
   });
 
-  // Rừng cây Hoa anh đào bên bờ Nene (X > 4)
   const sakuraPositions = [
-    [9, 12, 1.2], [14, 18, 1.35], [24, 18, 1.2], [32, 8, 1.4],
-    [28, -6, 1.3], [18, -20, 1.4], [30, -18, 1.25], [8, -14, 1.1],
-    [11, -2, 1.15], [20, 2, 1.3]
+    [9, 12, 1.2], [14, 18, 1.35], [24, 18, 1.2], [34, 8, 1.4],
+    [28, -6, 1.3], [18, -20, 1.4], [32, -18, 1.25], [8, -14, 1.1],
+    [11, -2, 1.15], [20, 2, 1.3], [40, -10, 1.4], [38, 14, 1.3]
   ];
   sakuraPositions.forEach(([sx, sz, ss]) => {
     const tree = createSakuraTree(ss);
@@ -951,61 +1037,15 @@ function buildFloraScenery() {
 }
 
 // ============================================================================
-// 5. TÀU SHINKANSEN KẾT NỐI 2 BỜ & NHÂN VẬT CHIBI THANH - NENE
+// 5. NHÂN VẬT CHIBI THANH & NENE — CÓ THỂ HÔN NHAU (KISSING ANIMATION)
 // ============================================================================
-const trackWaypoints = [
-  new THREE.Vector3(-22, 0.25, -5),
-  new THREE.Vector3(-14, 0.25, 4),
-  new THREE.Vector3(0, 0.65, 12),  // Qua cầu suối Onsen
-  new THREE.Vector3(14, 0.25, 4),
-  new THREE.Vector3(22, 0.25, -5),
-  new THREE.Vector3(16, 0.25, -16),
-  new THREE.Vector3(0, 0.65, -12), // Qua cầu phía bắc
-  new THREE.Vector3(-16, 0.25, -16)
-];
-const trackCurve = new THREE.CatmullRomCurve3(trackWaypoints, true);
-
-let trainMesh;
-let trainProgress = 0;
-
-function buildRailwayAndTrain() {
-  const points = trackCurve.getSpacedPoints(140);
-  const railGroup = new THREE.Group();
-  for (let i = 0; i < points.length; i++) {
-    const pt = points[i];
-    const tangent = trackCurve.getTangent(i / points.length);
-    const sleeper = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.12, 0.4), MATS.woodDark);
-    sleeper.position.copy(pt);
-    sleeper.lookAt(pt.clone().add(tangent));
-    railGroup.add(sleeper);
-  }
-  const tube = new THREE.Mesh(
-    new THREE.TubeGeometry(trackCurve, 140, 0.12, 8, true),
-    MATS.onsenRock
-  );
-  tube.position.y = 0.08;
-  railGroup.add(tube);
-  scene.add(railGroup);
-
-  // Đoàn tàu Shinkansen đỏ-hồng kết nối 2 bờ
-  trainMesh = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.3, 3.4), MATS.white);
-  body.position.y = 0.9;
-  const stripeRed = new THREE.Mesh(new THREE.BoxGeometry(1.85, 0.25, 3.42), MATS.vermilionRed);
-  stripeRed.position.y = 0.85;
-  const nose = new THREE.Mesh(new THREE.ConeGeometry(0.9, 1.8, 14), MATS.white);
-  nose.rotation.x = Math.PI / 2;
-  nose.position.set(0, 0.75, 2.5);
-  trainMesh.add(body, stripeRed, nose);
-  enableShadow(trainMesh);
-  scene.add(trainMesh);
-}
-
-// 2 Nhân vật chính: Chibi Thanh 🍁 & Chibi Nene 🌸
+let chibiThanhMesh, chibiNeneMesh;
+let isKissing = false;
+let kissProgress = 0;
 const characters = [];
 
 function buildChibiCouple() {
-  // 1. Chibi Thanh (Samurai Haori Đỏ - Bờ Lá Phong)
+  // 1. Chibi Thanh (Haori đỏ sẫm - Bờ Lá Phong)
   const thanhGroup = new THREE.Group();
   const tKimono = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.62, 1.25, 14), MATS.woodDark);
   tKimono.position.y = 0.72;
@@ -1020,6 +1060,7 @@ function buildChibiCouple() {
   thanhGroup.add(tKimono, tHaori, tHead, tHair, tBun);
   enableShadow(thanhGroup);
   scene.add(thanhGroup);
+  chibiThanhMesh = thanhGroup;
 
   const tLabel = document.createElement('div');
   tLabel.className = 'worker-label';
@@ -1027,16 +1068,17 @@ function buildChibiCouple() {
   labelsContainer.appendChild(tLabel);
 
   characters.push({
+    id: 'thanh',
     mesh: thanhGroup,
     labelEl: tLabel,
-    start: new THREE.Vector3(-14, 0, 4),
-    end: new THREE.Vector3(-1, 0.4, 6.5), // Gặp nhau giữa cầu Onsen
+    start: new THREE.Vector3(-12, 0, 4),
+    end: new THREE.Vector3(-0.6, 0.95, 6.5),
     t: 0,
     dir: 1,
-    speed: 0.18
+    speed: 0.16
   });
 
-  // 2. Chibi Nene (Kimono Hoa Đào Hồng - Bờ Sakura)
+  // 2. Chibi Nene (Kimono hoa đào hồng - Bờ Sakura)
   const neneGroup = new THREE.Group();
   const nKimono = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.62, 1.25, 14), MATS.sakuraPink);
   nKimono.position.y = 0.72;
@@ -1051,6 +1093,7 @@ function buildChibiCouple() {
   neneGroup.add(nKimono, nObi, nHead, nHair, nFlower);
   enableShadow(neneGroup);
   scene.add(neneGroup);
+  chibiNeneMesh = neneGroup;
 
   const nLabel = document.createElement('div');
   nLabel.className = 'worker-label';
@@ -1058,32 +1101,81 @@ function buildChibiCouple() {
   labelsContainer.appendChild(nLabel);
 
   characters.push({
+    id: 'nene',
     mesh: neneGroup,
     labelEl: nLabel,
-    start: new THREE.Vector3(14, 0, 4),
-    end: new THREE.Vector3(1, 0.4, 6.5), // Gặp nhau giữa cầu Onsen
+    start: new THREE.Vector3(12, 0, 4),
+    end: new THREE.Vector3(0.6, 0.95, 6.5),
     t: 0,
     dir: 1,
-    speed: 0.18
+    speed: 0.16
   });
 }
 
+// Chùm trái tim 3D bay lên khi Thanh và Nene hôn nhau
+const kissHearts = [];
+
+function spawnKissHearts(posX, posY, posZ) {
+  for (let i = 0; i < 18; i++) {
+    const hMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(0.25, 10, 10),
+      new THREE.MeshStandardMaterial({
+        color: i % 2 === 0 ? 0xff2d55 : 0xff758f,
+        emissive: 0xff2d55,
+        emissiveIntensity: 0.85
+      })
+    );
+    hMesh.position.set(
+      posX + (Math.random() - 0.5) * 0.8,
+      posY + Math.random() * 0.5,
+      posZ + (Math.random() - 0.5) * 0.8
+    );
+    scene.add(hMesh);
+    kissHearts.push({
+      mesh: hMesh,
+      velY: 1.8 + Math.random() * 2.2,
+      velX: (Math.random() - 0.5) * 1.5,
+      velZ: (Math.random() - 0.5) * 1.5,
+      life: 2.2,
+      maxLife: 2.2
+    });
+  }
+}
+
+function triggerKiss(broadcast = true) {
+  isKissing = true;
+  kissProgress = 4.5; // Kéo dài 4.5 giây
+
+  // Camera lướt nhẹ nhàng đến Cầu Onsen
+  cameraLerp = {
+    targetPos: new THREE.Vector3(0, 8.5, 18),
+    targetLook: new THREE.Vector3(0, 2.0, 6.5),
+    alpha: 0
+  };
+
+  spawnKissHearts(0, 2.8, 6.5);
+  showToast('💖 Thanh & Nene trao nhau nụ hôn ngọt ngào trên Cầu Suối Nước Nóng!');
+
+  if (broadcast && typeof publishCloudState === 'function') {
+    publishCloudState({ station: 'onsen_hub', msg: '💋 Thanh & Nene vừa hôn nhau lãng mạn!' });
+  }
+}
+
 // ============================================================================
-// 6. HỆ THỐNG THỜI TIẾT 4 MÙA (XUÂN, HẠ, THU, ĐÔNG) & HƠI NƯỚC ONSEN
+// 6. THỜI TIẾT 4 MÙA & HƠI NƯỚC ONSEN
 // ============================================================================
 const particles = [];
 let onsenSteamParticles = [];
 
 function initWeatherParticles() {
-  // Hơi nước Onsen bốc lên nghi ngút
-  const steamGeo = new THREE.SphereGeometry(0.35, 8, 8);
-  const steamMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 });
-  for (let s = 0; s < 45; s++) {
+  const steamGeo = new THREE.SphereGeometry(0.38, 8, 8);
+  const steamMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.38 });
+  for (let s = 0; s < 50; s++) {
     const sp = new THREE.Mesh(steamGeo, steamMat);
     sp.position.set(
-      (Math.random() - 0.5) * 5.5,
-      0.4 + Math.random() * 4.5,
-      (Math.random() - 0.5) * 25
+      (Math.random() - 0.5) * 6.5,
+      0.4 + Math.random() * 4.8,
+      (Math.random() - 0.5) * 35
     );
     scene.add(sp);
     onsenSteamParticles.push({
@@ -1095,15 +1187,14 @@ function initWeatherParticles() {
     });
   }
 
-  // 150 hạt thời tiết 4 mùa (Cánh hoa anh đào, Lá phong, Đom đóm, Bông tuyết)
-  const pGeo = new THREE.PlaneGeometry(0.3, 0.26);
+  const pGeo = new THREE.PlaneGeometry(0.32, 0.28);
   const pMat = new THREE.MeshBasicMaterial({ color: 0xffb7c5, side: THREE.DoubleSide, transparent: true, opacity: 0.9 });
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < 160; i++) {
     const pMesh = new THREE.Mesh(pGeo, pMat);
     pMesh.position.set(
-      (Math.random() - 0.5) * 75,
-      2 + Math.random() * 24,
-      (Math.random() - 0.5) * 70
+      (Math.random() - 0.5) * 95,
+      2 + Math.random() * 26,
+      (Math.random() - 0.5) * 85
     );
     pMesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
     scene.add(pMesh);
@@ -1124,64 +1215,49 @@ function applySeason(seasonName) {
 
   particles.forEach(p => {
     if (seasonName === 'spring') {
-      // Mùa Xuân: Cánh hoa anh đào hồng bay lãng mạn
       p.mesh.material.color.setHex(0xffb7c5);
       p.speedY = 1.0;
     } else if (seasonName === 'summer') {
-      // Mùa Hạ: Đom đóm vàng xanh đêm rực rỡ
       p.mesh.material.color.setHex(0xc8f700);
       p.speedY = 0.4;
     } else if (seasonName === 'autumn') {
-      // Mùa Thu: Mưa lá phong đỏ & cam rực lửa
       p.mesh.material.color.setHex(Math.random() > 0.5 ? 0xd92027 : 0xf37121);
       p.speedY = 1.4;
     } else if (seasonName === 'winter') {
-      // Mùa Đông: Tuyết trắng lấp lánh rơi dày phủ mái ngói
       p.mesh.material.color.setHex(0xffffff);
       p.speedY = 1.8;
     }
   });
 
   if (seasonName === 'winter') {
-    scene.background.setHex(0xd0d8e2);
-    scene.fog.color.setHex(0xd0d8e2);
-    groundThanhMesh.material.color.setHex(0xe8edf2);
-    groundNeneMesh.material.color.setHex(0xf0f4f8);
-  } else if (seasonName === 'autumn') {
-    scene.background.setHex(0xf8d8c2);
-    scene.fog.color.setHex(0xf8d8c2);
-    groundThanhMesh.material.color.setHex(0xd9c2a7);
-    groundNeneMesh.material.color.setHex(0xdde6d5);
-  } else if (seasonName === 'spring') {
-    scene.background.setHex(0xfde2e4);
-    scene.fog.color.setHex(0xfde2e4);
-    groundThanhMesh.material.color.setHex(0xd9c2a7);
-    groundNeneMesh.material.color.setHex(0xdde6d5);
+    scene.background.setHex(0x121728);
+    scene.fog.color.setHex(0x121728);
+    groundThanhMesh.material.color.setHex(0x38414e);
+    groundNeneMesh.material.color.setHex(0x3c4756);
   } else {
-    // Summer
-    scene.background.setHex(0xdcebd5);
-    scene.fog.color.setHex(0xdcebd5);
-    groundThanhMesh.material.color.setHex(0xd9c2a7);
-    groundNeneMesh.material.color.setHex(0xdde6d5);
+    scene.background.setHex(NIGHT_BG);
+    scene.fog.color.setHex(NIGHT_BG);
+    groundThanhMesh.material.color.setHex(0x302722);
+    groundNeneMesh.material.color.setHex(0x222d26);
   }
 
   showToast(`🌸 Thời tiết đã chuyển sang: MÙA ${seasonName === 'spring' ? 'XUÂN' : seasonName === 'summer' ? 'HẠ' : seasonName === 'autumn' ? 'THU' : 'ĐÔNG'}!`);
 }
 
 // ============================================================================
-// 7. HỆ THỐNG PHÁO HOA 3D & ĐẠI TIỆC PHÁO HOA 5 TASKS (MEGA FIREWORKS)
+// 7. HỆ THỐNG PHÁO HOA 3D & MEGA FIREWORKS (5 TASKS)
 // ============================================================================
 const fireworks = [];
 
 function spawnSingleFirework(posX, posY, posZ, colorHex = 0xff3b30) {
-  const count = 28;
+  const count = 30;
   for (let i = 0; i < count; i++) {
     const p = new THREE.Mesh(
-      new THREE.SphereGeometry(0.24, 8, 8),
+      new THREE.SphereGeometry(0.25, 8, 8),
       new THREE.MeshStandardMaterial({
         color: colorHex,
         emissive: colorHex,
-        emissiveIntensity: 0.9,
+        emissiveIntensity: 1.1,
         roughness: 0.2
       })
     );
@@ -1190,40 +1266,38 @@ function spawnSingleFirework(posX, posY, posZ, colorHex = 0xff3b30) {
     const v = Math.random();
     const theta = u * 2.0 * Math.PI;
     const phi = Math.acos(2.0 * v - 1.0);
-    const speed = 4.5 + Math.random() * 5.5;
+    const speed = 4.5 + Math.random() * 5.8;
     const vel = new THREE.Vector3(
       Math.sin(phi) * Math.cos(theta) * speed,
       Math.sin(phi) * Math.sin(theta) * speed + 3,
       Math.cos(phi) * speed
     );
     scene.add(p);
-    fireworks.push({ mesh: p, vel, life: 1.4, maxLife: 1.4 });
+    fireworks.push({ mesh: p, vel, life: 1.45, maxLife: 1.45 });
   }
 }
 
 function triggerMegaFireworks(customMessage = null) {
   const colors = [0xff3b30, 0xff9500, 0xffcc00, 0x4cd964, 0x5ac8fa, 0x007aff, 0x5856d6, 0xff2d55];
   const launchPoints = [
-    { x: -16, z: 6 }, { x: 16, z: 6 },
-    { x: -22, z: -14 }, { x: 23, z: -12 },
-    { x: 0, z: 0 }, { x: -8, z: 12 }, { x: 8, z: 12 }
+    { x: -18, z: 6 }, { x: 18, z: 6 },
+    { x: -26, z: -16 }, { x: 26, z: -14 },
+    { x: 0, z: 0 }, { x: -10, z: 14 }, { x: 10, z: 14 }
   ];
 
-  // Bắn liên hồi 8-10 phát pháo hoa rực sáng
   for (let wave = 0; wave < 8; wave++) {
     setTimeout(() => {
       const pt = launchPoints[wave % launchPoints.length];
       const col = colors[wave % colors.length];
       spawnSingleFirework(
-        pt.x + (Math.random() - 0.5) * 4,
-        14 + Math.random() * 8,
-        pt.z + (Math.random() - 0.5) * 4,
+        pt.x + (Math.random() - 0.5) * 5,
+        15 + Math.random() * 8,
+        pt.z + (Math.random() - 0.5) * 5,
         col
       );
     }, wave * 380);
   }
 
-  // Hiển thị Banner chúc mừng Đại Tiệc Pháo Hoa
   const banner = document.getElementById('mega-fireworks-banner');
   if (banner) {
     if (customMessage) {
@@ -1241,14 +1315,15 @@ buildOnsenCenter();
 buildThanhDojo();
 buildThanhTower();
 buildThanhExtras();
+buildThanhSubStructures(); // Mở rộng: Chợ đêm Yatai & Senbon Torii
 buildNeneTeaHouse();
 buildNeneExtras();
+buildNeneSubStructures();  // Mở rộng: Bánh xe nước & Vườn Zen
 buildFloraScenery();
-buildRailwayAndTrain();
 buildChibiCouple();
 initWeatherParticles();
 
-// Tạo các nhãn 3D nổi trên màn hình
+// Tạo các nhãn 3D nổi trên màn hình có gán data-side
 const stationLabelEls = {};
 
 function createStationLabels() {
@@ -1256,6 +1331,7 @@ function createStationLabels() {
     const wrapper = document.createElement('div');
     wrapper.className = 'world-label';
     wrapper.dataset.station = st.id;
+    wrapper.dataset.side = st.side; // 'thanh' | 'nene' | 'center'
     wrapper.innerHTML = `
       <div class="speech-bubble" id="bubble-${st.id}">${st.bubble}</div>
       <div class="station-badge">
@@ -1315,7 +1391,7 @@ function updateWorldBadges() {
 
     el.classList.toggle('active', state.activeStation === st.id);
     if (activeRingMeshes[st.id]) {
-      activeRingMeshes[st.id].material.opacity = state.activeStation === st.id ? 0.8 : 0.0;
+      activeRingMeshes[st.id].material.opacity = state.activeStation === st.id ? 0.85 : 0.0;
     }
   });
 }
@@ -1329,7 +1405,6 @@ function updateTopSummary() {
   document.getElementById('top-stat-tasks').textContent = `${totalDone}/${totalAll.length} task xong`;
   document.getElementById('fw-streak-text').textContent = `${state.completedStreak % 5}/5 task`;
 
-  // Cập nhật số dư theo Persona hiện tại
   if (state.currentUser === 'thanh') {
     const inc = state.thanh.finance.transactions.filter(t => t.type === 'income').reduce((s,t) => s + t.amount, 0);
     const exp = state.thanh.finance.transactions.filter(t => t.type === 'expense').reduce((s,t) => s + t.amount, 0);
@@ -1349,13 +1424,9 @@ function updateTopSummary() {
 let cameraLerp = null;
 let autoRotate = false;
 let simRunning = true;
-let followTrain = false;
 
 function flyToStation(stationId) {
   const st = STATIONS[stationId] || STATIONS.onsen_hub;
-  followTrain = false;
-  document.getElementById('btn-follow-train').classList.remove('active');
-
   cameraLerp = {
     targetPos: new THREE.Vector3(
       st.pos.x + st.camOffset.x * 0.45,
@@ -1421,12 +1492,9 @@ function renderInspector() {
 
   const body = document.getElementById('insp-body');
 
-  // A. SUỐI NƯỚC NÓNG ONSEN TRUNG TÂM (CHUNG CHO CẢ HAI)
   if (st.id === 'onsen_hub') {
     renderOnsenHubPanel(body);
-  }
-  // B. CÁC CÔNG TRÌNH CỦA THANH (BỜ LÁ PHONG ĐỎ)
-  else if (st.id === 'thanh_dojo') {
+  } else if (st.id === 'thanh_dojo') {
     renderTasksPanel(body, 'thanh');
   } else if (st.id === 'thanh_tower') {
     renderAppsPanel(body, 'thanh');
@@ -1434,9 +1502,7 @@ function renderInspector() {
     renderSchedulePanel(body, 'thanh');
   } else if (st.id === 'thanh_forge') {
     renderFinancePanel(body, 'thanh');
-  }
-  // C. CÁC CÔNG TRÌNH CỦA NENE (BỜ HOA ANH ĐÀO)
-  else if (st.id === 'nene_tea') {
+  } else if (st.id === 'nene_tea') {
     renderTasksPanel(body, 'nene');
   } else if (st.id === 'nene_studio') {
     renderAppsPanel(body, 'nene');
@@ -1495,23 +1561,10 @@ function renderOnsenHubPanel(body) {
       <button type="submit" class="btn-primary">Thêm Vào Suối Onsen</button>
     </form>
 
-    <div style="font-size:12px; font-weight:800; color:var(--maroon-main); margin: 12px 0 6px;">
-      💑 MỤC TIÊU GẮN KẾT (COUPLE GOALS):
-    </div>
-    <div class="item-list">
-      ${state.shared.coupleGoals.map(g => `
-        <div class="list-item">
-          <div class="item-left">
-            <span style="font-size:18px;">🔥</span>
-            <div class="item-info">
-              <div class="item-title">${g.title}</div>
-              <div class="item-meta">
-                <span class="tag-badge orange">Chuỗi ${g.streak} ngày</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      `).join('')}
+    <div style="margin-top:12px; text-align:center;">
+      <button class="ctrl-btn kiss-trigger-btn" style="width:100%; justify-content:center; padding:10px;" onclick="window.triggerKiss()">
+        💋 Thanh &amp; Nene Hôn Nhau Trên Cầu
+      </button>
     </div>
   `;
 }
@@ -1565,7 +1618,7 @@ function renderTasksPanel(body, role) {
     </div>
 
     <form class="add-form" onsubmit="window.addTask(event, '${role}', '${tab}')">
-      <div class="add-form-title">+ Thêm công việc mới cho ${isThanh ? 'Thanh' : 'Nene'} (${tab === 'day' ? 'Ngày' : tab === 'week' ? 'Tuần' : 'Tháng'})</div>
+      <div class="add-form-title">+ Thêm việc mới cho ${isThanh ? 'Thanh' : 'Nene'} (${tab === 'day' ? 'Ngày' : tab === 'week' ? 'Tuần' : 'Tháng'})</div>
       <input class="form-input" name="title" placeholder="Nhập tên việc cần làm..." required />
       <div class="form-row">
         <select class="form-select" name="priority">
@@ -1740,7 +1793,7 @@ function renderAppsPanel(body, role) {
 }
 
 // ============================================================================
-// WINDOW ACTIONS & PHÁO HOA TRIGGER KHI HOÀN THÀNH TASK
+// WINDOW ACTIONS & PHÁO HOA TRIGGER
 // ============================================================================
 window.setTaskTab = function(role, tab) {
   state.taskSubTab = tab;
@@ -1752,12 +1805,10 @@ function handleTaskCompletionReward(stationId, taskTitle) {
   state.completedStreak += 1;
   state.totalCompleted += 1;
 
-  // 1. Luôn bắn pháo hoa đơn lẻ tại vị trí công trình đó
   const st = STATIONS[stationId] || STATIONS.onsen_hub;
   spawnSingleFirework(st.pos.x, 8.5, st.pos.z, stationId.startsWith('thanh') ? 0xd63031 : 0xe84393);
   showToast(`🎆 Đã xong: ${taskTitle}! (${state.completedStreak % 5}/5 task)`);
 
-  // 2. Khi chạm mốc bội số của 5 -> KÍCH HOẠT ĐẠI TIỆC PHÁO HOA LỚN!
   if (state.completedStreak % 5 === 0) {
     triggerMegaFireworks(`🎉 CẢ HAI ĐÃ HOÀN THÀNH MỐC ${state.completedStreak} TASKS! ĐẠI TIỆC PHÁO HOA RỰC SÁNG! 🎉`);
   }
@@ -1913,14 +1964,23 @@ window.deleteApp = function(role, id) {
   renderInspector();
 };
 
+window.triggerKiss = function() {
+  triggerKiss(true);
+};
+
 // ============================================================================
-// TOP BAR SWITCHERS & LOCK SCREEN WIRING
+// TOP BAR SWITCHERS & PERSONA VIEW CONTROLLER
+// (TỰ ĐỘNG ẨN CÁC NÚT KHÔNG CẦN THIẾT THEO PERSONA)
 // ============================================================================
 function setPersonaView(persona) {
   state.currentUser = persona;
   document.getElementById('btn-role-thanh').classList.toggle('active', persona === 'thanh');
   document.getElementById('btn-role-nene').classList.toggle('active', persona === 'nene');
   document.getElementById('btn-role-all').classList.toggle('active', persona === 'all');
+
+  // Gán class lên document.body để CSS tự động ẩn các nút không cần thiết!
+  document.body.classList.remove('persona-thanh', 'persona-nene', 'persona-all');
+  document.body.classList.add('persona-' + persona);
 
   const heroBanner = document.getElementById('hero-banner-title');
   if (persona === 'thanh') {
@@ -1940,19 +2000,20 @@ document.getElementById('btn-role-thanh').addEventListener('click', () => setPer
 document.getElementById('btn-role-nene').addEventListener('click', () => setPersonaView('nene'));
 document.getElementById('btn-role-all').addEventListener('click', () => setPersonaView('all'));
 
-// 4 Seasons Buttons
 document.querySelectorAll('.season-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     applySeason(btn.dataset.season);
   });
 });
 
-// Nút bắn pháo hoa thủ công trên top bar
 document.getElementById('btn-trigger-fireworks').addEventListener('click', () => {
   triggerMegaFireworks('🎆 BẮN PHÁO HOA ĂN MỪNG THỊ TRẤN ĐÔI THANH & NENE! 🎆');
 });
 
-// Dock bar links
+document.getElementById('btn-trigger-kiss').addEventListener('click', () => {
+  triggerKiss(true);
+});
+
 document.querySelectorAll('.dock-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     selectStation(btn.dataset.station, true);
@@ -1976,15 +2037,8 @@ document.getElementById('btn-sim').addEventListener('click', e => {
   e.currentTarget.textContent = simRunning ? '⚡ Tự chạy ▶' : '⏸ Đã dừng';
 });
 
-document.getElementById('btn-follow-train').addEventListener('click', e => {
-  followTrain = !followTrain;
-  cameraLerp = null;
-  e.currentTarget.classList.toggle('active', followTrain);
-  if (followTrain) showToast('🚄 Camera đang đi theo tàu Shinkansen!');
-});
-
-// Theme Ngày / Hoàng hôn / Đêm
-let themeMode = 2; // Mặc định Đêm lộng lẫy pháo hoa và đèn lồng!
+// Chuyển đổi Ngày / Hoàng hôn / Đêm
+let themeMode = 2; // Mặc định Đêm huyền ảo
 document.getElementById('btn-theme').addEventListener('click', e => {
   themeMode = (themeMode + 1) % 3;
   if (themeMode === 0) {
@@ -1995,15 +2049,15 @@ document.getElementById('btn-theme').addEventListener('click', e => {
     dirLight.color.setHex(0xfff0dd);
     e.currentTarget.textContent = '☀️ Sáng';
   } else if (themeMode === 1) {
-    scene.background.setHex(0xf8c9b9);
-    scene.fog.color.setHex(0xf8c9b9);
+    scene.background.setHex(0x381f28);
+    scene.fog.color.setHex(0x381f28);
     ambientLight.intensity = 0.6;
     dirLight.intensity = 0.85;
-    dirLight.color.setHex(0xff8c69);
+    dirLight.color.setHex(0xff7755);
     e.currentTarget.textContent = '🌅 Hoàng hôn';
   } else {
-    scene.background.setHex(0x1a1e36);
-    scene.fog.color.setHex(0x1a1e36);
+    scene.background.setHex(NIGHT_BG);
+    scene.fog.color.setHex(NIGHT_BG);
     ambientLight.intensity = 0.45;
     dirLight.intensity = 0.55;
     dirLight.color.setHex(0x90caf9);
@@ -2022,7 +2076,6 @@ const CLIENT_ID = 'lt3d_' + Math.random().toString(36).substring(2, 10);
 let currentRoomId = localStorage.getItem(ROOM_KEY) || DEFAULT_ROOM_ID;
 let isRoomUnlocked = localStorage.getItem(UNLOCKED_KEY) === '1';
 let mqttClients = [];
-let sseSource = null;
 const seenMsgIds = new Set();
 
 const lockScreenEl = document.getElementById('lock-screen');
@@ -2105,6 +2158,12 @@ function applyIncomingCloudData(payload) {
     seenMsgIds.add(payload.msgId);
   }
 
+  // Nếu là sự kiện hôn nhau từ máy của người kia
+  if (payload.isKiss) {
+    triggerKiss(false);
+    return;
+  }
+
   if (payload.data.thanh) state.thanh = payload.data.thanh;
   if (payload.data.nene) state.nene = payload.data.nene;
   if (payload.data.shared) state.shared = payload.data.shared;
@@ -2134,6 +2193,7 @@ function publishCloudState(syncMeta = { station: 'onsen_hub', msg: 'Đồng bộ
     updatedAt: now,
     station: syncMeta.station || 'onsen_hub',
     msg: syncMeta.msg || '',
+    isKiss: isKissing,
     data: {
       thanh: state.thanh,
       nene: state.nene,
@@ -2257,37 +2317,61 @@ function animate() {
       }
     });
 
-    // 2. Chuyển động tàu Shinkansen chạy vòng quanh 2 bờ
-    trainProgress = (trainProgress + dt * 0.045) % 1;
-    const trainPos = trackCurve.getPointAt(trainProgress);
-    const trainTangent = trackCurve.getTangentAt(trainProgress);
-    trainMesh.position.copy(trainPos);
-    trainMesh.lookAt(trainPos.clone().add(trainTangent));
-
-    if (followTrain) {
-      const camOffset = trainPos.clone().add(new THREE.Vector3(0, 14, 18));
-      camera.position.lerp(camOffset, 0.08);
-      controls.target.lerp(trainPos, 0.12);
+    // 2. Quay bánh xe nước cối xay gỗ bên suối Nene
+    if (waterWheelMesh) {
+      waterWheelMesh.rotation.z -= dt * 0.95;
     }
 
-    // 3. Chibi Thanh & Nene đi dạo qua cầu suối Onsen gặp nhau
-    characters.forEach((char) => {
-      char.t += dt * char.speed * char.dir;
-      if (char.t >= 1) {
-        char.t = 1;
-        char.dir = -1;
-      } else if (char.t <= 0) {
-        char.t = 0;
-        char.dir = 1;
-      }
-      char.mesh.position.lerpVectors(char.start, char.end, char.t);
-      char.mesh.position.y = (char.mesh.position.z > 5 && Math.abs(char.mesh.position.x) < 4) ? 0.75 : 0;
-      char.mesh.position.y += Math.abs(Math.sin(elapsed * 7)) * 0.22;
-      const target = char.dir === 1 ? char.end : char.start;
-      char.mesh.lookAt(target.x, char.mesh.position.y, target.z);
-    });
+    // 3. Xử lý nhân vật Chibi Thanh & Nene (Bao gồm nụ hôn ngọt ngào)
+    if (isKissing) {
+      kissProgress -= dt;
+      // Hai nhân vật tiến sát nhau trên Cầu Onsen và nghiêng người hôn nhau
+      chibiThanhMesh.position.set(-0.48, 0.95, 6.5);
+      chibiNeneMesh.position.set(0.48, 0.95, 6.5);
+      chibiThanhMesh.lookAt(1, 0.95, 6.5);
+      chibiNeneMesh.lookAt(-1, 0.95, 6.5);
+      chibiThanhMesh.rotation.z = -0.18;
+      chibiNeneMesh.rotation.z = 0.18;
 
-    // 4. Chuyển động hơi nước Onsen bốc lên mờ ảo
+      if (kissProgress <= 0) {
+        isKissing = false;
+        chibiThanhMesh.rotation.z = 0;
+        chibiNeneMesh.rotation.z = 0;
+      }
+    } else {
+      characters.forEach((char) => {
+        char.t += dt * char.speed * char.dir;
+        if (char.t >= 1) {
+          char.t = 1;
+          char.dir = -1;
+        } else if (char.t <= 0) {
+          char.t = 0;
+          char.dir = 1;
+        }
+        char.mesh.position.lerpVectors(char.start, char.end, char.t);
+        char.mesh.position.y = (char.mesh.position.z > 5 && Math.abs(char.mesh.position.x) < 4) ? 0.75 : 0;
+        char.mesh.position.y += Math.abs(Math.sin(elapsed * 7)) * 0.22;
+        const target = char.dir === 1 ? char.end : char.start;
+        char.mesh.lookAt(target.x, char.mesh.position.y, target.z);
+      });
+    }
+
+    // 4. Cập nhật các hạt trái tim bay khi hôn nhau
+    for (let h = kissHearts.length - 1; h >= 0; h--) {
+      const heart = kissHearts[h];
+      heart.life -= dt;
+      heart.mesh.position.y += heart.velY * dt;
+      heart.mesh.position.x += heart.velX * dt;
+      heart.mesh.position.z += heart.velZ * dt;
+      const alpha = heart.life / heart.maxLife;
+      heart.mesh.scale.setScalar(Math.max(alpha * 1.2, 0.1));
+      if (heart.life <= 0) {
+        scene.remove(heart.mesh);
+        kissHearts.splice(h, 1);
+      }
+    }
+
+    // 5. Chuyển động hơi nước Onsen bốc lên mờ ảo
     onsenSteamParticles.forEach(sp => {
       sp.mesh.position.y += sp.speedY * dt;
       sp.mesh.position.x = sp.baseX + Math.sin(elapsed * 1.5 + sp.baseZ) * 0.4;
@@ -2298,7 +2382,7 @@ function animate() {
       }
     });
 
-    // 5. Chuyển động hạt thời tiết 4 mùa (hoa đào, lá phong, tuyết, đom đóm)
+    // 6. Chuyển động hạt thời tiết 4 mùa
     particles.forEach(p => {
       p.mesh.position.y -= p.speedY * dt;
       p.mesh.position.x += Math.sin(elapsed * 1.4 + p.phase) * p.driftX * dt;
@@ -2306,18 +2390,18 @@ function animate() {
       p.mesh.rotation.x += dt * 1.5;
       p.mesh.rotation.y += dt * 1.8;
       if (p.mesh.position.y < 0.2) {
-        p.mesh.position.y = 22 + Math.random() * 5;
-        p.mesh.position.x = (Math.random() - 0.5) * 75;
-        p.mesh.position.z = (Math.random() - 0.5) * 70;
+        p.mesh.position.y = 24 + Math.random() * 5;
+        p.mesh.position.x = (Math.random() - 0.5) * 95;
+        p.mesh.position.z = (Math.random() - 0.5) * 85;
       }
     });
   }
 
-  // 6. Xử lý hoạt ảnh pháo hoa nổ bung và rơi tàn
+  // 7. Xử lý hoạt ảnh pháo hoa nổ bung
   for (let i = fireworks.length - 1; i >= 0; i--) {
     const fw = fireworks[i];
     fw.life -= dt;
-    fw.vel.y -= 9.8 * dt; // Trọng lực rơi
+    fw.vel.y -= 9.8 * dt;
     fw.mesh.position.addScaledVector(fw.vel, dt);
     const alpha = fw.life / fw.maxLife;
     fw.mesh.scale.setScalar(Math.max(alpha, 0.1));
@@ -2327,7 +2411,7 @@ function animate() {
     }
   }
 
-  // 7. Lướt camera chuyển cảnh mượt mà
+  // 8. Lướt camera chuyển cảnh mượt mà
   if (cameraLerp) {
     cameraLerp.alpha += dt * 2.5;
     const t = Math.min(1, cameraLerp.alpha);
@@ -2377,5 +2461,5 @@ if (isRoomUnlocked && currentRoomId) {
   lockScreenEl.classList.remove('hidden');
 }
 
-applySeason('autumn'); // Mặc định mùa Thu lá phong đỏ & hoa anh đào ấm áp
+applySeason('autumn'); // Mặc định mùa Thu ấm cúng
 animate();

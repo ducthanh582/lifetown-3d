@@ -107,7 +107,7 @@
       <button class="ctrl-btn" id="btn-theme" title="Chuyển Sáng / Hoàng hôn / Đêm">🌙 Đêm</button>
       <button class="ctrl-btn" id="btn-rotate" title="Bật/tắt tự động xoay camera">🔄 Đang xoay</button>
       <button class="ctrl-btn active" id="btn-sim" title="Tạm dừng / Tiếp tục chuyển động 3D">⚡ Tự chạy ▶</button>
-      <button class="ctrl-btn" id="btn-follow-train" title="Camera đi theo tàu Shinkansen">🚄 Theo tàu</button>
+      <button class="ctrl-btn kiss-trigger-btn" id="btn-trigger-kiss" title="Cho Thanh và Nene trao nhau nụ hôn ngọt ngào trên Cầu Onsen!">💋 Hôn Nhau</button>
       <button class="ctrl-btn fireworks-trigger-btn" id="btn-trigger-fireworks" title="Bắn pháo hoa ăn mừng ngay lập tức!">🎆 Bắn Pháo Hoa</button>
     </div>
 
@@ -235,18 +235,22 @@
         🍁 Bên Thanh &amp; 🌸 Bên Nene · Cùng Nhau Hoàn Thành Task
       </div>
       <div class="dock-bar" id="station-dock">
-        <!-- Rendered dynamically or styled with 3 sections: Thanh | Onsen | Nene -->
-        <button class="dock-btn active" data-station="onsen_hub">♨️ Suối Nước Nóng (Chung)</button>
-        <span class="dock-divider">| 🍁 Thanh:</span>
-        <button class="dock-btn" data-station="thanh_dojo">⛩️ Võ Đường Task</button>
-        <button class="dock-btn" data-station="thanh_tower">🏯 Lầu Vọng Cảnh</button>
-        <button class="dock-btn" data-station="thanh_bell">🔔 Tháp Kỷ Luật</button>
-        <button class="dock-btn" data-station="thanh_forge">⚔️ Tiệm Rèn &amp; Tiền</button>
-        <span class="dock-divider">| 🌸 Nene:</span>
-        <button class="dock-btn" data-station="nene_tea">🍵 Trà Quán Task</button>
-        <button class="dock-btn" data-station="nene_studio">👘 Tiệm Sáng Tạo</button>
-        <button class="dock-btn" data-station="nene_clock">🕰️ Lầu Nguyệt Quang</button>
-        <button class="dock-btn" data-station="nene_wagashi">🍡 Wagashi &amp; Tiền</button>
+        <!-- Nút chung Onsen -->
+        <button class="dock-btn active dock-shared" data-station="onsen_hub">♨️ Suối Nước Nóng (Chung)</button>
+
+        <!-- Nhóm công trình Thanh (Bờ Lá Phong Đỏ) -->
+        <span class="dock-divider dock-thanh">| 🍁 Thanh:</span>
+        <button class="dock-btn dock-thanh" data-station="thanh_dojo">⛩️ Võ Đường Task</button>
+        <button class="dock-btn dock-thanh" data-station="thanh_tower">🏯 Lầu Vọng Cảnh</button>
+        <button class="dock-btn dock-thanh" data-station="thanh_bell">🔔 Tháp Kỷ Luật</button>
+        <button class="dock-btn dock-thanh" data-station="thanh_forge">⚔️ Tiệm Rèn &amp; Tiền</button>
+
+        <!-- Nhóm công trình Nene (Bờ Hoa Anh Đào) -->
+        <span class="dock-divider dock-nene">| 🌸 Nene:</span>
+        <button class="dock-btn dock-nene" data-station="nene_tea">🍵 Trà Quán Task</button>
+        <button class="dock-btn dock-nene" data-station="nene_studio">👘 Tiệm Sáng Tạo</button>
+        <button class="dock-btn dock-nene" data-station="nene_clock">🕰️ Lầu Nguyệt Quang</button>
+        <button class="dock-btn dock-nene" data-station="nene_wagashi">🍡 Wagashi &amp; Tiền</button>
       </div>
     </div>
 
