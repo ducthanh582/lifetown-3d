@@ -1233,7 +1233,7 @@ body.view-only-mode .item-check {
 }
 
 .lock-backdrop.hidden {
-  display: none;
+  display: none !important;
 }
 
 body.room-locked #labels-container,

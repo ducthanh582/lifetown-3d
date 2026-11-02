@@ -2886,9 +2886,9 @@ let isRoomUnlocked = localStorage.getItem(UNLOCKED_KEY) === '1';
 let mqttClients = [];
 const seenMsgIds = new Set();
 
-const lockModal = document.getElementById('lock-screen-modal');
+const lockModal = document.getElementById('lock-screen') || document.getElementById('lock-screen-modal');
 const lockFormEl = document.getElementById('lock-form');
-const lockPinInput = document.getElementById('lock-pin');
+const lockPinInput = document.getElementById('lock-room-input') || document.getElementById('lock-pin');
 const lockShowPin = document.getElementById('lock-show-pin');
 const lockErrorMsg = document.getElementById('lock-error');
 const btnEnterDemo = document.getElementById('btn-enter-demo');
@@ -2902,24 +2902,32 @@ if (lockShowPin && lockPinInput) {
 
 function handleLockSubmit(e) {
   if (e && e.preventDefault) e.preventDefault();
-  const enteredPin = (lockPinInput ? lockPinInput.value : '').trim();
-  const selectedRoleEl = document.querySelector('input[name="user-persona"]:checked');
+  const pinInput = document.getElementById('lock-room-input') || document.getElementById('lock-pin');
+  const enteredPin = (pinInput ? pinInput.value : '').trim();
+  const selectedRoleEl = document.querySelector('input[name="lock_role"]:checked') || document.querySelector('input[name="user-persona"]:checked');
   const role = selectedRoleEl ? selectedRoleEl.value : 'all';
+  const rememberMeEl = document.getElementById('lock-remember-me');
+  const remember = rememberMeEl ? rememberMeEl.checked : true;
+  const errorEl = document.getElementById('lock-error');
 
   if (!enteredPin) {
-    if (lockErrorMsg) {
-      lockErrorMsg.textContent = 'Vui lòng nhập mật khẩu phòng!';
-      lockErrorMsg.style.display = 'block';
+    if (errorEl) {
+      errorEl.textContent = 'Vui lòng nhập mã phòng bí mật!';
+      errorEl.style.display = 'block';
+    } else {
+      showToast('⚠️ Vui lòng nhập mã phòng bí mật!');
     }
     return;
   }
 
-  if (enteredPin === DEFAULT_ROOM_ID) {
-    unlockWithRoomAndRole(enteredPin, role, true);
+  if (enteredPin === DEFAULT_ROOM_ID || enteredPin === '280900') {
+    unlockWithRoomAndRole(enteredPin, role, remember);
   } else {
-    if (lockErrorMsg) {
-      lockErrorMsg.textContent = 'Mật mã phòng không đúng! Gợi ý: 280900';
-      lockErrorMsg.style.display = 'block';
+    if (errorEl) {
+      errorEl.textContent = 'Mật mã phòng không đúng! Gợi ý: 280900';
+      errorEl.style.display = 'block';
+    } else {
+      showToast('❌ Mật mã phòng không đúng! Gợi ý: 280900');
     }
   }
 }
@@ -2928,8 +2936,11 @@ if (lockFormEl) lockFormEl.addEventListener('submit', handleLockSubmit);
 if (btnSubmitLock) btnSubmitLock.addEventListener('click', handleLockSubmit);
 
 if (btnEnterDemo) {
-  btnEnterDemo.addEventListener('click', () => {
-    unlockWithRoomAndRole(DEFAULT_ROOM_ID, 'all', true);
+  btnEnterDemo.addEventListener('click', (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const selectedRoleEl = document.querySelector('input[name="lock_role"]:checked') || document.querySelector('input[name="user-persona"]:checked');
+    const role = selectedRoleEl ? selectedRoleEl.value : 'all';
+    unlockWithRoomAndRole(DEFAULT_ROOM_ID, role, false);
   });
 }
 
@@ -2941,7 +2952,12 @@ function unlockWithRoomAndRole(roomId, role, remember = true) {
     localStorage.setItem(UNLOCKED_KEY, '1');
     localStorage.setItem(ROLE_KEY, role);
   }
-  if (lockModal) lockModal.classList.add('hidden');
+  const lockEl = document.getElementById('lock-screen') || document.getElementById('lock-screen-modal');
+  if (lockEl) {
+    lockEl.classList.add('hidden');
+    lockEl.style.display = 'none';
+  }
+  document.body.classList.remove('room-locked');
   setPersonaView(role);
   connectRealtimeCloud();
   buildShareLinks();
@@ -2949,13 +2965,23 @@ function unlockWithRoomAndRole(roomId, role, remember = true) {
 }
 
 if (isRoomUnlocked) {
-  if (lockModal) lockModal.classList.add('hidden');
+  const lockEl = document.getElementById('lock-screen') || document.getElementById('lock-screen-modal');
+  if (lockEl) {
+    lockEl.classList.add('hidden');
+    lockEl.style.display = 'none';
+  }
+  document.body.classList.remove('room-locked');
   const savedRole = localStorage.getItem(ROLE_KEY) || 'all';
   setPersonaView(savedRole);
   connectRealtimeCloud();
   buildShareLinks();
 } else {
-  if (lockModal) lockModal.classList.remove('hidden');
+  const lockEl = document.getElementById('lock-screen') || document.getElementById('lock-screen-modal');
+  if (lockEl) {
+    lockEl.classList.remove('hidden');
+    lockEl.style.display = 'flex';
+  }
+  document.body.classList.add('room-locked');
 }
 
 function updateSyncStatusUI(status, text) {
