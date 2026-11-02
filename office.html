@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifeOffice 3D · Không Gian Làm Việc Animal Crossing</title>
+  <link rel="stylesheet" href="office.css" />
+  <!-- Three.js r128, OrbitControls & MQTT Cloud Sync -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/mqtt@5.3.4/dist/mqtt.min.js"></script>
+</head>
+<body class="office-body">
+  <!-- 3D WebGL Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- 3D Floating Projector Labels Layer -->
+  <div id="labels-container"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Private Room Lock Gatekeeper (Room 280900) -->
+  <div class="lock-backdrop" id="lock-screen">
+    <div class="lock-card">
+      <div class="lock-icon">🏢</div>
+      <h2 class="lock-title">LifeOffice 3D · Văn Phòng Animal Crossing</h2>
+      <p class="lock-subtitle">
+        Không gian làm việc đôi của 🍁 <strong>Thanh</strong> &amp; 🌸 <strong>Nene</strong><br/>
+        với các đồng nghiệp thú cưng siêu dễ thương, quản lý task &amp; tài chính thông minh!
+      </p>
+
+      <form id="lock-form" class="lock-form">
+        <div class="persona-select-group">
+          <div class="persona-title">Chọn vị trí làm việc của bạn:</div>
+          <div class="persona-options">
+            <label class="persona-option" id="label-role-thanh">
+              <input type="radio" name="lock_role" value="thanh" checked />
+              <div class="persona-card">
+                <span class="p-avatar">🍁</span>
+                <span class="p-name">Thanh (Trưởng Nhóm)</span>
+                <span class="p-sub">Bàn Bên Trái · Cubicle 1</span>
+              </div>
+            </label>
+            <label class="persona-option" id="label-role-nene">
+              <input type="radio" name="lock_role" value="nene" />
+              <div class="persona-card">
+                <span class="p-avatar">🌸</span>
+                <span class="p-name">Nene (Thiết Kế)</span>
+                <span class="p-sub">Bàn Bên Phải · Cubicle 2</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div style="text-align:left; font-size:12px; font-weight:700; color:var(--text-sub); margin-top:4px;">
+          Mã phòng bí mật:
+        </div>
+        <input
+          type="password"
+          id="lock-room-input"
+          class="lock-input"
+          placeholder="Nhập mã phòng bí mật..."
+          value="280900"
+          autocomplete="off"
+          required
+        />
+        <div class="lock-options">
+          <label class="lock-remember">
+            <input type="checkbox" id="lock-show-pin" /> Hiện mã phòng
+          </label>
+          <label class="lock-remember">
+            <input type="checkbox" id="lock-remember-me" checked /> Nhớ trên máy này
+          </label>
+        </div>
+        <div id="lock-error" style="display:none; color:#e74c3c; font-size:12px; font-weight:700; margin:6px 0; text-align:center;"></div>
+        <button type="submit" class="btn-primary lock-submit-btn" id="btn-submit-lock">🔓 Vào Bàn Làm Việc 3D</button>
+      </form>
+
+      <div class="lock-divider"><span>hoặc</span></div>
+      <button type="button" class="ctrl-btn lock-demo-btn" id="btn-enter-demo">
+        ✨ Xem bản Demo mẫu (Không kết nối phòng)
+      </button>
+    </div>
+  </div>
+
+  <!-- Top Bar Navigation & Controls -->
+  <header class="top-bar">
+    <div class="brand-pill">
+      <span class="brand-title">🏢 LifeOffice 3D · Animal Crossing</span>
+      <div class="persona-switcher">
+        <button class="role-btn active" id="btn-role-thanh" title="Xem bàn làm việc & công việc của Thanh">🍁 Thanh</button>
+        <button class="role-btn" id="btn-role-nene" title="Xem bàn làm việc & công việc của Nene">🌸 Nene</button>
+        <button class="role-btn" id="btn-role-all" title="Xem toàn cảnh văn phòng">🏢 Cả Văn Phòng</button>
+      </div>
+    </div>
+
+    <div class="camera-controls">
+      <!-- Switch to Kyoto Town (Old Project) -->
+      <a href="index.html" class="ctrl-btn portal-btn" title="Quay lại Thị Trấn Phố Cổ Nhật Bản (Kyoto Town)">
+        ⛩️ Về Phố Cổ Kyoto
+      </a>
+
+      <!-- Day / Night Mode -->
+      <button class="ctrl-btn" id="btn-theme" title="Bật/Tắt chế độ làm việc buổi tối (Đèn văn phòng, màn hình máy tính tự động phát sáng)">
+        ☀️ Ngày / 🌙 Đêm
+      </button>
+
+      <!-- Romantic / Breaktime Interaction -->
+      <button class="ctrl-btn coffee-break-btn" id="btn-coffee-break" title="Thanh & Nene cùng ra quầy Pantry uống cà phê giải lao!">
+        ☕ Uống Cà Phê Cùng Nhau
+      </button>
+
+      <!-- Label toggle -->
+      <button class="ctrl-btn" id="btn-toggle-labels" title="Ẩn/Hiện nhãn 3D trên bàn & phòng">
+        🏷️ Ẩn Chữ
+      </button>
+
+      <!-- Auto Rotate -->
+      <button class="ctrl-btn active" id="btn-rotate" title="Bật/Tắt tự động xoay camera">
+        🔄 Đang xoay
+      </button>
+
+      <!-- Fireworks / Confetti celebration trigger -->
+      <button class="ctrl-btn celebration-trigger-btn" id="btn-trigger-celebration" title="Bắn pháo hoa giấy Confetti ăn mừng văn phòng!">
+        🎉 Ăn Mừng
+      </button>
+    </div>
+
+    <div class="status-summary-pill">
+      <button class="ctrl-btn sync-pill-btn" id="btn-open-sync" title="Trạng thái đồng bộ thời gian thực qua Cloud">
+        <span class="status-dot" id="sync-status-dot"></span>
+        <span id="sync-status-text">☁️ 280900</span>
+      </button>
+      <span class="status-divider">|</span>
+      <div class="fireworks-counter-badge" id="fw-counter-badge" title="Tích lũy 5 task hoàn thành để kích hoạt Đại Tiệc Pháo Hoa Lớn!">
+        🎆 <span id="fw-streak-text">0/5 task</span>
+      </div>
+      <span class="status-divider">|</span>
+      <span id="top-stat-tasks">0/0 task</span>
+      <span class="status-divider">|</span>
+      <span id="top-stat-budget">Số dư: 0đ</span>
+    </div>
+  </header>
+
+  <!-- Cloud Sync & Share Modal -->
+  <div class="modal-backdrop hidden" id="sync-modal">
+    <div class="modal-card">
+      <div class="inspector-header">
+        <div class="inspector-title-group">
+          <div class="station-avatar">☁️</div>
+          <div>
+            <div class="inspector-title">Đồng Bộ Văn Phòng Thời Gian Thực</div>
+            <div class="inspector-status">
+              <span class="status-dot" id="modal-sync-dot"></span>
+              <span id="modal-sync-desc">Đang đồng bộ trực tiếp với Thị trấn Kyoto</span>
+            </div>
+          </div>
+        </div>
+        <button class="close-btn" id="btn-close-sync">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="sync-section">
+          <div class="sync-label">1. Mã Phòng Đồng Bộ (Room ID):</div>
+          <div class="form-row">
+            <input class="form-input" id="input-room-id" placeholder="280900" />
+            <button class="btn-primary" id="btn-apply-room">Đổi Mã Phòng</button>
+          </div>
+          <div class="sync-hint">
+            💡 Dữ liệu văn phòng được đồng bộ 100% với Thị Trấn Kyoto qua phòng <b>280900</b>. Bất kỳ task nào bạn thêm hoặc tích xong ở văn phòng sẽ tự động xuất hiện ngay trên phố cổ và ngược lại!
+          </div>
+        </div>
+
+        <div class="sync-section">
+          <div class="sync-label">2. Link Truy Cập Nhanh:</div>
+          <div class="share-box">
+            <input class="form-input" id="input-share-edit" readonly />
+            <button class="btn-primary" id="btn-copy-edit">📋 Copy Link</button>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:14px; padding-top:10px; border-top:1px solid #e2dcd4;">
+          <button class="ctrl-btn" id="btn-force-push">📤 Đẩy Dữ Liệu Lên Cloud</button>
+          <button class="ctrl-btn" onclick="window.exportJsonFile()">💾 Tải File Backup (.json)</button>
+          <button class="ctrl-btn" id="btn-lock-room" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5;">🔒 Khóa Phòng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Floating Office Inspector Card (Workstations & Tasks) -->
+  <aside class="inspector-card" id="inspector-card">
+    <div class="inspector-header">
+      <div class="inspector-title-group">
+        <div class="station-avatar" id="insp-avatar">🏢</div>
+        <div>
+          <div class="inspector-title" id="insp-title">Bàn Làm Việc</div>
+          <div class="inspector-status">
+            <span class="status-dot"></span>
+            <span id="insp-status">sẵn sàng làm việc</span>
+          </div>
+        </div>
+      </div>
+      <button class="close-btn" id="btn-close-inspector" title="Thu gọn bảng">✕</button>
+    </div>
+
+    <div class="inspector-quote" id="insp-quote">
+      "Bấm vào từng bàn làm việc, quầy cà phê hay bảng ghim để xem nhiệm vụ!"
+    </div>
+
+    <div class="inspector-body" id="insp-body">
+      <!-- Dynamic Content Rendered by office.js -->
+    </div>
+  </aside>
+
+  <!-- Mega Confetti / Fireworks 5-Task Celebration Overlay -->
+  <div class="fireworks-banner hidden" id="mega-fireworks-banner">
+    <div class="fw-content">
+      <span class="fw-sparkle">🎉</span>
+      <div class="fw-text-group">
+        <div class="fw-headline">ĐẠI TIỆC ĂN MỪNG VĂN PHÒNG!</div>
+        <div class="fw-sub" id="fw-banner-sub">Xuất sắc! Bạn đã hoàn thành 5 nhiệm vụ công việc hôm nay!</div>
+      </div>
+      <span class="fw-sparkle">✨</span>
+    </div>
+  </div>
+
+  <!-- Bottom Bar: Station Dock & Fast Navigation -->
+  <footer class="bottom-bar">
+    <div class="bottom-left-stack">
+      <div class="hero-banner" id="hero-banner-title">
+        🏢 Văn Phòng Làm Việc Animal Crossing · Thanh 🍁 &amp; Nene 🌸
+      </div>
+      <div class="dock-bar" id="station-dock">
+        <!-- Shared Pantry -->
+        <button class="dock-btn active dock-shared" data-station="pantry_coffee">☕ Quầy Cà Phê Pantry (Chung)</button>
+
+        <!-- Thanh Stations -->
+        <span class="dock-divider dock-thanh">| 🍁 Thanh:</span>
+        <button class="dock-btn dock-thanh" data-station="thanh_desk">💻 Bàn Làm Việc Thanh</button>
+        <button class="dock-btn dock-thanh" data-station="bulletin_board">📌 Bảng Ghim Dự Án</button>
+        <button class="dock-btn dock-thanh" data-station="phone_schedule">☎️ Điện Thoại Lịch Trình</button>
+        <button class="dock-btn dock-thanh" data-station="file_cabinet">🗄️ Tủ Hồ Sơ &amp; Tiền</button>
+
+        <!-- Nene Stations -->
+        <span class="dock-divider dock-nene">| 🌸 Nene:</span>
+        <button class="dock-btn dock-nene" data-station="nene_desk">🌸 Bàn Thiết Kế Nene</button>
+        <button class="dock-btn dock-nene" data-station="vending_water">🥤 Máy Bán Nước Canteen</button>
+        <button class="dock-btn dock-nene" data-station="wall_dashboard">📊 Biểu Đồ KPI &amp; Sáng Tạo</button>
+      </div>
+    </div>
+
+    <div class="guide-card">
+      <strong>Văn Phòng Animal Crossing</strong>
+      Bấm vào từng bàn làm việc, máy pha cà phê, máy bán nước hoặc bảng ghim để quản lý to-do list, lịch họp và tài chính của Thanh &amp; Nene!
+    </div>
+  </footer>
+
+  <script src="office.js"></script>
+</body>
+</html>

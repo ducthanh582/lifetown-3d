@@ -354,6 +354,23 @@ body, html {
 }
 
 /* Nút Tắm Onsen Thư Giãn */
+.portal-office-btn {
+  background: linear-gradient(135deg, #f28da3, #d86882) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 2px 10px rgba(216, 104, 130, 0.45) !important;
+  text-decoration: none;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.portal-office-btn:hover {
+  transform: translateY(-1px) scale(1.04);
+  background: linear-gradient(135deg, #f49ab0, #e0768e) !important;
+}
+
 .bath-trigger-btn {
   background: linear-gradient(135deg, #00cec9, #0984e3) !important;
   color: #fff !important;

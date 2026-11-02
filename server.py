@@ -8,7 +8,7 @@ import threading
 
 PORT = 8080
 ROOMS_FILE = os.path.join(os.path.dirname(__file__), 'cloud_rooms.json')
-WATCHED_FILES = ['index.html', 'styles.css', 'app.js']
+WATCHED_FILES = ['index.html', 'styles.css', 'app.js', 'office.html', 'office.css', 'office.js']
 
 rooms_lock = threading.Lock()
 rooms_data = {}
